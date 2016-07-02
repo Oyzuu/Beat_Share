@@ -1,4 +1,4 @@
-package fragments;
+package be.omnuzel.beatshare.fragments;
 
 import android.app.Fragment;
 import android.content.Context;

@@ -1,13 +1,11 @@
 package be.omnuzel.beatshare;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
-import fragments.LogInFragment;
+import be.omnuzel.beatshare.fragments.LogInFragment;
 
 public class MainActivity
         extends
@@ -28,6 +26,7 @@ public class MainActivity
 
     @Override
     public void logIn(View view) {
+        startActivity(new Intent(this, SequencerActivity.class));
     }
 
     @Override

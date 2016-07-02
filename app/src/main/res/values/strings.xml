@@ -5,4 +5,9 @@
     <string name="signup"           >Sign up</string>
     <string name="username"         >Username</string>
     <string name="password"         >Password</string>
+
+    <string name="play"             >play</string>
+    <string name="pause"            >pause</string>
+    <string name="stop"             >stop</string>
+    <string name="rec"              >record</string>
 </resources>
