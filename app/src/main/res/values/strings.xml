@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Beat Share</string>
+    <string name="app_name"         >Beat Share</string>
+
+    <string name="signin"           >Sign in</string>
+    <string name="signup"           >Sign up</string>
+    <string name="username"         >Username</string>
+    <string name="password"         >Password</string>
 </resources>
