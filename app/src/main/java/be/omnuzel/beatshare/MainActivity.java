@@ -1,10 +1,15 @@
 package be.omnuzel.beatshare;
 
+import android.animation.AnimatorListenerAdapter;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 
 import be.omnuzel.beatshare.fragments.LogInFragment;
 import be.omnuzel.beatshare.fragments.SignUpFragment;

@@ -42,6 +42,7 @@
             android:layout_gravity="center"
             android:text="@string/signup"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/button_to_signup"
             android:onClick="toSignUp"/>
 
     </LinearLayout>
