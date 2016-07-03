@@ -111,15 +111,13 @@
                 android:layout_height="75dp"
                 android:layout_margin="4dp"
                 android:id="@+id/seq_button_12"
-                android:background="@drawable/sequencer_pad_selector"
-                android:onClick="playSound"/>
+                android:background="@drawable/sequencer_pad_selector"/>
             <Button
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_margin="4dp"
                 android:id="@+id/seq_button_13"
-                android:background="@drawable/sequencer_pad_selector"
-                android:onClick="playSound"/>
+                android:background="@drawable/sequencer_pad_selector"/>
             <Button
                 android:layout_width="75dp"
                 android:layout_height="75dp"

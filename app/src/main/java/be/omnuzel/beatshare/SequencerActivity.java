@@ -1,12 +1,17 @@
 package be.omnuzel.beatshare;
 
+import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.media.SoundPool;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,65 +23,91 @@ import java.io.OutputStream;
 
 public class SequencerActivity extends AppCompatActivity {
 
-    private AudioTrack audioTrack;
-    private byte[] sound, wavHeader;
+    private SoundPool soundPool;
+
+    private int
+            firstSound,
+            secondSound,
+            thirdSound,
+            fourthSound,
+            fifthSound,
+            sixthSound;
+
+    private Button
+            button8,
+            button9,
+            button10,
+            button12,
+            button13,
+            button14;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sequencer);
 
+        button8   = (Button) findViewById(R.id.seq_button_8);
+        button9   = (Button) findViewById(R.id.seq_button_9);
+        button10  = (Button) findViewById(R.id.seq_button_10);
+        button12  = (Button) findViewById(R.id.seq_button_12);
+        button13  = (Button) findViewById(R.id.seq_button_13);
+        button14  = (Button) findViewById(R.id.seq_button_14);
+
+
+        setActionOnTouch(button8);
+        setActionOnTouch(button9);
+        setActionOnTouch(button10);
+        setActionOnTouch(button12);
+        setActionOnTouch(button13);
+        setActionOnTouch(button14);
+
         initSounds();
     }
 
     public void initSounds() {
-        try {
-            InputStream         is  = getResources().openRawResource(R.raw.iamm_dd2_ride_cymbal_1);
-            BufferedInputStream bis = new BufferedInputStream       (is, 8000);
-            DataInputStream     dis = new DataInputStream           (bis);
-
-            wavHeader = new byte[44];
-            sound     = new byte[dis.available() - wavHeader.length];
-
-            for (int i = 0; i < 44; i++) {
-                wavHeader[i] = dis.readByte();
-            }
-
-            int i = 0;
-            while (dis.available() > 0) {
-                sound[i] = dis.readByte();
-                i++;
-            }
-
-            dis.close();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        else {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage      (AudioAttributes.USAGE_GAME)
+                    .build         ();
+
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams     (6)
+                    .setAudioAttributes(audioAttributes)
+                    .build             ();
         }
+
+        firstSound  = soundPool.load(this, R.raw.iamm_c1_bass_drum     , 0);
+        secondSound = soundPool.load(this, R.raw.iamm_d1_acoustic_snare, 0);
+        thirdSound  = soundPool.load(this, R.raw.iamm_e1_electric_snare, 0);
+        fourthSound = soundPool.load(this, R.raw.iamm_ad1_open_hihat,    0);
+        fifthSound  = soundPool.load(this, R.raw.iamm_cd3_low_bongo,     0);
+        sixthSound  = soundPool.load(this, R.raw.iamm_gd3_low_agogo,     0);
+    }
+
+    private void setActionOnTouch(Button button) {
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    playSound(v);
+                }
+                return false;
+            }
+        });
     }
 
     public void playSound(View view) {
-        if (audioTrack == null) {
-            int sampleRate = 44100;
-
-            int minBufferSize = AudioTrack.getMinBufferSize(
-                    sampleRate,
-                    AudioFormat.CHANNEL_OUT_STEREO,
-                    AudioFormat.ENCODING_PCM_16BIT);
-
-            audioTrack = new AudioTrack(
-                    AudioManager.STREAM_MUSIC,
-                    sampleRate,
-                    AudioFormat.CHANNEL_OUT_STEREO,
-                    AudioFormat.ENCODING_PCM_16BIT,
-                    minBufferSize,
-                    AudioTrack.MODE_STATIC);
-
-            audioTrack.write(sound, 0, sound.length);
+        switch (view.getId()) {
+            case R.id.seq_button_8  : soundPool.play(thirdSound,  1, 1, 1, 0, 1); break;
+            case R.id.seq_button_9  : soundPool.play(fourthSound, 1, 1, 1, 0, 1); break;
+            case R.id.seq_button_10 : soundPool.play(fifthSound,  1, 1, 1, 0, 1); break;
+            case R.id.seq_button_12 : soundPool.play(firstSound,  1, 1, 1, 0, 1); break;
+            case R.id.seq_button_13 : soundPool.play(secondSound, 1, 1, 1, 0, 1); break;
+            case R.id.seq_button_14 : soundPool.play(sixthSound,  1, 1, 1, 0, 1); break;
         }
-
-        audioTrack.play();
-        audioTrack.stop();
-        audioTrack.reloadStaticData();
     }
 }
