@@ -5,57 +5,79 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class SequencerActivity extends AppCompatActivity {
 
-    AudioTrack audioTrack;
-    byte[] sound;
+    private AudioTrack audioTrack;
+    private byte[] wavHeader;
+    private short[] sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sequencer);
 
-        InputStream is = getResources().openRawResource(R.raw.iamm_e1_electric_snare);
+        initSounds();
+    }
 
-        audioTrack = new AudioTrack(
-                AudioManager.STREAM_MUSIC,
-                44100,
-                AudioFormat.CHANNEL_OUT_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT,
-                5000,
-                AudioTrack.MODE_STATIC);
-
+    public void initSounds() {
         try {
-            sound = new byte[is.available()];
-            sound = convertStreamToByteArray(is);
+            InputStream         is  = getResources().openRawResource(R.raw.iamm_dd2_ride_cymbal_1);
+            BufferedInputStream bis = new BufferedInputStream       (is, 8000);
+            DataInputStream     dis = new DataInputStream           (bis);
+
+            wavHeader = new byte[44];
+            sound     = new short[dis.available()];
+
+            for (int i = 0; i < 44; i++) {
+                wavHeader[i] = dis.readByte();
+            }
+
+            int i = 0;
+            while (dis.available() > 0) {
+                sound[i] = dis.readShort();
+                i++;
+            }
+
+            dis.close();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        audioTrack.write(sound, 0, sound.length);
     }
 
     public void playSound(View view) {
-        audioTrack.play();
-        audioTrack.reloadStaticData();
-    }
+        if (audioTrack == null) {
+            int sampleRate = 44100;
 
-    public byte[] convertStreamToByteArray(InputStream is) throws IOException {
-        byte[] buffer = new byte[10240];
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int i = 1;
+            int minBufferSize = AudioTrack.getMinBufferSize(
+                    sampleRate,
+                    AudioFormat.CHANNEL_OUT_STEREO,
+                    AudioFormat.ENCODING_PCM_16BIT);
 
-        while ((i = is.read(buffer)) > 0) {
-            baos.write(buffer);
+            audioTrack = new AudioTrack(
+                    AudioManager.STREAM_MUSIC,
+                    sampleRate,
+                    AudioFormat.CHANNEL_OUT_STEREO,
+                    AudioFormat.ENCODING_PCM_16BIT,
+                    minBufferSize,
+                    AudioTrack.MODE_STATIC);
+
+            audioTrack.write(sound, 0, sound.length);
         }
 
-        return baos.toByteArray();
+        audioTrack.play();
+        audioTrack.stop();
+        audioTrack.reloadStaticData();
     }
 }
