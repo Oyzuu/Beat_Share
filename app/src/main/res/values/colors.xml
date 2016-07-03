@@ -3,8 +3,13 @@
     <color name="colorPrimary"      >#424242  </color>
     <color name="colorPrimaryDark"  >#212121  </color>
     <color name="colorAccent"       >#ffa726  </color>
+    <color name="unactivated"       >#cf9f59  </color>
     <color name="colorAccentLight"  >#ffd494  </color>
+
     <color name="white"             >#FFFFFF  </color>
     <color name="offwhite"          >#DAFFFFFF</color>
     <color name="black"             >#000000  </color>
+
+    <color name="sad_gray"          >#737373  </color>
+    <color name="sad_red"           >#e13333  </color>
 </resources>

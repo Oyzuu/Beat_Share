@@ -20,8 +20,12 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 public class SequencerActivity extends AppCompatActivity {
+
+    // TODO Create a Sound object
+    // TODO Create a SoundBank object extending SoundPool - will link Button and Sound
 
     private SoundPool soundPool;
 
@@ -86,6 +90,32 @@ public class SequencerActivity extends AppCompatActivity {
         fourthSound = soundPool.load(this, R.raw.iamm_ad1_open_hihat,    0);
         fifthSound  = soundPool.load(this, R.raw.iamm_cd3_low_bongo,     0);
         sixthSound  = soundPool.load(this, R.raw.iamm_gd3_low_agogo,     0);
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                switch (sampleId) {
+                    case 1 :
+                        button12.setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                        break;
+                    case 2 :
+                        button13.setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                        break;
+                    case 3 :
+                        button8 .setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                        break;
+                    case 4 :
+                        button9 .setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                        break;
+                    case 5 :
+                        button10.setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                        break;
+                    case 6 :
+                        button14.setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                        break;
+                }
+            }
+        });
     }
 
     private void setActionOnTouch(Button button) {
