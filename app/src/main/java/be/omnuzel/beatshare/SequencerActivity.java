@@ -19,8 +19,7 @@ import java.io.OutputStream;
 public class SequencerActivity extends AppCompatActivity {
 
     private AudioTrack audioTrack;
-    private byte[] wavHeader;
-    private short[] sound;
+    private byte[] sound, wavHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class SequencerActivity extends AppCompatActivity {
             DataInputStream     dis = new DataInputStream           (bis);
 
             wavHeader = new byte[44];
-            sound     = new short[dis.available()];
+            sound     = new byte[dis.available() - wavHeader.length];
 
             for (int i = 0; i < 44; i++) {
                 wavHeader[i] = dis.readByte();
@@ -45,7 +44,7 @@ public class SequencerActivity extends AppCompatActivity {
 
             int i = 0;
             while (dis.available() > 0) {
-                sound[i] = dis.readShort();
+                sound[i] = dis.readByte();
                 i++;
             }
 
