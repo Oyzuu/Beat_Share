@@ -15,7 +15,7 @@ import be.omnuzel.beatshare.db.UserDAO;
 import be.omnuzel.beatshare.fragments.LogInFragment;
 import be.omnuzel.beatshare.fragments.SignUpFragment;
 
-// TODO Functional log in / sign up
+// TODO functional log in / sign up - almost done
 
 public class MainActivity
         extends
@@ -108,6 +108,7 @@ public class MainActivity
 
     @Override
     public void signUp(View view) {
+        // TODO trim the strings ! (auto-completion adds spaces)
         boolean formIsOK = true;
 
         String name        = nameEdit        != null ? nameEdit       .getText().toString() : "";
@@ -150,7 +151,7 @@ public class MainActivity
         userDAO.create(user);
         userDAO.close ();
 
-        resetEditText(nameEdit, passEdit, passConfirmEdit, mailEdit, mailConfirmEdit);
+        cancel(view);
 
         startActivity(new Intent(this, SequencerActivity.class));
     }
@@ -162,12 +163,21 @@ public class MainActivity
         onBackPressed();
     }
 
-    public void resetEditText(EditText... editTexts) {
+    /**
+     * Sets back EditText in the array to and empty string
+     * @param editTexts one or many EditText in need of a clean shave
+     */
+    private void resetEditText(EditText... editTexts) {
         for (EditText editText : editTexts) {
             if (editText != null) editText.setText("");
         }
     }
 
+    // TODO move this elsewhere (maybe in a ToolBox class) --- IF TIME FOR IT
+    /**
+     * Displays a message in a Snackbar
+     * @param message The string you want to display in a short-length Snackbar
+     */
     private void snackThis(String message) {
         View view = findViewById(R.id.main_view);
 

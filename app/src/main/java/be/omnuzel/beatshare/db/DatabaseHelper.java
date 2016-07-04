@@ -4,9 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by student on 4/07/2016.
- */
+// TODO create all the DAOs !
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME    = "app.db";
     private static int    DB_VERSION = 1;

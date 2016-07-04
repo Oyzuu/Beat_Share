@@ -10,7 +10,9 @@ import android.widget.Button;
 
 import be.omnuzel.beatshare.model.SoundBank;
 
-// TODO Check AudioAttributes CONTENT_TYPE and USAGE
+// TODO check AudioAttributes CONTENT_TYPE and USAGE
+// TODO will probably need its own fragment
+// TODO animate button activation --- IF TIME FOR IT
 
 public class SequencerActivity extends AppCompatActivity {
 
@@ -54,6 +56,9 @@ public class SequencerActivity extends AppCompatActivity {
             activateButtons();
         }
 
+        // TODO move this elsewhere (SoundBank -> callback.activateButtons()) --- IF TIME FOR IT
+        // Ensures that the last sound is loaded before calling activateButtons() for the first time
+        // Afterwards, notifies the sound bank that all the sounds are loaded
         soundBank.getSoundPool().setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
@@ -67,8 +72,8 @@ public class SequencerActivity extends AppCompatActivity {
     }
 
     /**
-     *  Sets a background color for activated pads
-     *  Loops through a linked list of integers to get activated buttons identifiers
+     * Sets a background color for activated pads
+     * Loops through a linked list of integers to get activated buttons identifiers
      */
     private void activateButtons() {
         for (int id : soundBank.getLoadedButtons())  {
@@ -80,6 +85,10 @@ public class SequencerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Forces a button to react on touch instead of on release
+     * @param button Button to capture ACTION_DOWN
+     */
     private void setActionOnTouch(Button button) {
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
