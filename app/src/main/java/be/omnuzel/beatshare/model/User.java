@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare.classes;
+package be.omnuzel.beatshare.model;
 
 public class User {
 

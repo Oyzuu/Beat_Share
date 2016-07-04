@@ -3,12 +3,12 @@ package be.omnuzel.beatshare.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
-import be.omnuzel.beatshare.classes.User;
+import be.omnuzel.beatshare.model.User;
 
 public class UserDAO implements DataAccessObject<User> {
     public static String
@@ -49,23 +49,30 @@ public class UserDAO implements DataAccessObject<User> {
 
         if (openTypeConstant == READABLE)
             db = DatabaseHelper.getReadableDatabase();
+
+        Log.i("USERDAO", "Database open type : " + openTypeConstant);
     }
 
     @Override
     public void close() {
         db.close();
         DatabaseHelper.close();
+
+        Log.i("USERDAO", "Database closed");
     }
 
     @Override
-    public long create(User user) throws SQLiteConstraintException {
+    public long create(User user) {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_USERNAME, user.getUserName());
-        cv.put(COLUMN_EMAIL,    user.getEmail   ());
+        cv.put(COLUMN_EMAIL,    user.getEmail());
         cv.put(COLUMN_PASSWORD, user.getPassword());
 
-        return db.insert(TABLE_NAME, null, cv);
+        long id = db.insert(TABLE_NAME, null, cv);
+        Log.i("USERDAO", "User : " + user.getUserName() + " @ " + id);
+
+        return id;
     }
 
     @Override
@@ -98,7 +105,7 @@ public class UserDAO implements DataAccessObject<User> {
             return null;
     }
 
-    public User getUserByEmail(String email) {
+    public User getByEmail(String email) {
         Cursor c = db.query(TABLE_NAME, null, COLUMN_USERNAME + "='" + email + "'",
                 null, null, null, null);
 
@@ -145,6 +152,8 @@ public class UserDAO implements DataAccessObject<User> {
 
                 users.add(user);
             } while (c.moveToNext());
+
+            c.close();
 
             return users;
         }

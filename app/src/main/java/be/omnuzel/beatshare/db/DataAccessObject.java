@@ -1,13 +1,10 @@
 package be.omnuzel.beatshare.db;
 
-import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 
 import java.util.ArrayList;
 
-/**
- * Created by student on 4/07/2016.
- */
 public interface DataAccessObject<T> {
     int WRITABLE = 1;
     int READABLE = 0;
@@ -16,7 +13,7 @@ public interface DataAccessObject<T> {
 
     void close();
 
-    long create(T t);
+    long create(T t) throws SQLiteConstraintException;
 
     void delete(int id);
 

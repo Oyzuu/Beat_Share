@@ -8,37 +8,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import be.omnuzel.beatshare.model.SoundBank;
 
-import be.omnuzel.beatshare.classes.SoundBank;
+// TODO Check AudioAttributes CONTENT_TYPE and USAGE
 
 public class SequencerActivity extends AppCompatActivity {
 
-    // TODO Check AudioAttributes CONTENT_TYPE and USAGE
-
-    private SoundBank           soundBank;
-    private LinkedList<Button>  buttons = new LinkedList<>();
+    private SoundBank soundBank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sequencer);
 
-        // For matching coherence on button / sample id - NO ZERO BUTTON !
-        buttons.add(null);
-
-        // Init all the buttons with a setActionTouch and store them in a list for onLoadComplete
+        // Init all the buttons with a setActionTouch
         for (int i = 1; i <= 16; i++) {
             String buttonId = "seq_button_" + i;
             int    id       = getResources().getIdentifier(buttonId, "id", getPackageName());
             Button button   = (Button) findViewById(id);
-            Log.i("SEQ_ONCREATE_INFO", "Button " + i + " created.");
+            Log.i("SEQUENCER", "Button " + i + " created.");
 
             setActionOnTouch(button);
-            Log.i("SEQ_ONCREATE_INFO", "Touch action set on button " + i);
-
-            buttons.add(button);
+            Log.i("SEQUENCER", "Touch action set on button " + i);
         }
 
         initSounds();

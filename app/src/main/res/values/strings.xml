@@ -1,19 +1,23 @@
 <resources>
-    <string name="app_name"         >Beat Share</string>
+    <string name="app_name"             >Beat Share</string>
 
-    <string name="signin"           >Sign in</string>
-    <string name="signup"           >Sign up</string>
-    <string name="confirm"          >Confirm</string>
-    <string name="cancel"           >Cancel</string>
+    <string name="signin"               >Sign in</string>
+    <string name="signup"               >Sign up</string>
+    <string name="confirm"              >Confirm</string>
+    <string name="cancel"               >Cancel</string>
 
-    <string name="username"         >Username</string>
-    <string name="password"         >Password</string>
-    <string name="confirm_password" >Confirm password</string>
-    <string name="mail"             >Mail</string>
-    <string name="confirm_mail"     >Confirm mail</string>
+    <string name="username"             >Username</string>
+    <string name="password"             >Password</string>
+    <string name="confirm_password"     >Confirm password</string>
+    <string name="mail"                 >Mail</string>
+    <string name="confirm_mail"         >Confirm mail</string>
 
-    <string name="play"             >play</string>
-    <string name="pause"            >pause</string>
-    <string name="stop"             >stop</string>
-    <string name="rec"              >record</string>
+    <string name="play"                 >play</string>
+    <string name="pause"                >pause</string>
+    <string name="stop"                 >stop</string>
+    <string name="rec"                  >record</string>
+
+    <string name="input_error"          >Input error</string>
+    <string name="pass_confirm_error"   >Pass confirmation error</string>
+    <string name="mail_confirm_error"   >Mail confirmation error</string>
 </resources>
