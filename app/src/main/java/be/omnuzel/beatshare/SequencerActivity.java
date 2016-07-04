@@ -19,7 +19,6 @@ public class SequencerActivity extends AppCompatActivity {
 
     private SoundBank           soundBank;
     private LinkedList<Button>  buttons = new LinkedList<>();
-    private LinkedList<Integer> activeButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +75,17 @@ public class SequencerActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *  Sets a background color for activated pads
+     *  Loops through a linked list of integers to get activated buttons identifiers
+     */
     private void activateButtons() {
         for (int id : soundBank.getLoadedButtons())  {
-            findViewById(id).setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+            Button button = (Button) findViewById(id);
+
+            if (button != null) {
+                button.setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+            }
         }
     }
 
