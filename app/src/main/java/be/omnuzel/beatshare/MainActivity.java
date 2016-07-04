@@ -21,7 +21,7 @@ public class MainActivity
             LogInFragment.ILoginFragment,
             SignUpFragment.ISignUpFragment {
 
-    // TODO Functional log in / sign up - Database and UserDAO
+    // TODO Functional log in / sign up
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,9 +10,7 @@ import java.util.ArrayList;
 
 import be.omnuzel.beatshare.classes.User;
 
-// TODO adapt methods to User
-
-public class UserDAO {
+public class UserDAO implements DataAccessObject<User> {
     public static String
             TABLE_NAME        = "User",
 
@@ -43,24 +41,24 @@ public class UserDAO {
         this.context = context;
     }
 
-    public UserDAO openWritable() {
+    @Override
+    public void open(int openTypeConstant) {
         DatabaseHelper = new DatabaseHelper(context);
-        db = DatabaseHelper.getWritableDatabase();
-        return this;
+        if (openTypeConstant == WRITABLE)
+            db = DatabaseHelper.getWritableDatabase();
+
+        if (openTypeConstant == READABLE)
+            db = DatabaseHelper.getReadableDatabase();
     }
 
-    public UserDAO openReadable() {
-        DatabaseHelper = new DatabaseHelper(context);
-        db = DatabaseHelper.getReadableDatabase();
-        return this;
-    }
-
+    @Override
     public void close() {
         db.close();
         DatabaseHelper.close();
     }
 
-    public long createUser(User user) throws SQLiteConstraintException {
+    @Override
+    public long create(User user) throws SQLiteConstraintException {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_USERNAME, user.getUserName());
@@ -70,33 +68,50 @@ public class UserDAO {
         return db.insert(TABLE_NAME, null, cv);
     }
 
-    public void deleteUser(User user) {
-        db.delete(TABLE_NAME, COLUMN_ID + "=" + user.getId(), null);
+    @Override
+    public void delete(int userId) {
+        db.delete(TABLE_NAME, COLUMN_ID + "=" + userId, null);
     }
 
-    public User getUserById(int userId) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + userId, null, null, null, null);
+    @Override
+    public User get(int userId) {
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + userId,
+                null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();
-            return getUserFromCursor(c);
+            return getFromCursor(c);
         }
         else
             return null;
     }
 
-    public User getUserByName(String userName) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_USERNAME + "='" + userName + "'", null, null, null, null);
+    public User getByName(String userName) {
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_USERNAME + "='" + userName + "'",
+                null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();
-            return getUserFromCursor(c);
+            return getFromCursor(c);
         }
         else
             return null;
     }
 
-    private User getUserFromCursor(Cursor c) {
+    public User getUserByEmail(String email) {
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_USERNAME + "='" + email + "'",
+                null, null, null, null);
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            return getFromCursor(c);
+        }
+        else
+            return null;
+    }
+
+    @Override
+    public User getFromCursor(Cursor c) {
         int    id       = c.getInt   (c.getColumnIndex(COLUMN_ID));
         String userName = c.getString(c.getColumnIndex(COLUMN_USERNAME));
         String email    = c.getString(c.getColumnIndex(COLUMN_EMAIL));
@@ -111,7 +126,8 @@ public class UserDAO {
         return user;
     }
 
-    public ArrayList<User> getUsers() {
+    @Override
+    public ArrayList<User> getAll() {
         String[] selection = {COLUMN_ID, COLUMN_USERNAME, COLUMN_EMAIL};
         Cursor c = db.query(TABLE_NAME, selection, null, null, null, null, null);
 
@@ -123,8 +139,9 @@ public class UserDAO {
             do {
                 User user = new User();
 
-                user.setId(c.getInt(c.getColumnIndex(COLUMN_ID)));
+                user.setId      (c.getInt   (c.getColumnIndex(COLUMN_ID)));
                 user.setUserName(c.getString(c.getColumnIndex(COLUMN_USERNAME)));
+                user.setEmail   (c.getString(c.getColumnIndex(COLUMN_EMAIL)));
 
                 users.add(user);
             } while (c.moveToNext());
