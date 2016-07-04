@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import be.omnuzel.beatshare.classes.User;
 
-// TODO Add UserDAO to helper
 // TODO adapt methods to User
 
 public class UserDAO {
@@ -77,6 +76,17 @@ public class UserDAO {
 
     public User getUserById(int userId) {
         Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + userId, null, null, null, null);
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            return getUserFromCursor(c);
+        }
+        else
+            return null;
+    }
+
+    public User getUserByName(String userName) {
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_USERNAME + "='" + userName + "'", null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();
