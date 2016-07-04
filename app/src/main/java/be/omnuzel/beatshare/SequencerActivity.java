@@ -16,10 +16,10 @@ import be.omnuzel.beatshare.classes.SoundBank;
 public class SequencerActivity extends AppCompatActivity {
 
     // TODO Check AudioAttributes CONTENT_TYPE and USAGE
-    // TODO Modify onLoadComplete() for Button / sample id
 
-    private SoundBank          soundBank;
-    private LinkedList<Button> buttons = new LinkedList<>();
+    private SoundBank           soundBank;
+    private LinkedList<Button>  buttons = new LinkedList<>();
+    private LinkedList<Integer> activeButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,25 +48,38 @@ public class SequencerActivity extends AppCompatActivity {
     public void initSounds() {
         soundBank = SoundBank.getInstance(this);
 
-        soundBank.load(R.raw.iamm_c1_bass_drum,      R.id.seq_button_1);
-        soundBank.load(R.raw.iamm_d1_acoustic_snare, R.id.seq_button_2);
-        soundBank.load(R.raw.iamm_c3_hi_bongo,       R.id.seq_button_3);
-        soundBank.load(R.raw.iamm_cd3_low_bongo,     R.id.seq_button_4);
-        soundBank.load(R.raw.iamm_fd1_closed_hihat,  R.id.seq_button_5);
-        soundBank.load(R.raw.iamm_ad1_open_hihat,    R.id.seq_button_6);
-        soundBank.load(R.raw.iamm_e1_electric_snare, R.id.seq_button_7);
+        if (!soundBank.getLoadingState()) {
+            soundBank.load(R.raw.iamm_c1_bass_drum,      R.id.seq_button_1);
+            soundBank.load(R.raw.iamm_d1_acoustic_snare, R.id.seq_button_2);
+            soundBank.load(R.raw.iamm_c3_hi_bongo,       R.id.seq_button_3);
+            soundBank.load(R.raw.iamm_cd3_low_bongo,     R.id.seq_button_4);
+            soundBank.load(R.raw.iamm_fd1_closed_hihat,  R.id.seq_button_5);
+            soundBank.load(R.raw.iamm_ad1_open_hihat,    R.id.seq_button_6);
+            soundBank.load(R.raw.iamm_e1_electric_snare, R.id.seq_button_7);
+            soundBank.load(R.raw.iamm_dd2_ride_cymbal_1, R.id.seq_button_8);
+            soundBank.load(R.raw.iamm_gd3_low_agogo,     R.id.seq_button_9);
+        }
 
-        // First sound seems to load instantly and thus is not "heard" on the listener - DUCT TAPE
-        buttons.get(1).setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+        if (soundBank.getLoadingState()) {
+            activateButtons();
+        }
 
         soundBank.getSoundPool().setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                Log.i("SEQ_LOADCOMPLETE", "Sample " + sampleId + " loaded !");
-                buttons.get(sampleId)
-                        .setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+                if (sampleId == soundBank.getMaxSoundId()) {
+                    soundBank.setLoadingState(true);
+
+                    activateButtons();
+                }
             }
         });
+    }
+
+    private void activateButtons() {
+        for (int id : soundBank.getLoadedButtons())  {
+            findViewById(id).setBackground(getResources().getDrawable(R.drawable.sequencer_pad));
+        }
     }
 
     private void setActionOnTouch(Button button) {
@@ -76,6 +89,7 @@ public class SequencerActivity extends AppCompatActivity {
                 if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     soundBank.play(view.getId());
                 }
+
                 return false;
             }
         });
