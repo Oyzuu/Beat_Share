@@ -1,5 +1,6 @@
 package be.omnuzel.beatshare.classes;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;

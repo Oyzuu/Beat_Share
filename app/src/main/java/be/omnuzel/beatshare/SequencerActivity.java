@@ -46,7 +46,7 @@ public class SequencerActivity extends AppCompatActivity {
     }
 
     public void initSounds() {
-        soundBank = new SoundBank(this);
+        soundBank = SoundBank.getInstance(this);
 
         soundBank.load(R.raw.iamm_c1_bass_drum,      R.id.seq_button_1);
         soundBank.load(R.raw.iamm_d1_acoustic_snare, R.id.seq_button_2);
