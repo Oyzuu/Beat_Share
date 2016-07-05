@@ -62,6 +62,12 @@
             android:text="get all roles"
             android:onClick="allRoles"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get user_role"
+            android:onClick="allUserRoles"/>
+
     </LinearLayout>
 
 </LinearLayout>

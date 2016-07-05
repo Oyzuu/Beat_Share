@@ -11,7 +11,7 @@ public class User {
 
     private ArrayList<Role> roles;
 
-    private int id;
+    private long id;
 
     public User() {
         roles = new ArrayList<>();
@@ -41,11 +41,11 @@ public class User {
         this.email = email;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-// TODO create RoleDAO and the corresponding link table USER_ROLE
+// TODO modify UserDAO to query and insert roles
 // TODO create all the DAOs !
 
 public class DatabaseHelper extends SQLiteOpenHelper {

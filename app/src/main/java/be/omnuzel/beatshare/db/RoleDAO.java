@@ -37,6 +37,12 @@ public class RoleDAO implements DataAccessObject<Role> {
             TABLE_NAME
     );
 
+    public static int
+    ADMIN   = 1,
+    MEMBER  = 2,
+    BLOCKED = 3,
+    DELETED = 4;
+
     private SQLiteDatabase db;
     private DatabaseHelper databaseHelper;
     private Context context;

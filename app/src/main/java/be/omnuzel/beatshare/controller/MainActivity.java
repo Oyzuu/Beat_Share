@@ -21,6 +21,8 @@ import be.omnuzel.beatshare.db.UserDAO;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 
+// TODO Regex for log in / sign up --- IF TIME FOR IT
+
 public class MainActivity
         extends
             AppCompatActivity
@@ -235,6 +237,24 @@ public class MainActivity
         StringBuilder sb = new StringBuilder();
         for (Role role : roleDAO.getAll()) {
             sb.append(role.toString() + "\n");
+        }
+
+        Intent intent = new Intent(this, Debug.class);
+        intent.putExtra("debugInfo", sb.toString());
+        startActivity(intent);
+    }
+
+    public void allUserRoles(View view) {
+        userDAO.open(DataAccessObject.READABLE);
+
+        if (userDAO.getAllUserRoles() == null) {
+            snackThis("getAll() returns NULL");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : userDAO.getAllUserRoles()) {
+            sb.append(s + "\n");
         }
 
         Intent intent = new Intent(this, Debug.class);

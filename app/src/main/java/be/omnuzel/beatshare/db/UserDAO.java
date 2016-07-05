@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
 // TODO create an admin user
@@ -86,9 +87,26 @@ public class UserDAO implements DataAccessObject<User> {
         cv.put(COLUMN_PASSWORD, user.getPassword());
 
         long id = db.insert(TABLE_NAME, null, cv);
+        user.setId(id);
+
+        Role role = new Role();
+        role.setId(RoleDAO.MEMBER);
+        role.setName("member");
+
+        createUserRole(user, role);
+
         Log.i("USERDAO", "User : " + user.getUserName() + " @ " + id);
 
         return id;
+    }
+
+    private void createUserRole(User user, Role role) {
+        ContentValues cv = new ContentValues();
+
+        cv.put("user_id", user.getId());
+        cv.put("role_id", role.getId());
+
+        db.insert("user_role", null, cv);
     }
 
     @Override
@@ -167,6 +185,28 @@ public class UserDAO implements DataAccessObject<User> {
             c.close();
 
             return users;
+        }
+
+        return null;
+    }
+
+    public ArrayList<String> getAllUserRoles() {
+        Cursor cursor = db.query("user_role", null, null, null, null, null, null);
+
+        if (cursor.getColumnCount() > 0) {
+            ArrayList<String> user_roles = new ArrayList<>();
+
+            cursor.moveToFirst();
+
+            do {
+                int user_id = cursor.getInt(cursor.getColumnIndex("user_id"));
+                int role_id = cursor.getInt(cursor.getColumnIndex("role_id"));
+
+                user_roles.add(user_id + " : " + role_id);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+            return user_roles;
         }
 
         return null;

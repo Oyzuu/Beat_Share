@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 
 import be.omnuzel.beatshare.R;
 
-/**
- * Created by Gilbert on 02-07-16.
- */
 public class SignUpFragment extends Fragment {
     public interface ISignUpFragment {
         void signUp(View view);
