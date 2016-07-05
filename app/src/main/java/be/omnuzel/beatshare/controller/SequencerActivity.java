@@ -38,6 +38,9 @@ public class SequencerActivity extends AppCompatActivity {
         initSounds();
     }
 
+    /**
+     * Load the sounds in the SoundBank
+     */
     public void initSounds() {
         soundBank = SoundBank.getInstance(this);
 
@@ -73,8 +76,7 @@ public class SequencerActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets a background color for activated pads
-     * Loops through a linked list of integers to get activated buttons identifiers
+     * Set a background color for activated pads
      */
     private void activateButtons() {
         for (int id : soundBank.getLoadedButtons())  {
@@ -87,8 +89,8 @@ public class SequencerActivity extends AppCompatActivity {
     }
 
     /**
-     * Forces a button to react on touch instead of on release
-     * @param button Button view you'd like to set the on touch action
+     * Force a button to react on touch instead of on release
+     * @param button the button to set up
      */
     private void setActionOnTouch(Button button) {
         button.setOnTouchListener(new View.OnTouchListener() {

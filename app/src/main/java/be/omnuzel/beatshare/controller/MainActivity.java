@@ -187,7 +187,7 @@ public class MainActivity
     }
 
     /**
-     * Sets back the text field of every EditText in the array to an empty string
+     * Set back the text field of every EditText in the array to an empty string
      * @param editTexts an EditText array
      */
     private void resetEditText(EditText... editTexts) {
@@ -196,9 +196,8 @@ public class MainActivity
         }
     }
 
-    // TODO move this elsewhere (maybe in a ToolBox class) --- IF TIME FOR IT
     /**
-     * Displays a message in a short-length Snackbar
+     * Display a message in a short-length Snackbar
      * @param message The string you want to display
      */
     private void snackThis(String message) {

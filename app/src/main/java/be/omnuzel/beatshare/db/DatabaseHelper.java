@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-// TODO modify UserDAO to query and insert roles
+import be.omnuzel.beatshare.model.City;
+import be.omnuzel.beatshare.model.Country;
+
 // TODO create all the DAOs !
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -18,19 +20,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(UserDAO.CREATE_TABLE);
-        db.execSQL(UserDAO.CREATE_USER_ROLE);
-        db.execSQL(RoleDAO.CREATE_TABLE);
-        db.execSQL(RoleDAO.INSERT_BASEROLES);
-        Log.e("ROLE_BASE", RoleDAO.INSERT_BASEROLES);
+        db.execSQL(UserDAO   .CREATE_TABLE);
+        db.execSQL(RoleDAO   .CREATE_TABLE);
+        db.execSQL(CountryDAO.CREATE_TABLE);
+        db.execSQL(CityDAO   .CREATE_TABLE);
+
+        db.execSQL(UserDAO   .CREATE_USER_ROLE);
+        db.execSQL(RoleDAO   .INSERT_BASEROLES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(UserDAO.UPGRADE_TABLE);
-        db.execSQL(UserDAO.UPGRADE_USER_ROLE);
-        db.execSQL(RoleDAO.UPGRADE_TABLE);
-        db.execSQL(RoleDAO.INSERT_BASEROLES);
+        db.execSQL(UserDAO   .UPGRADE_TABLE);
+        db.execSQL(RoleDAO   .UPGRADE_TABLE);
+        db.execSQL(CountryDAO.UPGRADE_TABLE);
+        db.execSQL(CityDAO   .UPGRADE_TABLE);
+
+        db.execSQL(UserDAO   .UPGRADE_USER_ROLE);
+        db.execSQL(RoleDAO   .INSERT_BASEROLES);
+
         onCreate(db);
     }
 }

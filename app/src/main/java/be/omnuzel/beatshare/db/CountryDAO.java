@@ -9,45 +9,30 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import be.omnuzel.beatshare.model.Role;
+import be.omnuzel.beatshare.model.Country;
 
-public class RoleDAO implements DataAccessObject<Role> {
+public class CountryDAO implements DataAccessObject<Country> {
 
     public static String
-    TABLE_NAME       = "role",
+    TABLE_NAME = "country",
 
-    COLUMN_ID        = "id",
-    COLUMN_NAME      = "name",
+    COLUMN_ID = "id",
+    COLUMN_NAME = "name",
 
-    CREATE_TABLE     = String.format(
+    CREATE_TABLE = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL UNIQUE)",
             TABLE_NAME, COLUMN_ID, COLUMN_NAME
     ),
 
-    UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE,
-
-    INSERT_BASEROLES = String.format(
-            "INSERT INTO %s " +
-            "VALUES (1, 'admin')," +
-            "       (2, 'member')," +
-            "       (3, 'blocked')," +
-            "       (4, 'deleted')",
-            TABLE_NAME
-    );
-
-    public static int
-    ADMIN   = 1,
-    MEMBER  = 2,
-    BLOCKED = 3,
-    DELETED = 4;
+    UPGRADE_TABLE = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
 
     private SQLiteDatabase db;
     private DatabaseHelper databaseHelper;
     private Context        context;
 
-    public RoleDAO(Context context) {
+    public CountryDAO(Context context) {
         this.context = context;
     }
 
@@ -60,25 +45,24 @@ public class RoleDAO implements DataAccessObject<Role> {
 
         if (openTypeConstant == READABLE)
             db = databaseHelper.getReadableDatabase();
-        Log.i("ROLEDAO", "Database open type : " + openTypeConstant);
+        Log.i("COUNTRYDAO", "Database open type : " + openTypeConstant);
     }
 
     @Override
     public void close() {
         db.close();
         databaseHelper.close();
-
-        Log.i("ROLEDAO", "Database closed");
+        Log.i("COUNTRYDAO", "Database closed");
     }
 
     @Override
-    public long create(Role role) throws SQLiteConstraintException {
+    public long create(Country country) throws SQLiteConstraintException {
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_NAME, role.getName());
+        cv.put(COLUMN_NAME, country.getName());
 
         long id = db.insert(TABLE_NAME, null, cv);
-        Log.i("ROLEDAO", "Role : " + role.getName() + " @ " + id);
+        Log.i("COUNTRYDAO", "Country : " + country.getName() + " @ " + id);
 
         return id;
     }
@@ -86,11 +70,11 @@ public class RoleDAO implements DataAccessObject<Role> {
     @Override
     public void delete(int id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
-        Log.i("ROLEDAO", "Role with id : " + id + " has been deleted");
+        Log.i("COUNTRYDAO", "Country with id : " + id + " has been deleted");
     }
 
     @Override
-    public Role get(int id) {
+    public Country get(int id) {
         Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (c.getCount() > 0) {
@@ -102,35 +86,35 @@ public class RoleDAO implements DataAccessObject<Role> {
     }
 
     @Override
-    public Role getFromCursor(Cursor cursor) {
-        int id      = cursor.getInt   (cursor.getColumnIndex(COLUMN_ID));
+    public Country getFromCursor(Cursor cursor) {
+        int    id   = cursor.getInt   (cursor.getColumnIndex(COLUMN_ID));
         String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
 
-        Role role = new Role();
+        Country country = new Country();
 
-        role.setId  (id);
-        role.setName(name);
+        country.setId(id);
+        country.setName(name);
 
-        return role;
+        return country;
     }
 
     @Override
-    public ArrayList<Role> getAll() {
+    public ArrayList<Country> getAll() {
         String[] selection = {COLUMN_ID, COLUMN_NAME};
-        Cursor cursor      = db.query(TABLE_NAME, selection, null, null, null, null, null);
+        Cursor c           = db.query(TABLE_NAME, selection, null, null, null, null, null);
 
-        if (cursor.getCount() > 0) {
-            ArrayList<Role> roles = new ArrayList<>();
+        if (c.getCount() > 0) {
+            ArrayList<Country> countries = new ArrayList<>();
 
-            cursor.moveToFirst();
+            c.moveToFirst();
 
             do {
-                roles.add(getFromCursor(cursor));
-            } while (cursor.moveToNext());
+                countries.add(getFromCursor(c));
+            } while (c.moveToNext());
 
-            cursor.close();
+            c.close();
 
-            return roles;
+            return countries;
         }
 
         return null;

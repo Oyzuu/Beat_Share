@@ -50,8 +50,8 @@ public class UserDAO implements DataAccessObject<User> {
 
     private SQLiteDatabase db;
     private DatabaseHelper DatabaseHelper;
-    private Context context;
-    private RoleDAO roleDAO;
+    private Context        context;
+    private RoleDAO        roleDAO;
 
     public UserDAO(Context context) {
         this.context = context;
@@ -123,8 +123,8 @@ public class UserDAO implements DataAccessObject<User> {
             c.moveToFirst();
             return getFromCursor(c);
         }
-        else
-            return null;
+
+        return null;
     }
 
     public User getByName(String userName) {
