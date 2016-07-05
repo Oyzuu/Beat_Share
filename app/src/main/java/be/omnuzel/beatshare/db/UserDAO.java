@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -79,14 +80,14 @@ public class UserDAO implements DataAccessObject<User> {
     }
 
     @Override
-    public long create(User user) throws SQLiteConstraintException {
+    public long create(User user) throws SQLiteException {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_USERNAME, user.getUserName());
         cv.put(COLUMN_EMAIL,    user.getEmail());
         cv.put(COLUMN_PASSWORD, user.getPassword());
 
-        long id = db.insert(TABLE_NAME, null, cv);
+        long id = db.insertOrThrow(TABLE_NAME, null, cv);
         user.setId(id);
 
         Role role = new Role();

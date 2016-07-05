@@ -2,8 +2,8 @@ package be.omnuzel.beatshare.model;
 
 public class Location {
     private long   id;
-    private double longitude,
-                   latitude;
+    private double latitude,
+                   longitude;
     private City   city;
 
     public Location() {}
@@ -16,20 +16,20 @@ public class Location {
         this.id = id;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public double getLatitude() {
         return latitude;
     }
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public City getCity() {

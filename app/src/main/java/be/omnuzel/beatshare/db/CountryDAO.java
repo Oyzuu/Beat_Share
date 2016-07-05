@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -14,12 +15,12 @@ import be.omnuzel.beatshare.model.Country;
 public class CountryDAO implements DataAccessObject<Country> {
 
     public static String
-    TABLE_NAME = "country",
+    TABLE_NAME    = "country",
 
-    COLUMN_ID = "id",
-    COLUMN_NAME = "name",
+    COLUMN_ID     = "id",
+    COLUMN_NAME   = "name",
 
-    CREATE_TABLE = String.format(
+    CREATE_TABLE  = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL UNIQUE)",
@@ -56,12 +57,12 @@ public class CountryDAO implements DataAccessObject<Country> {
     }
 
     @Override
-    public long create(Country country) throws SQLiteConstraintException {
+    public long create(Country country) throws SQLiteException {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, country.getName());
 
-        long id = db.insert(TABLE_NAME, null, cv);
+        long id = db.insertOrThrow(TABLE_NAME, null, cv);
         Log.i("COUNTRYDAO", "Country : " + country.getName() + " @ " + id);
 
         return id;

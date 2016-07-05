@@ -3,8 +3,8 @@ package be.omnuzel.beatshare.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import be.omnuzel.beatshare.model.Country;
 public class CityDAO implements DataAccessObject<City> {
 
     public static String
-    TABLE_NAME = "city",
+    TABLE_NAME        = "city",
 
-    COLUMN_ID = "id",
-    COLUMN_NAME = "name",
+    COLUMN_ID         = "id",
+    COLUMN_NAME       = "name",
     COLUMN_COUNTRY_ID = "country_ID",
 
-    CREATE_TABLE = String.format(
+    CREATE_TABLE      = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL," +
@@ -29,7 +29,7 @@ public class CityDAO implements DataAccessObject<City> {
             TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_COUNTRY_ID
     ),
 
-    UPGRADE_TABLE = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
+    UPGRADE_TABLE     = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
 
     private SQLiteDatabase db;
     private DatabaseHelper databaseHelper;
@@ -61,13 +61,13 @@ public class CityDAO implements DataAccessObject<City> {
     }
 
     @Override
-    public long create(City city) throws SQLiteConstraintException {
+    public long create(City city) throws SQLiteException {
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_NAME, city.getName());
+        cv.put(COLUMN_NAME,       city.getName());
         cv.put(COLUMN_COUNTRY_ID, city.getCountry().getId());
 
-        long id = db.insert(TABLE_NAME, null, cv);
+        long id = db.insertOrThrow(TABLE_NAME, null, cv);
         Log.i("CITYDAO", "City : " + city.getName() + " @ " + id);
 
         return id;
@@ -81,11 +81,11 @@ public class CityDAO implements DataAccessObject<City> {
 
     @Override
     public City get(int id) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            return getFromCursor(c);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            return getFromCursor(cursor);
         }
 
         return null;

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -170,13 +171,19 @@ public class MainActivity
         user.setEmail   (mail);
         user.setPassword(pass);
 
-        userDAO.open  (DataAccessObject.WRITABLE);
-        userDAO.create(user);
-        userDAO.close ();
+        userDAO.open(DataAccessObject.WRITABLE);
 
-        cancel(view);
-
-        startActivity(new Intent(this, SequencerActivity.class));
+        try {
+            userDAO.create(user);
+            cancel(view);
+            startActivity(new Intent(this, SequencerActivity.class));
+        }
+        catch (SQLiteConstraintException e) {
+            snackThis("SQLite Constraint error");
+        }
+        finally {
+            userDAO.close ();
+        }
     }
 
     @Override

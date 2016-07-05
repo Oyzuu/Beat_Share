@@ -77,7 +77,7 @@ public class RoleDAO implements DataAccessObject<Role> {
 
         cv.put(COLUMN_NAME, role.getName());
 
-        long id = db.insert(TABLE_NAME, null, cv);
+        long id = db.insertOrThrow(TABLE_NAME, null, cv);
         Log.i("ROLEDAO", "Role : " + role.getName() + " @ " + id);
 
         return id;

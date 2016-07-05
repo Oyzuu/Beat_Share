@@ -1,7 +1,7 @@
 package be.omnuzel.beatshare.db;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteException;
 
 import java.util.ArrayList;
 
@@ -28,9 +28,9 @@ public interface DataAccessObject<T> {
      * Create a row in the table from your <T> object
      * @param t the object you want to insert
      * @return  indentifier of the table row
-     * @throws  SQLiteConstraintException
+     * @throws  SQLiteException
      */
-    long create(T t) throws SQLiteConstraintException;
+    long create(T t) throws SQLiteException;
 
     void delete(int id);
 
