@@ -34,15 +34,27 @@ public class UserDAO implements DataAccessObject<User> {
             COLUMN_EMAIL,
             COLUMN_PASSWORD),
 
-    UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + ";" + CREATE_TABLE;
+    UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + ";" + CREATE_TABLE,
+
+    CREATE_USER_ROLE =
+            "CREATE TABLE IF NOT EXISTS user_role(" +
+                    "user_id INTEGER NOT NULL," +
+                    "role_id INTEGER NOT NULL," +
+                    "FOREIGN KEY (user_id) REFERENCES user(id)," +
+                    "FOREIGN KEY (role_id) REFERENCES role(id)" +
+                    "PRIMARY KEY (user_id, role_id) " +
+                    ")",
+    UPGRADE_USER_ROLE = "DROP TABLE user_role ; " + CREATE_USER_ROLE;
 
 
     private SQLiteDatabase db;
     private DatabaseHelper DatabaseHelper;
     private Context context;
+    private RoleDAO roleDAO;
 
     public UserDAO(Context context) {
         this.context = context;
+        this.roleDAO = new RoleDAO(context);
     }
 
     @Override
@@ -87,8 +99,7 @@ public class UserDAO implements DataAccessObject<User> {
 
     @Override
     public User get(int id) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id,
-                null, null, null, null);
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();
@@ -141,7 +152,7 @@ public class UserDAO implements DataAccessObject<User> {
 
     @Override
     public ArrayList<User> getAll() {
-        String[] selection = {COLUMN_ID, COLUMN_USERNAME, COLUMN_EMAIL};
+        String[] selection = {COLUMN_ID, COLUMN_USERNAME, COLUMN_EMAIL, COLUMN_PASSWORD};
         Cursor c           = db.query(TABLE_NAME, selection, null, null, null, null, null);
 
         if (c.getCount() > 0) {

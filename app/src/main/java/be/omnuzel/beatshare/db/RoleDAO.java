@@ -14,18 +14,28 @@ import be.omnuzel.beatshare.model.Role;
 public class RoleDAO implements DataAccessObject<Role> {
 
     public static String
-    TABLE_NAME    = "role",
+    TABLE_NAME       = "role",
 
-    COLUMN_ID     = "id",
-    COLUMN_NAME   = "name",
+    COLUMN_ID        = "id",
+    COLUMN_NAME      = "name",
 
-    CREATE_TABLE  = String.format(
+    CREATE_TABLE     = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL UNIQUE)",
             TABLE_NAME, COLUMN_ID, COLUMN_NAME
     ),
-    UPGRADE_TABLE = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
+
+    UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE,
+
+    INSERT_BASEROLES = String.format(
+            "INSERT INTO %s " +
+            "VALUES (1, 'admin')," +
+            "       (2, 'member')," +
+            "       (3, 'blocked')," +
+            "       (4, 'deleted')",
+            TABLE_NAME
+    );
 
     private SQLiteDatabase db;
     private DatabaseHelper databaseHelper;
@@ -38,12 +48,12 @@ public class RoleDAO implements DataAccessObject<Role> {
     @Override
     public void open(int openTypeConstant) {
         databaseHelper = new DatabaseHelper(context);
+
         if (openTypeConstant == WRITABLE)
             db = databaseHelper.getWritableDatabase();
 
         if (openTypeConstant == READABLE)
             db = databaseHelper.getReadableDatabase();
-
         Log.i("ROLEDAO", "Database open type : " + openTypeConstant);
     }
 
@@ -75,8 +85,7 @@ public class RoleDAO implements DataAccessObject<Role> {
 
     @Override
     public Role get(int id) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id,
-                null, null, null, null);
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();

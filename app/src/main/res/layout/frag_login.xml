@@ -50,6 +50,18 @@
             android:id="@+id/button_to_signup"
             android:onClick="toSignUp"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get all users"
+            android:onClick="allUsers"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get all roles"
+            android:onClick="allRoles"/>
+
     </LinearLayout>
 
 </LinearLayout>

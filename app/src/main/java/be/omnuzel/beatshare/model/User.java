@@ -1,5 +1,7 @@
 package be.omnuzel.beatshare.model;
 
+import java.util.ArrayList;
+
 public class User {
 
     private String
@@ -7,7 +9,13 @@ public class User {
             password,
             email;
 
+    private ArrayList<Role> roles;
+
     private int id;
+
+    public User() {
+        roles = new ArrayList<>();
+    }
 
     public String getUserName() {
         return userName;
@@ -39,5 +47,24 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public ArrayList<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                ", id=" + id +
+                '}';
     }
 }

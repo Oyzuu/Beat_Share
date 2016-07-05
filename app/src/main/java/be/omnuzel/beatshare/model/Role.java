@@ -1,8 +1,5 @@
 package be.omnuzel.beatshare.model;
 
-/**
- * Created by student on 5/07/2016.
- */
 public class Role {
     private int id;
     private String name;
@@ -23,5 +20,13 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

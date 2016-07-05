@@ -1,8 +1,11 @@
 package be.omnuzel.beatshare.controller;
 
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import be.omnuzel.beatshare.R;
+import be.omnuzel.beatshare.db.RoleDAO;
+import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 import be.omnuzel.beatshare.db.DataAccessObject;
 import be.omnuzel.beatshare.db.UserDAO;
@@ -24,6 +29,7 @@ public class MainActivity
             SignUpFragment.ISignUpFragment {
 
     private UserDAO userDAO;
+    private RoleDAO roleDAO;
 
     private EditText
             nameEdit,
@@ -40,6 +46,7 @@ public class MainActivity
         setContentView(R.layout.activity_main);
 
         userDAO = new UserDAO(this);
+        roleDAO = new RoleDAO(this);
 
         getFragmentManager()
                 .beginTransaction()
@@ -197,5 +204,41 @@ public class MainActivity
 
         if (view != null)
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void allUsers(View view) {
+        userDAO.open(DataAccessObject.READABLE);
+
+        if (userDAO.getAll() == null) {
+            snackThis("getAll() returns NULL");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (User user : userDAO.getAll()) {
+            sb.append(user.toString() + "\n");
+        }
+
+        Intent intent = new Intent(this, Debug.class);
+        intent.putExtra("debugInfo", sb.toString());
+        startActivity(intent);
+    }
+
+    public void allRoles(View view) {
+        roleDAO.open(DataAccessObject.READABLE);
+
+        if (roleDAO.getAll() == null) {
+            snackThis("getAll() returns NULL");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Role role : roleDAO.getAll()) {
+            sb.append(role.toString() + "\n");
+        }
+
+        Intent intent = new Intent(this, Debug.class);
+        intent.putExtra("debugInfo", sb.toString());
+        startActivity(intent);
     }
 }
