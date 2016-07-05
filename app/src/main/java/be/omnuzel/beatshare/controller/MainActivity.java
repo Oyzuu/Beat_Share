@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare;
+package be.omnuzel.beatshare.controller;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.model.User;
 import be.omnuzel.beatshare.db.DataAccessObject;
 import be.omnuzel.beatshare.db.UserDAO;
-import be.omnuzel.beatshare.fragments.LogInFragment;
-import be.omnuzel.beatshare.fragments.SignUpFragment;
+import be.omnuzel.beatshare.controller.fragments.LogInFragment;
+import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 
 // TODO functional log in / sign up - almost done
 
@@ -52,7 +53,7 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-
+        // TODO check if these become NULL at some point in the lifecycle
         loginNameEdit   = (EditText) findViewById(R.id.login_username);
         loginPassEdit   = (EditText) findViewById(R.id.login_password);
     }
@@ -164,8 +165,8 @@ public class MainActivity
     }
 
     /**
-     * Sets back EditText in the array to and empty string
-     * @param editTexts one or many EditText in need of a clean shave
+     * Sets back the text field of every EditText in the array to an empty string
+     * @param editTexts an EditText array
      */
     private void resetEditText(EditText... editTexts) {
         for (EditText editText : editTexts) {
@@ -175,8 +176,8 @@ public class MainActivity
 
     // TODO move this elsewhere (maybe in a ToolBox class) --- IF TIME FOR IT
     /**
-     * Displays a message in a Snackbar
-     * @param message The string you want to display in a short-length Snackbar
+     * Displays a message in a short-length Snackbar
+     * @param message The string you want to display
      */
     private void snackThis(String message) {
         View view = findViewById(R.id.main_view);

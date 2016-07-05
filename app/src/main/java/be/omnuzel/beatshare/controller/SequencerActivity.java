@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare;
+package be.omnuzel.beatshare.controller;
 
 import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.model.SoundBank;
 
 // TODO check AudioAttributes CONTENT_TYPE and USAGE

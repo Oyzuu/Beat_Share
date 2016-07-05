@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import be.omnuzel.beatshare.model.User;
 
+// TODO create an admin user
+
 public class UserDAO implements DataAccessObject<User> {
     public static String
             TABLE_NAME        = "User",

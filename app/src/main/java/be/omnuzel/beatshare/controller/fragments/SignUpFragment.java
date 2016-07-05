@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare.fragments;
+package be.omnuzel.beatshare.controller.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
