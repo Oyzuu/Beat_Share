@@ -14,7 +14,7 @@ public interface DataAccessObject<T> {
     int READABLE = 0;
 
     /**
-     * Open the database and the DatabaseHelper in read or write
+     * Open the database in read or write
      * @param openTypeConstant WRITABLE or READABLE
      */
     void open(int openTypeConstant);
@@ -26,8 +26,8 @@ public interface DataAccessObject<T> {
 
     /**
      * Create a row in the table from your <T> object
-     * @param t the object you want to insert
-     * @return  indentifier of the table row
+     * @param t the object to insert in the table
+     * @return  row identifier
      * @throws  SQLiteException
      */
     long create(T t) throws SQLiteException;
