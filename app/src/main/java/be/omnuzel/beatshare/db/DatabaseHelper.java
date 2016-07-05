@@ -3,10 +3,6 @@ package be.omnuzel.beatshare.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import be.omnuzel.beatshare.model.City;
-import be.omnuzel.beatshare.model.Country;
 
 // TODO Sequence and SequenceDAO when able
 

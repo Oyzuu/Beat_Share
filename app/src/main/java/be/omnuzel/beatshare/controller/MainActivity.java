@@ -1,29 +1,27 @@
 package be.omnuzel.beatshare.controller;
 
-import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import be.omnuzel.beatshare.R;
-import be.omnuzel.beatshare.db.RoleDAO;
-import be.omnuzel.beatshare.model.Role;
-import be.omnuzel.beatshare.model.User;
-import be.omnuzel.beatshare.db.DataAccessObject;
-import be.omnuzel.beatshare.db.UserDAO;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
+import be.omnuzel.beatshare.db.DataAccessObject;
+import be.omnuzel.beatshare.db.RoleDAO;
+import be.omnuzel.beatshare.db.UserDAO;
+import be.omnuzel.beatshare.model.Role;
+import be.omnuzel.beatshare.model.User;
 
 // TODO Regex for log in / sign up --- IF TIME FOR IT
 // TODO make models parcelable
+// TODO WEDNESDAY : choose between geoloc and Play Games
 
 public class MainActivity
         extends
