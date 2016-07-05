@@ -16,8 +16,6 @@ import be.omnuzel.beatshare.db.UserDAO;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 
-// TODO functional log in / sign up - almost done
-
 public class MainActivity
         extends
             AppCompatActivity
@@ -53,9 +51,16 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO check if these become NULL at some point in the lifecycle
-        loginNameEdit   = (EditText) findViewById(R.id.login_username);
-        loginPassEdit   = (EditText) findViewById(R.id.login_password);
+        loginNameEdit = (EditText) findViewById(R.id.login_username);
+        loginPassEdit = (EditText) findViewById(R.id.login_password);
+    }
+
+    // Ensures non null log in screen text fields
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        loginNameEdit = (EditText) findViewById(R.id.login_username);
+        loginPassEdit = (EditText) findViewById(R.id.login_password);
     }
 
     @Override
@@ -64,6 +69,9 @@ public class MainActivity
 
         String name = loginNameEdit != null ? loginNameEdit.getText().toString() : "";
         String pass = loginPassEdit != null ? loginPassEdit.getText().toString() : "";
+
+        name = name.trim();
+        pass = pass.trim();
 
         if (name.equals("") || pass.equals("")) {
             snackThis(getString(R.string.input_error));
@@ -83,8 +91,8 @@ public class MainActivity
             startActivity(new Intent(this, SequencerActivity.class));
         }
         else {
-            snackThis(getString(R.string.input_error));
-            Log.i("MAIN", "User input error");
+            snackThis(getString(R.string.database_error));
+            Log.i("MAIN", "Database error");
         }
     }
 
@@ -109,7 +117,6 @@ public class MainActivity
 
     @Override
     public void signUp(View view) {
-        // TODO trim the strings ! (auto-completion adds spaces)
         boolean formIsOK = true;
 
         String name        = nameEdit        != null ? nameEdit       .getText().toString() : "";
@@ -117,6 +124,12 @@ public class MainActivity
         String passConfirm = passConfirmEdit != null ? passConfirmEdit.getText().toString() : "";
         String mail        = mailEdit        != null ? mailEdit       .getText().toString() : "";
         String mailConfirm = mailConfirmEdit != null ? mailConfirmEdit.getText().toString() : "";
+
+        name        = name       .trim();
+        pass        = pass       .trim();
+        passConfirm = passConfirm.trim();
+        mail        = mail       .trim();
+        mailConfirm = mailConfirm.trim();
 
         Log.i("MAIN", String.format("name : %s, pass : %s, mail : %s", name, pass, mail));
 

@@ -3,6 +3,7 @@ package be.omnuzel.beatshare.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -14,26 +15,27 @@ import be.omnuzel.beatshare.model.User;
 
 public class UserDAO implements DataAccessObject<User> {
     public static String
-            TABLE_NAME        = "User",
+    TABLE_NAME        = "User",
 
-            COLUMN_ID         = "id",
-            COLUMN_USERNAME   = "firstName",
-            COLUMN_EMAIL      = "email",
-            COLUMN_PASSWORD   = "password",
+    COLUMN_ID         = "id",
+    COLUMN_USERNAME   = "firstName",
+    COLUMN_EMAIL      = "email",
+    COLUMN_PASSWORD   = "password",
 
-            CREATE_TABLE      = String.format(
-                    "create table if not exists %s(" +
-                            "%s INTEGER PRIMARY KEY," +
-                            "%s TEXT NOT NULL UNIQUE," +
-                            "%s TEXT NOT NULL UNIQUE," +
-                            "%s TEXT NOT NULL)",
-                    TABLE_NAME,
-                    COLUMN_ID,
-                    COLUMN_USERNAME,
-                    COLUMN_EMAIL,
-                    COLUMN_PASSWORD),
+    CREATE_TABLE      = String.format(
+            "create table if not exists %s(" +
+                    "%s INTEGER PRIMARY KEY," +
+                    "%s TEXT NOT NULL UNIQUE," +
+                    "%s TEXT NOT NULL UNIQUE," +
+                    "%s TEXT NOT NULL)",
+            TABLE_NAME,
+            COLUMN_ID,
+            COLUMN_USERNAME,
+            COLUMN_EMAIL,
+            COLUMN_PASSWORD),
 
-            UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + ";" + CREATE_TABLE;
+    UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + ";" + CREATE_TABLE;
+
 
     private SQLiteDatabase db;
     private DatabaseHelper DatabaseHelper;
@@ -64,7 +66,7 @@ public class UserDAO implements DataAccessObject<User> {
     }
 
     @Override
-    public long create(User user) {
+    public long create(User user) throws SQLiteConstraintException {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_USERNAME, user.getUserName());
@@ -78,13 +80,14 @@ public class UserDAO implements DataAccessObject<User> {
     }
 
     @Override
-    public void delete(int userId) {
-        db.delete(TABLE_NAME, COLUMN_ID + "=" + userId, null);
+    public void delete(int id) {
+        db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
+        Log.i("USERDAO", "User with id : " + id + " has been deleted");
     }
 
     @Override
-    public User get(int userId) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + userId,
+    public User get(int id) {
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id,
                 null, null, null, null);
 
         if (c.getCount() > 0) {
@@ -127,6 +130,7 @@ public class UserDAO implements DataAccessObject<User> {
         String password = c.getString(c.getColumnIndex(COLUMN_PASSWORD));
 
         User user = new User();
+
         user.setId      (id);
         user.setUserName(userName);
         user.setEmail   (email);
@@ -138,7 +142,7 @@ public class UserDAO implements DataAccessObject<User> {
     @Override
     public ArrayList<User> getAll() {
         String[] selection = {COLUMN_ID, COLUMN_USERNAME, COLUMN_EMAIL};
-        Cursor c = db.query(TABLE_NAME, selection, null, null, null, null, null);
+        Cursor c           = db.query(TABLE_NAME, selection, null, null, null, null, null);
 
         if (c.getCount() > 0) {
             ArrayList<User> users = new ArrayList<>();
@@ -146,20 +150,14 @@ public class UserDAO implements DataAccessObject<User> {
             c.moveToFirst();
 
             do {
-                User user = new User();
-
-                user.setId      (c.getInt   (c.getColumnIndex(COLUMN_ID)));
-                user.setUserName(c.getString(c.getColumnIndex(COLUMN_USERNAME)));
-                user.setEmail   (c.getString(c.getColumnIndex(COLUMN_EMAIL)));
-
-                users.add(user);
+                users.add(getFromCursor(c));
             } while (c.moveToNext());
 
             c.close();
 
             return users;
         }
-        else
-            return null;
+
+        return null;
     }
 }

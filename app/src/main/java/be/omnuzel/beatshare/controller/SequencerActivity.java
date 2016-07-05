@@ -88,7 +88,7 @@ public class SequencerActivity extends AppCompatActivity {
 
     /**
      * Forces a button to react on touch instead of on release
-     * @param button Button to capture ACTION_DOWN
+     * @param button Button view you'd like to set the on touch action
      */
     private void setActionOnTouch(Button button) {
         button.setOnTouchListener(new View.OnTouchListener() {

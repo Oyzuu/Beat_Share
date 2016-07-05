@@ -18,6 +18,7 @@
     <string name="rec"                  >record</string>
 
     <string name="input_error"          >Input error</string>
+    <string name="database_error"       >Database error</string>
     <string name="pass_confirm_error"   >Pass confirmation error</string>
     <string name="mail_confirm_error"   >Mail confirmation error</string>
 </resources>
