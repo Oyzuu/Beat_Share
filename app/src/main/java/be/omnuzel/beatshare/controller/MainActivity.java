@@ -23,6 +23,7 @@ import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 
 // TODO Regex for log in / sign up --- IF TIME FOR IT
+// TODO make models parcelable
 
 public class MainActivity
         extends

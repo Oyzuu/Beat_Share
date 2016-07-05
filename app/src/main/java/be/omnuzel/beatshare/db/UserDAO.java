@@ -101,6 +101,10 @@ public class UserDAO implements DataAccessObject<User> {
         return id;
     }
 
+    /**
+     * Create the administrator
+     * @param db the database of your application
+     */
     public static void createAdmin(SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
 
@@ -127,6 +131,11 @@ public class UserDAO implements DataAccessObject<User> {
         Log.i("USERDAO", "Admin created");
     }
 
+    /**
+     * Insert a row "user_id", "role_id" in the link table user_role
+     * @param user User to get an id from
+     * @param role Role to get an id from
+     */
     private void createUserRole(User user, Role role) {
         ContentValues cv = new ContentValues();
 

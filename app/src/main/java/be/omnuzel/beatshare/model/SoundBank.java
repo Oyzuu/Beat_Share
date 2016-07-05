@@ -27,6 +27,8 @@ public class SoundBank {
     private HashMap<Integer, Integer> pads = new HashMap<>();
 
     public SoundBank(Context context) {
+        this.context = context;
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
         }
@@ -41,8 +43,6 @@ public class SoundBank {
                     .setAudioAttributes(audioAttributes)
                     .build             ();
         }
-
-        this.context = context;
     }
 
     public void load(int resourceId, int buttonId) {
