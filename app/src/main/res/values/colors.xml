@@ -7,7 +7,8 @@
     <color name="colorAccentLight"  >#ffd494  </color>
 
     <color name="white"             >#FFFFFF  </color>
-    <color name="offwhite"          >#DAFFFFFF</color>
+    <color name="off_white"         >#DAFFFFFF</color>
+    <color name="validate_white"    >#1effffff</color>
     <color name="black"             >#000000  </color>
 
     <color name="sad_gray"          >#737373  </color>

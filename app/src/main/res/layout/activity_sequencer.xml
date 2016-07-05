@@ -148,19 +148,19 @@
             android:layout_height="wrap_content"
             android:text="@string/play"
             android:layout_margin="4dp"
-            android:background="@drawable/plain_button_selector"/>
+            android:background="@drawable/plain_button"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stop"
             android:layout_margin="4dp"
-            android:background="@drawable/plain_button_selector"/>
+            android:background="@drawable/plain_button"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rec"
             android:layout_margin="4dp"
-            android:background="@drawable/plain_button_selector"/>
+            android:background="@drawable/plain_button"/>
     </LinearLayout>
 
 </LinearLayout>

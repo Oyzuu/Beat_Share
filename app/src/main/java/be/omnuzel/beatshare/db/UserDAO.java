@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
-// TODO create an admin user
+// TODO Salt the password
 
 public class UserDAO implements DataAccessObject<User> {
     public static String
@@ -25,7 +25,7 @@ public class UserDAO implements DataAccessObject<User> {
     COLUMN_PASSWORD   = "password",
 
     CREATE_TABLE      = String.format(
-            "create table if not exists %s(" +
+            "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL UNIQUE," +
                     "%s TEXT NOT NULL UNIQUE," +
@@ -101,6 +101,32 @@ public class UserDAO implements DataAccessObject<User> {
         return id;
     }
 
+    public static void createAdmin(SQLiteDatabase db) {
+        ContentValues cv = new ContentValues();
+
+        User user = new User();
+        user.setId      (1);
+        user.setUserName("admin");
+        user.setEmail   ("admin@admin.admin");
+        user.setPassword("admin");
+
+        cv.put(COLUMN_ID,       user.getId());
+        cv.put(COLUMN_USERNAME, user.getUserName());
+        cv.put(COLUMN_EMAIL,    user.getEmail());
+        cv.put(COLUMN_PASSWORD, user.getPassword());
+
+        db.insert(TABLE_NAME, null, cv);
+
+        cv = new ContentValues();
+
+        cv.put("user_id", user.getId());
+        cv.put("role_id", RoleDAO.ADMIN);
+
+        db.insert("user_role", null, cv);
+
+        Log.i("USERDAO", "Admin created");
+    }
+
     private void createUserRole(User user, Role role) {
         ContentValues cv = new ContentValues();
 
@@ -159,12 +185,14 @@ public class UserDAO implements DataAccessObject<User> {
         String email    = c.getString(c.getColumnIndex(COLUMN_EMAIL));
         String password = c.getString(c.getColumnIndex(COLUMN_PASSWORD));
 
-        User user = new User();
+        ArrayList<Role> roles = getRolesFromId(id);
 
+        User user = new User();
         user.setId      (id);
         user.setUserName(userName);
         user.setEmail   (email);
         user.setPassword(password);
+        user.setRoles   (roles);
 
         return user;
     }
@@ -191,10 +219,35 @@ public class UserDAO implements DataAccessObject<User> {
         return null;
     }
 
+    private ArrayList<Role> getRolesFromId(long userId) {
+        Cursor cursor = db.query("user_role", null, "user_id=" + userId, null, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            ArrayList<Role> roles = new ArrayList<>();
+
+            cursor.moveToFirst();
+
+            do {
+                int role_id = cursor.getInt(cursor.getColumnIndex("role_id"));
+
+                roleDAO.open(READABLE);
+                Role role = roleDAO.get(role_id);
+                roleDAO.close();
+
+                roles.add(role);
+            } while (cursor.moveToNext());
+            cursor.close();
+
+            return roles;
+        }
+
+        return null;
+    }
+
     public ArrayList<String> getAllUserRoles() {
         Cursor cursor = db.query("user_role", null, null, null, null, null, null);
 
-        if (cursor.getColumnCount() > 0) {
+        if (cursor.getCount() > 0) {
             ArrayList<String> user_roles = new ArrayList<>();
 
             cursor.moveToFirst();

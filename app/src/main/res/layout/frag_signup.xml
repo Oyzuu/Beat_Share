@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO change transparent button sizing to match plain ones -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/signup_username"
+            android:inputType="text"
             android:textColor="@color/colorAccent"/>
 
         <TextView
@@ -71,14 +70,15 @@
             android:layout_gravity="center"
             android:text="@string/confirm"
             android:onClick="signUp"
-            android:background="@drawable/plain_button_selector"/>
+            android:background="@drawable/plain_button"/>
         <Button
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:text="@string/cancel"
             android:onClick="cancel"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+            android:background="@drawable/secondary_button"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 </LinearLayout>
