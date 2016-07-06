@@ -1,6 +1,11 @@
 package be.omnuzel.beatshare.model;
 
-public class Location {
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Location implements Parcelable {
     private long   id;
     private double latitude,
                    longitude;
@@ -49,4 +54,38 @@ public class Location {
                 ", city=" + city +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void writeToParcel(Parcel destination, int flags) {
+        destination.writeLong       (id);
+        destination.writeDouble     (latitude);
+        destination.writeDouble     (longitude);
+        destination.writeTypedObject(city, 0);
+    }
+
+    public static Creator<Location> CREATOR = new Creator<Location>() {
+        @TargetApi(Build.VERSION_CODES.M)
+        @Override
+        public Location createFromParcel(Parcel source) {
+            Location location = new Location();
+
+            location.setId       (source.readLong());
+            location.setLatitude (source.readDouble());
+            location.setLongitude(source.readDouble());
+            location.setCity     (source.readTypedObject(City.CREATOR));
+
+            return null;
+        }
+
+        @Override
+        public Location[] newArray(int size) {
+            return new Location[0];
+        }
+    };
 }

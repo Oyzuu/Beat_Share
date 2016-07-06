@@ -1,6 +1,11 @@
 package be.omnuzel.beatshare.model;
 
-public class City {
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class City implements Parcelable {
 
     private long    id;
     private String  name;
@@ -39,4 +44,35 @@ public class City {
                 ", country=" + country +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void writeToParcel(Parcel destination, int flags) {
+        destination.writeLong       (id);
+        destination.writeString     (name);
+        destination.writeTypedObject(country, 0);
+    }
+
+    public static Creator<City> CREATOR = new Creator<City>() {
+        @TargetApi(Build.VERSION_CODES.M)
+        @Override
+        public City createFromParcel(Parcel source) {
+            City city = new City();
+
+            city.setId     (source.readLong());
+            city.setName   (source.readString());
+            city.setCountry(source.readTypedObject(Country.CREATOR));
+            return city;
+        }
+
+        @Override
+        public City[] newArray(int size) {
+            return new City[0];
+        }
+    };
 }

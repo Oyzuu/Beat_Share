@@ -1,6 +1,9 @@
 package be.omnuzel.beatshare.model;
 
-public class Country {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Country implements Parcelable {
 
     private long   id;
     private String name;
@@ -30,4 +33,31 @@ public class Country {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel destination, int flags) {
+        destination.writeLong  (id);
+        destination.writeString(name);
+    }
+
+    public static Creator<Country> CREATOR = new Creator<Country>() {
+        @Override
+        public Country createFromParcel(Parcel source) {
+            Country country = new Country();
+
+            country.setId  (source.readLong());
+            country.setName(source.readString());
+            return null;
+        }
+
+        @Override
+        public Country[] newArray(int size) {
+            return new Country[0];
+        }
+    };
 }

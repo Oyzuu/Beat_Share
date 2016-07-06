@@ -1,8 +1,10 @@
 package be.omnuzel.beatshare.controller;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
+import android.location.Criteria;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +15,16 @@ import android.widget.EditText;
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
+import be.omnuzel.beatshare.controller.utils.Localizer;
 import be.omnuzel.beatshare.db.DataAccessObject;
 import be.omnuzel.beatshare.db.RoleDAO;
 import be.omnuzel.beatshare.db.UserDAO;
+import be.omnuzel.beatshare.model.Location;
 import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
 // TODO Regex for log in / sign up --- IF TIME FOR IT
-// TODO make models parcelable
+// TODO make models parcelable (Sequence ?)
 // TODO WEDNESDAY : choose between geoloc and Play Games
 
 public class MainActivity
@@ -213,6 +217,8 @@ public class MainActivity
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    // DEBUG METHODS
+
     public void allUsers(View view) {
         userDAO.open(DataAccessObject.READABLE);
 
@@ -265,5 +271,18 @@ public class MainActivity
         Intent intent = new Intent(this, Debug.class);
         intent.putExtra("debugInfo", sb.toString());
         startActivity(intent);
+    }
+
+    public void localizeMe(View view) {
+        Localizer localizer = new Localizer(this);
+
+        Location location   = localizer.getLocation(Criteria.ACCURACY_COARSE);
+
+        @SuppressLint("DefaultLocale")
+        String locString    = String.format(
+                "Location : %.2f, %.2f",
+                location.getLatitude(), location.getLongitude()
+        );
+        snackThis(locString);
     }
 }

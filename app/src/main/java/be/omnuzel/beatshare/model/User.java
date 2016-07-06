@@ -1,17 +1,20 @@
 package be.omnuzel.beatshare.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class User {
+public class User implements Parcelable {
+
+    private long id;
 
     private String
             userName,
-            password,
-            email;
+            email,
+            password;
 
     private ArrayList<Role> roles;
-
-    private long id;
 
     public User() {
         roles = new ArrayList<>();
@@ -25,20 +28,20 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public long getId() {
@@ -64,4 +67,39 @@ public class User {
                 id, userName, email, password, roles
         );
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel destination, int flags) {
+        destination.writeLong     (id);
+        destination.writeString   (userName);
+        destination.writeString   (email);
+        destination.writeString   (password);
+        destination.writeTypedList(roles);
+    }
+
+    public static Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            User user = new User();
+
+            user.setId      (source.readLong());
+            user.setUserName(source.readString());
+            user.setEmail   (source.readString());
+            user.setPassword(source.readString());
+            // TODO check if this works
+            user.setRoles   (source.readArrayList(Role.class.getClassLoader()));
+
+            return user;
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[0];
+        }
+    };
 }

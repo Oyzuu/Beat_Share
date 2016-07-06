@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
-// TODO Salt the password
+// TODO Salt the password --- IF TIME FOR IT
 
 public class UserDAO implements DataAccessObject<User> {
     public static String

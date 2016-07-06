@@ -1,16 +1,19 @@
 package be.omnuzel.beatshare.model;
 
-public class Role {
-    private int id;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Role implements Parcelable {
+    private long id;
     private String name;
 
     public Role() {}
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -29,4 +32,32 @@ public class Role {
                 id, name
         );
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel destination, int flags) {
+        destination.writeLong  (id);
+        destination.writeString(name);
+    }
+
+    public static  Creator<Role> CREATOR = new Creator<Role>() {
+        @Override
+        public Role createFromParcel(Parcel source) {
+            Role role = new Role();
+
+            role.setId  (source.readLong());
+            role.setName(source.readString());
+
+            return role;
+        }
+
+        @Override
+        public Role[] newArray(int size) {
+            return new Role[0];
+        }
+    };
 }
