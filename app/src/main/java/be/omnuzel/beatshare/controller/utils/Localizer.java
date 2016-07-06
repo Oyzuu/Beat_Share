@@ -9,7 +9,12 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
-import be.omnuzel.beatshare.model.*;
+import org.json.JSONException;
+
+import java.util.concurrent.ExecutionException;
+
+import be.omnuzel.beatshare.controller.tasks.LocationJSONTask;
+import be.omnuzel.beatshare.model.Location;
 
 public class Localizer {
 
@@ -48,6 +53,8 @@ public class Localizer {
 
         String bestProvider = locationManager.getBestProvider(criteria, true);
 
+//        locationManager.requestLocationUpdates();
+
         android.location.Location receivedLocation =
                 locationManager.getLastKnownLocation(bestProvider);
 
@@ -55,11 +62,30 @@ public class Localizer {
             Toast.makeText(context, "Received location is NULL", Toast.LENGTH_SHORT).show();
             return null;
         }
+        Toast.makeText(context, receivedLocation.toString(), Toast.LENGTH_SHORT).show();
 
-        Location location = new be.omnuzel.beatshare.model.Location();
+        double lat = receivedLocation.getLatitude();
+        double lon = receivedLocation.getLongitude();
 
-        location.setLatitude (receivedLocation.getLatitude());
-        location.setLongitude(receivedLocation.getLongitude());
+        LocationJSONTask locationJSONTask = new LocationJSONTask();
+        locationJSONTask.execute(lat, lon);
+
+        String json = "";
+
+        try {
+            json = locationJSONTask.get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Location location = null;
+
+        try {
+            location = Location.hydrateFromJSON(lat, lon, json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return location;
     }

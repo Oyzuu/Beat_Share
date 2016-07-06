@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare.controller;
+package be.omnuzel.beatshare.controller.activities;
 
 import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import be.omnuzel.beatshare.R;
-import be.omnuzel.beatshare.model.SoundBank;
+import be.omnuzel.beatshare.controller.utils.SoundBank;
 
 // TODO check AudioAttributes CONTENT_TYPE and USAGE
 // TODO will probably need its own fragment

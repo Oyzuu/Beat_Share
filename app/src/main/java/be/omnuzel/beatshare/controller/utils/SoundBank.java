@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare.model;
+package be.omnuzel.beatshare.controller.utils;
 
 import android.content.Context;
 import android.media.AudioAttributes;

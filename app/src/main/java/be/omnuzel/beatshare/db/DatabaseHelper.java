@@ -16,25 +16,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(UserDAO    .CREATE_TABLE);
-        db.execSQL(UserDAO    .CREATE_USER_ROLE);
-        db.execSQL(RoleDAO    .CREATE_TABLE);
-        db.execSQL(RoleDAO    .INSERT_BASEROLES);
-        db.execSQL(CountryDAO .CREATE_TABLE);
-        db.execSQL(CityDAO    .CREATE_TABLE);
-        db.execSQL(LocationDAO.CREATE_TABLE);
+        db.execSQL(UserDAO         .CREATE_TABLE);
+        db.execSQL(UserDAO         .CREATE_USER_ROLE);
+        db.execSQL(RoleDAO         .CREATE_TABLE);
+        db.execSQL(RoleDAO         .INSERT_BASEROLES);
+        db.execSQL(CountryDAO      .CREATE_TABLE);
+        db.execSQL(CityDAO         .CREATE_TABLE);
+        db.execSQL(NeighbourhoodDAO.CREATE_TABLE);
+        db.execSQL(LocationDAO     .CREATE_TABLE);
 
         UserDAO.createAdmin(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(UserDAO    .UPGRADE_TABLE);
-        db.execSQL(UserDAO    .UPGRADE_USER_ROLE);
-        db.execSQL(RoleDAO    .UPGRADE_TABLE);
-        db.execSQL(CountryDAO .UPGRADE_TABLE);
-        db.execSQL(CityDAO    .UPGRADE_TABLE);
-        db.execSQL(LocationDAO.UPGRADE_TABLE);
+        db.execSQL(UserDAO         .UPGRADE_TABLE);
+        db.execSQL(UserDAO         .UPGRADE_USER_ROLE);
+        db.execSQL(RoleDAO         .UPGRADE_TABLE);
+        db.execSQL(CountryDAO      .UPGRADE_TABLE);
+        db.execSQL(CityDAO         .UPGRADE_TABLE);
+        db.execSQL(NeighbourhoodDAO.UPGRADE_TABLE);
+        db.execSQL(LocationDAO     .UPGRADE_TABLE);
 
         onCreate(db);
     }

@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare.controller;
+package be.omnuzel.beatshare.controller.activities;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
@@ -278,10 +278,19 @@ public class MainActivity
 
         Location location   = localizer.getLocation(Criteria.ACCURACY_COARSE);
 
+        if (location == null) {
+            snackThis("NULL Location");
+            return;
+        }
+
         @SuppressLint("DefaultLocale")
         String locString    = String.format(
-                "Location : %.2f, %.2f",
-                location.getLatitude(), location.getLongitude()
+                "Location : %.4f, %.4f - %s, %s, %s",
+                location.getLatitude(),
+                location.getLongitude(),
+                location.getNeighbourhood().getCity().getCountry().getName(),
+                location.getNeighbourhood().getCity().getName(),
+                location.getNeighbourhood().getName()
         );
         snackThis(locString);
     }

@@ -5,11 +5,15 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Location implements Parcelable {
-    private long   id;
-    private double latitude,
-                   longitude;
-    private City   city;
+    private long          id;
+    private double        latitude,
+                          longitude;
+    private Neighbourhood neighbourhood;
 
     public Location() {}
 
@@ -37,23 +41,59 @@ public class Location implements Parcelable {
         this.longitude = longitude;
     }
 
-    public City getCity() {
-        return city;
+    public Neighbourhood getNeighbourhood() {
+        return neighbourhood;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setNeighbourhood(Neighbourhood neighbourhood) {
+        this.neighbourhood = neighbourhood;
     }
 
     @Override
     public String toString() {
         return "Location{" +
                 "id=" + id +
-                ", longitude=" + longitude +
                 ", latitude=" + latitude +
-                ", city=" + city +
+                ", longitude=" + longitude +
+                ", neighbourhood=" + neighbourhood +
                 '}';
     }
+
+    public static Location hydrateFromJSON(double latitude, double longitude, String json) throws JSONException {
+        JSONObject jo = new JSONObject(json);
+
+        JSONArray  results        = jo           .getJSONArray("results");
+        JSONObject resultDetails  = results      .getJSONObject(0);
+        JSONArray  addrComponents = resultDetails.getJSONArray("address_components");
+
+        JSONObject neighbourhoodDetails = addrComponents.getJSONObject(2);
+        JSONObject cityDetails          = addrComponents.getJSONObject(3);
+        JSONObject countryDetails       = addrComponents.getJSONObject(4);
+
+        String neighbourhoodName = neighbourhoodDetails.optString("long_name", "ERROR");
+        String cityName          = cityDetails         .optString("long_name", "ERROR");
+        String countryName       = countryDetails      .optString("long_name", "ERROR");
+
+        Country country = new Country();
+        country.setName(countryName);
+
+        City city = new City();
+        city.setName(cityName);
+        city.setCountry(country);
+
+        Neighbourhood neighbourhood = new Neighbourhood() ;
+        neighbourhood.setName(neighbourhoodName);
+        neighbourhood.setCity(city);
+
+        Location location = new Location();
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location.setNeighbourhood(neighbourhood);
+
+        return location;
+    }
+
+    // Parcelable
 
     @Override
     public int describeContents() {
@@ -66,7 +106,7 @@ public class Location implements Parcelable {
         destination.writeLong       (id);
         destination.writeDouble     (latitude);
         destination.writeDouble     (longitude);
-        destination.writeTypedObject(city, 0);
+        destination.writeTypedObject(neighbourhood, 0);
     }
 
     public static Creator<Location> CREATOR = new Creator<Location>() {
@@ -75,10 +115,10 @@ public class Location implements Parcelable {
         public Location createFromParcel(Parcel source) {
             Location location = new Location();
 
-            location.setId       (source.readLong());
-            location.setLatitude (source.readDouble());
-            location.setLongitude(source.readDouble());
-            location.setCity     (source.readTypedObject(City.CREATOR));
+            location.setId           (source.readLong());
+            location.setLatitude     (source.readDouble());
+            location.setLongitude    (source.readDouble());
+            location.setNeighbourhood(source.readTypedObject(Neighbourhood.CREATOR));
 
             return null;
         }

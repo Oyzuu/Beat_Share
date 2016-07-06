@@ -9,8 +9,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import be.omnuzel.beatshare.model.City;
 import be.omnuzel.beatshare.model.Location;
+import be.omnuzel.beatshare.model.Neighbourhood;
 
 public class LocationDAO implements DataAccessObject<Location> {
 
@@ -20,7 +20,7 @@ public class LocationDAO implements DataAccessObject<Location> {
     COLUMN_ID        = "id",
     COLUMN_LATITUDE  = "latitude",
     COLUMN_LONGITUDE = "longitude",
-    COLUMN_CITY_ID   = "city_id",
+    COLUMN_NEIGH_ID  = "neigh_id",
 
     CREATE_TABLE     = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
@@ -28,19 +28,19 @@ public class LocationDAO implements DataAccessObject<Location> {
                     "%s REAL NOT NULL," +
                     "%s REAL NOT NULL," +
                     "%s INTEGER NOT NULL)",
-            TABLE_NAME, COLUMN_ID, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_CITY_ID
+            TABLE_NAME, COLUMN_ID, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_NEIGH_ID
     ),
 
     UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
 
-    private SQLiteDatabase db;
-    private DatabaseHelper databaseHelper;
-    private Context        context;
-    private CityDAO        cityDAO;
+    private SQLiteDatabase   db;
+    private DatabaseHelper   databaseHelper;
+    private Context          context;
+    private NeighbourhoodDAO neighbourhoodDAO;
 
     public LocationDAO(Context context) {
-        this.context = context;
-        cityDAO      = new CityDAO(context);
+        this.context     = context;
+        neighbourhoodDAO = new NeighbourhoodDAO(context);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class LocationDAO implements DataAccessObject<Location> {
 
         cv.put(COLUMN_LATITUDE,  location.getLatitude());
         cv.put(COLUMN_LONGITUDE, location.getLongitude());
-        cv.put(COLUMN_CITY_ID,   location.getCity().getId());
+        cv.put(COLUMN_NEIGH_ID,  location.getNeighbourhood().getId());
 
         long id = db.insertOrThrow(TABLE_NAME, null, cv);
         double latitude  = location.getLatitude();
@@ -101,24 +101,24 @@ public class LocationDAO implements DataAccessObject<Location> {
         int id           = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
         double latitude  = cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUDE));
         double longitude = cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUDE));
-        int city_id      = cursor.getInt(cursor.getColumnIndex(COLUMN_CITY_ID));
+        int neigh_id     = cursor.getInt(cursor.getColumnIndex(COLUMN_NEIGH_ID));
 
-        cityDAO.open(READABLE);
-        City city = cityDAO.get(city_id);
-        cityDAO.close();
+        neighbourhoodDAO.open(READABLE);
+        Neighbourhood neighbourhood = neighbourhoodDAO.get(neigh_id);
+        neighbourhoodDAO.close();
 
         Location location = new Location();
         location.setId(id);
         location.setLatitude(latitude);
         location.setLongitude(longitude);
-        location.setCity(city);
+        location.setNeighbourhood(neighbourhood);
 
         return location;
     }
 
     @Override
     public ArrayList<Location> getAll() {
-        String[] selection = {COLUMN_ID, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_CITY_ID};
+        String[] selection = {COLUMN_ID, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_NEIGH_ID};
         Cursor cursor      = db.query(TABLE_NAME, selection, null, null, null, null, null);
 
         if (cursor.getCount() > 0) {
