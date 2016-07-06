@@ -59,6 +59,14 @@ public class Location implements Parcelable {
                 '}';
     }
 
+    /**
+     * Return a hydrated Location from coordinates and a JSON string
+     * @param latitude latitude of the location
+     * @param longitude longitude of the location
+     * @param json a JSON from reverse Geocoding API
+     * @return Location
+     * @throws JSONException
+     */
     public static Location hydrateFromJSON(double latitude, double longitude, String json) throws JSONException {
         JSONObject jo = new JSONObject(json);
 
@@ -92,8 +100,6 @@ public class Location implements Parcelable {
 
         return location;
     }
-
-    // Parcelable
 
     @Override
     public int describeContents() {

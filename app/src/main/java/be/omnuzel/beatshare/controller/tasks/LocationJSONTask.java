@@ -2,7 +2,6 @@ package be.omnuzel.beatshare.controller.tasks;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,7 +25,6 @@ public class LocationJSONTask extends AsyncTask<Double, String, String> {
         );
 
         try {
-            Log.i("LOCATIONTASK", "Bonjour !");
             URL url = new URL(urlString);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -46,8 +44,6 @@ public class LocationJSONTask extends AsyncTask<Double, String, String> {
             reader.close();
 
             json = sb.toString();
-            Log.i("LOCATIONTASK", sb.toString());
-
         }
         catch (IOException e) {
             e.printStackTrace();
