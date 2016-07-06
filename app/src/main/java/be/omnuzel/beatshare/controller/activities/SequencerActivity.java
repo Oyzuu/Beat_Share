@@ -39,7 +39,7 @@ public class SequencerActivity extends AppCompatActivity {
     }
 
     /**
-     * Load the sounds in the SoundBank
+     * Load the sounds in the SoundBank and give a visual feedback of button activation
      */
     public void initSounds() {
         soundBank = SoundBank.getInstance(this);

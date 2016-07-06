@@ -10,6 +10,9 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+/**
+ * Facilitate sound management with the sequencer
+ */
 public class SoundBank {
 
     public static SoundBank instance;
@@ -45,6 +48,11 @@ public class SoundBank {
         }
     }
 
+    /**
+     * Load a sound in the SoundPool and put key: button id, value: sound id in pads
+     * @param resourceId Identifier of the sound resource
+     * @param buttonId Identifier of the button to link with this sound
+     */
     public void load(int resourceId, int buttonId) {
         int id = soundPool.load(context, resourceId, 0);
         Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
@@ -53,6 +61,10 @@ public class SoundBank {
         maxSoundId = id;
     }
 
+    /**
+     * Play the sound linked to the button
+     * @param buttonId Identifier of pushed button
+     */
     public void play(int buttonId) {
         if (pads.get(buttonId) != null)
             soundPool.play(pads.get(buttonId), 1, 1, 1, 0, 1);
