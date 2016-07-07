@@ -11,12 +11,6 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:paddingTop="100dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/login_error_text"
-            android:background="@color/sad_red"
-            android:visibility="invisible"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

@@ -48,6 +48,9 @@ public class MainActivity
             loginNameEdit,
             loginPassEdit;
 
+    private LogInFragment  logInFragment;
+    private SignUpFragment signUpFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +59,13 @@ public class MainActivity
         userDAO = new UserDAO(this);
         roleDAO = new RoleDAO(this);
 
+        logInFragment  = LogInFragment.getInstance();
+        signUpFragment = SignUpFragment.getInstance();
+
         getFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.main_view, LogInFragment.getInstance())
+                .replace(R.id.main_view, logInFragment)
                 .commit();
     }
 
@@ -82,6 +88,7 @@ public class MainActivity
     public void logIn(View view) {
         boolean formIsOK = true;
 
+        // non null verification with an empty string as fallback value
         String name = loginNameEdit != null ? loginNameEdit.getText().toString() : "";
         String pass = loginPassEdit != null ? loginPassEdit.getText().toString() : "";
 
@@ -96,7 +103,7 @@ public class MainActivity
 
         if (pass.equals("")) {
             Log.i("MAIN", "Password input error");
-            loginPassEdit.setError(getString(R.string.pass_confirm_error));
+            loginPassEdit.setError(getString(R.string.password_input_error));
             formIsOK = false;
         }
 
@@ -106,31 +113,31 @@ public class MainActivity
         userDAO.open(DataAccessObject.READABLE);
         User user = userDAO.getByName(name);
         userDAO.close();
-
-        if (user != null && user.getPassword().equals(pass)) {
-            flushLogInForm();
-            startActivity(new Intent(this, SequencerActivity.class));
+        if (user == null) {
+            loginNameEdit.setError(getString(R.string.login_user_error));
+            return;
         }
-        else {
-            // TODO change this !
-            TextView tv = (TextView) findViewById(R.id.login_error_text);
 
-            if (tv == null)
-                return;
-
-            tv.setVisibility(View.VISIBLE);
-            tv.setText(getString(R.string.database_error));
-            Log.i("MAIN", getString(R.string.database_error));
+        if (pass.equals(user.getPassword())) {
+            loginPassEdit.setError(getString(R.string.login_password_error));
+            return;
         }
+
+        flushLogInForm();
+        Intent intent = new Intent(this, SequencerActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
     @Override
     public void toSignUp(View view) {
+        flushLogInForm();
+
         getFragmentManager()
                 .beginTransaction()
                 .addToBackStack("")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.main_view, SignUpFragment.getInstance())
+                .replace(R.id.main_view, signUpFragment)
                 .commit();
 
         // Force commit to avoid null on views
@@ -147,6 +154,7 @@ public class MainActivity
     public void signUp(View view) {
         boolean formIsOK = true;
 
+        // non null verification with an empty string as fallback value
         String name        = nameEdit        != null ? nameEdit       .getText().toString() : "";
         String pass        = passEdit        != null ? passEdit       .getText().toString() : "";
         String passConfirm = passConfirmEdit != null ? passConfirmEdit.getText().toString() : "";
@@ -213,8 +221,12 @@ public class MainActivity
 
         try {
             userDAO.create(user);
-            cancel(view);
-            startActivity(new Intent(this, SequencerActivity.class));
+
+            flushSignUpForm();
+
+            Intent intent = new Intent(this, SequencerActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
         }
         catch (SQLiteConstraintException e) {
             snackThis("SQLite Constraint error");

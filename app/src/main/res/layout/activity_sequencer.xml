@@ -8,8 +8,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/sequencer_rootview"
     android:orientation="vertical"
     tools:context=".controller.activities.SequencerActivity"
+    android:background="@drawable/appbg"
     tools:openDrawer="true">
 
     <LinearLayout
@@ -170,14 +172,15 @@
 
     <!-- left drawer -->
     <android.support.design.widget.NavigationView
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="match_parent"
         android:id="@+id/sequencer_drawer"
         android:background="@color/colorPrimaryDark"
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/sequencer_drawer"
-        app:itemTextColor="@color/white">
+        app:itemTextColor="@color/white"
+        app:itemTextAppearance="@android:style/TextAppearance.DeviceDefault.Large">
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

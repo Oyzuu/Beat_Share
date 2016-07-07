@@ -1,15 +1,18 @@
 package be.omnuzel.beatshare.controller.activities;
 
 import android.media.SoundPool;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.utils.SoundBank;
+import be.omnuzel.beatshare.model.User;
 
 // TODO check AudioAttributes CONTENT_TYPE and USAGE
 // TODO will probably need its own fragment
@@ -18,11 +21,50 @@ import be.omnuzel.beatshare.controller.utils.SoundBank;
 public class SequencerActivity extends AppCompatActivity {
 
     private SoundBank soundBank;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sequencer);
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            user = (User) extras.get("user");
+            Log.i("SEQUENCER", "Started for user : " + user.getUserName() + " - " + user.getEmail());
+        }
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
+
+        if (drawerLayout != null)
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                TextView headerNameText = (TextView) findViewById(R.id.header_name);
+                if (headerNameText != null)
+                    headerNameText.setText(user.getUserName());
+
+                TextView headerMailText = (TextView) findViewById(R.id.header_mail);
+                if (headerMailText != null)
+                    headerMailText.setText(user.getEmail());
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
         // Init all the buttons with a setActionTouch
         for (int i = 1; i <= 16; i++) {

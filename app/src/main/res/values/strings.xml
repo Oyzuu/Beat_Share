@@ -3,32 +3,32 @@
 
     <string name="placeholder">Placeholder</string>
 
-    <string name="signin">Sign in</string>
-    <string name="signup">Sign up</string>
+    <string name="signin" >Sign in</string>
+    <string name="signup" >Sign up</string>
     <string name="confirm">Confirm</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel" >Cancel</string>
 
-    <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="username"        >Username</string>
+    <string name="password"        >Password</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="mail">Mail</string>
-    <string name="confirm_mail">Confirm mail</string>
+    <string name="mail"            >Mail</string>
+    <string name="confirm_mail"    >Confirm mail</string>
 
-    <string name="play">play</string>
+    <string name="play" >play</string>
     <string name="pause">pause</string>
-    <string name="stop">stop</string>
-    <string name="rec">record</string>
+    <string name="stop" >stop</string>
+    <string name="rec"  >record</string>
 
-    <string name="input_error">Input error</string>
-    <string name="user_input_error">You need to enter a name</string>
-    <string name="password_input_error">You need to enter a password</string>
-    <string name="mail_input_error">You need to enter an e-mail address</string>
-    <string name="database_error">Can\'t find user name or password</string>
-    <string name="pass_confirm_error">Confirmation password not matching</string>
-    <string name="mail_confirm_error">Confirmation mail not matching</string>
-    <string name="title_activity_test_drawer">TestDrawer</string>
+    <string name="input_error"               >Input error</string>
+    <string name="user_input_error"          >You need to enter a name</string>
+    <string name="password_input_error"      >You need to enter a password</string>
+    <string name="mail_input_error"          >You need to enter an e-mail address</string>
+    <string name="pass_confirm_error"        >Confirmation password not matching</string>
+    <string name="mail_confirm_error"        >Confirmation mail not matching</string>
+    <string name="login_user_error"          >Wrong user name</string>
+    <string name="login_password_error"      >Wrong password</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_open" >Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
