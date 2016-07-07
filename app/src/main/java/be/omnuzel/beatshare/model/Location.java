@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,17 +71,21 @@ public class Location implements Parcelable {
     public static Location hydrateFromJSON(double latitude, double longitude, String json) throws JSONException {
         JSONObject jo = new JSONObject(json);
 
-        JSONArray  results        = jo           .getJSONArray("results");
-        JSONObject resultDetails  = results      .getJSONObject(0);
-        JSONArray  addrComponents = resultDetails.getJSONArray("address_components");
+        JSONArray  results                 = jo     .getJSONArray("results");
+        JSONObject resultFirstObject       = results.getJSONObject(0);
+        JSONObject resultBeforeLastObject  = results.getJSONObject(results.length()-2);
 
-        JSONObject neighbourhoodDetails = addrComponents.getJSONObject(2);
-        JSONObject cityDetails          = addrComponents.getJSONObject(3);
-        JSONObject countryDetails       = addrComponents.getJSONObject(4);
+        // splitting the complete address to get neighbourhood's name
+        // is easier this way due to data model inconsistency
+        String   fullAddress       = resultFirstObject.optString("formatted_address", "ERROR");
+        String[] addressArray      = fullAddress.split(", ");
+        String[] neighArray        = addressArray[1].split(" ");
+        String   neighbourhoodName = neighArray[1];
 
-        String neighbourhoodName = neighbourhoodDetails.optString("long_name", "ERROR");
-        String cityName          = cityDetails         .optString("long_name", "ERROR");
-        String countryName       = countryDetails      .optString("long_name", "ERROR");
+        String   cityCountryString  = resultBeforeLastObject.optString("formatted_address", "ERROR");
+        String[] cityCountryArray   = cityCountryString.split(", ");
+        String   cityName           = cityCountryArray[0];
+        String   countryName        = cityCountryArray[1];
 
         Country country = new Country();
         country.setName(countryName);

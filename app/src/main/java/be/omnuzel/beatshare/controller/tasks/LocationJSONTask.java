@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Return a JSON file from Google geocode API based on given coordinates
+ */
 public class LocationJSONTask extends AsyncTask<Double, String, String> {
 
     @Override

@@ -25,7 +25,7 @@ import be.omnuzel.beatshare.model.User;
 
 // TODO Regex for log in / sign up --- IF TIME FOR IT
 // TODO make models parcelable (Sequence ?)
-// TODO WEDNESDAY : choose between geoloc and Play Games
+// TODO Create developer account for Play Games Services
 
 public class MainActivity
         extends
@@ -288,9 +288,9 @@ public class MainActivity
                 "Location : %.4f, %.4f - %s, %s, %s",
                 location.getLatitude(),
                 location.getLongitude(),
-                location.getNeighbourhood().getCity().getCountry().getName(),
+                location.getNeighbourhood().getName(),
                 location.getNeighbourhood().getCity().getName(),
-                location.getNeighbourhood().getName()
+                location.getNeighbourhood().getCity().getCountry().getName()
         );
         snackThis(locString);
     }

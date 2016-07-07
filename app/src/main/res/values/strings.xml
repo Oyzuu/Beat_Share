@@ -21,4 +21,10 @@
     <string name="database_error">Database error</string>
     <string name="pass_confirm_error">Pass confirmation error</string>
     <string name="mail_confirm_error">Mail confirmation error</string>
+    <string name="title_activity_test_drawer">TestDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
