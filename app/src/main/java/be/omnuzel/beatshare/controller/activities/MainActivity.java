@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
@@ -100,7 +101,7 @@ public class MainActivity
         userDAO.close();
 
         if (user != null && user.getPassword().equals(pass)) {
-            resetEditText(loginNameEdit, loginPassEdit);
+            flushLogInForm();
             startActivity(new Intent(this, SequencerActivity.class));
         }
         else {
@@ -146,24 +147,45 @@ public class MainActivity
 
         Log.i("MAIN", String.format("name : %s, pass : %s, mail : %s", name, pass, mail));
 
+        // TODO put errors in strings.xml
         if (name.equals("") || pass.equals("") || mail.equals("")) {
-            snackThis(getString(R.string.input_error));
             Log.i("MAIN", "User input error");
             formIsOK = false;
         }
-        
+
+        if (name.equals("")) {
+            Log.i("MAIN", "Name input error");
+            nameEdit.setError("You need to enter a name");
+            formIsOK = false;
+        }
+
+        if (pass.equals("")) {
+            Log.i("MAIN", "Password input error");
+            passEdit.setError("You need to enter a password");
+            formIsOK = false;
+        }
+
+        if (mail.equals("")) {
+            Log.i("MAIN", "mail input error");
+            mailEdit.setError("You need to enter an e-mail address");
+            formIsOK = false;
+        }
+
+        if (!formIsOK)
+            return;
+
         if (!pass.equals(passConfirm)) {
-            snackThis(getString(R.string.pass_confirm_error));
             Log.i("MAIN", "Password confirmation error");
+            passConfirmEdit.setError("Confirmation password not matching");
             formIsOK = false;
         }
-        
+
         if (!mail.equals(mailConfirm)) {
-            snackThis(getString(R.string.mail_confirm_error));
             Log.i("MAIN", "Mail confirmation error");
+            mailConfirmEdit.setError("Confirmation mail not matching");
             formIsOK = false;
         }
-        
+
         if (!formIsOK)
             return;
 
@@ -191,18 +213,35 @@ public class MainActivity
 
     @Override
     public void cancel(View view) {
-        resetEditText(nameEdit, passEdit, passConfirmEdit, mailEdit, mailConfirmEdit);
-
+        flushSignUpForm();
         onBackPressed();
     }
 
     /**
-     * Set back the text field of every EditText in the array to an empty string
-     * @param editTexts an EditText array
+     * Remove text and error from every EditText in LogInFragment
      */
-    private void resetEditText(EditText... editTexts) {
+    @Override
+    public void flushLogInForm() {
+        EditText[] editTexts = {loginNameEdit, loginPassEdit};
         for (EditText editText : editTexts) {
-            if (editText != null) editText.setText("");
+            if (editText != null) {
+                editText.setText("");
+                editText.setError(null);
+            }
+        }
+    }
+
+    /**
+     * Remove text and error from every EditText in SignUpFragment
+     */
+    @Override
+    public void flushSignUpForm() {
+        EditText[] editTexts = {nameEdit, passEdit, passConfirmEdit, mailEdit, mailConfirmEdit};
+        for (EditText editText : editTexts) {
+            if (editText != null) {
+                editText.setText("");
+                editText.setError(null);
+            }
         }
     }
 
@@ -294,4 +333,6 @@ public class MainActivity
         );
         snackThis(locString);
     }
+
+
 }

@@ -18,6 +18,7 @@ public class LogInFragment extends Fragment {
     public interface ILoginFragment {
         void logIn(View view);
         void toSignUp(View view);
+        void flushLogInForm();
     }
 
     public static LogInFragment instance;
@@ -40,5 +41,11 @@ public class LogInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.frag_login, container, false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        callback.flushLogInForm();
     }
 }
