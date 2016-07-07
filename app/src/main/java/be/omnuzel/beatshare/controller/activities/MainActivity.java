@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import be.omnuzel.beatshare.R;
@@ -87,9 +88,15 @@ public class MainActivity
         name = name.trim();
         pass = pass.trim();
 
-        if (name.equals("") || pass.equals("")) {
-            snackThis(getString(R.string.input_error));
+        if (name.equals("")) {
             Log.i("MAIN", "User input error");
+            loginNameEdit.setError(getString(R.string.user_input_error));
+            formIsOK = false;
+        }
+
+        if (pass.equals("")) {
+            Log.i("MAIN", "Password input error");
+            loginPassEdit.setError(getString(R.string.pass_confirm_error));
             formIsOK = false;
         }
 
@@ -105,8 +112,15 @@ public class MainActivity
             startActivity(new Intent(this, SequencerActivity.class));
         }
         else {
-            snackThis(getString(R.string.database_error));
-            Log.i("MAIN", "Database error");
+            // TODO change this !
+            TextView tv = (TextView) findViewById(R.id.login_error_text);
+
+            if (tv == null)
+                return;
+
+            tv.setVisibility(View.VISIBLE);
+            tv.setText(getString(R.string.database_error));
+            Log.i("MAIN", getString(R.string.database_error));
         }
     }
 
@@ -147,7 +161,6 @@ public class MainActivity
 
         Log.i("MAIN", String.format("name : %s, pass : %s, mail : %s", name, pass, mail));
 
-        // TODO put errors in strings.xml
         if (name.equals("") || pass.equals("") || mail.equals("")) {
             Log.i("MAIN", "User input error");
             formIsOK = false;
@@ -155,19 +168,19 @@ public class MainActivity
 
         if (name.equals("")) {
             Log.i("MAIN", "Name input error");
-            nameEdit.setError("You need to enter a name");
+            nameEdit.setError(getString(R.string.user_input_error));
             formIsOK = false;
         }
 
         if (pass.equals("")) {
             Log.i("MAIN", "Password input error");
-            passEdit.setError("You need to enter a password");
+            passEdit.setError(getString(R.string.pass_confirm_error));
             formIsOK = false;
         }
 
         if (mail.equals("")) {
             Log.i("MAIN", "mail input error");
-            mailEdit.setError("You need to enter an e-mail address");
+            mailEdit.setError(getString(R.string.mail_input_error));
             formIsOK = false;
         }
 
@@ -176,13 +189,13 @@ public class MainActivity
 
         if (!pass.equals(passConfirm)) {
             Log.i("MAIN", "Password confirmation error");
-            passConfirmEdit.setError("Confirmation password not matching");
+            passConfirmEdit.setError(getString(R.string.pass_confirm_error));
             formIsOK = false;
         }
 
         if (!mail.equals(mailConfirm)) {
             Log.i("MAIN", "Mail confirmation error");
-            mailConfirmEdit.setError("Confirmation mail not matching");
+            mailConfirmEdit.setError(getString(R.string.mail_confirm_error));
             formIsOK = false;
         }
 
@@ -333,6 +346,4 @@ public class MainActivity
         );
         snackThis(locString);
     }
-
-
 }
