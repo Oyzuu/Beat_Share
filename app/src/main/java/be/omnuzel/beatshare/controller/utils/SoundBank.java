@@ -15,6 +15,15 @@ import java.util.LinkedList;
  */
 public class SoundBank {
 
+    public interface ISoundBank {
+        boolean isPlaying();
+        boolean isRecording();
+        boolean hasRecordingStarted();
+        void    startRecording();
+
+        void writeSound(int soundId);
+    }
+
     public static SoundBank instance;
     public static SoundBank getInstance(Context context) {
         if (instance == null)
@@ -22,15 +31,17 @@ public class SoundBank {
         return instance;
     }
 
-    private SoundPool soundPool;
-    private Context   context;
-    private boolean   isLoaded;
-    private int       maxSoundId;
+    private SoundPool  soundPool;
+    private Context    context;
+    private ISoundBank callback;
+    private boolean    isLoaded;
+    private int        maxSoundId;
 
     private HashMap<Integer, Integer> pads = new HashMap<>();
 
     public SoundBank(Context context) {
-        this.context = context;
+        this.context  = context;
+        this.callback = (ISoundBank) context;
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
@@ -66,8 +77,16 @@ public class SoundBank {
      * @param buttonId Identifier of pushed button
      */
     public void play(int buttonId) {
-        if (pads.get(buttonId) != null)
-            soundPool.play(pads.get(buttonId), 1, 1, 1, 0, 1);
+        if (pads.get(buttonId) != null) {
+            int soundId = pads.get(buttonId);
+            soundPool.play(soundId, 1, 1, 1, 0, 1);
+
+            if (callback.isRecording()) {
+                if (!callback.hasRecordingStarted())
+                    callback.startRecording();
+                callback.writeSound(soundId);
+            }
+        }
     }
 
     public SoundPool getSoundPool() {

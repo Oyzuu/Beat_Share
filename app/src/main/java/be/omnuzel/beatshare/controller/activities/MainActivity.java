@@ -113,12 +113,13 @@ public class MainActivity
         userDAO.open(DataAccessObject.READABLE);
         User user = userDAO.getByName(name);
         userDAO.close();
+
         if (user == null) {
             loginNameEdit.setError(getString(R.string.login_user_error));
             return;
         }
 
-        if (pass.equals(user.getPassword())) {
+        if (!user.getPassword().equals(pass)) {
             loginPassEdit.setError(getString(R.string.login_password_error));
             return;
         }
@@ -357,5 +358,9 @@ public class MainActivity
                 location.getNeighbourhood().getCity().getCountry().getName()
         );
         snackThis(locString);
+    }
+
+    public void toSeq(View view) {
+        startActivity(new Intent(this, SequencerActivity.class));
     }
 }

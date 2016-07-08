@@ -14,10 +14,10 @@
     <string name="mail"            >Mail</string>
     <string name="confirm_mail"    >Confirm mail</string>
 
-    <string name="play" >play</string>
-    <string name="pause">pause</string>
-    <string name="stop" >stop</string>
-    <string name="rec"  >record</string>
+    <string name="play"   >play</string>
+    <string name="pause"  >pause</string>
+    <string name="stop"   >stop</string>
+    <string name="record" >record</string>
 
     <string name="input_error"               >Input error</string>
     <string name="user_input_error"          >You need to enter a name</string>

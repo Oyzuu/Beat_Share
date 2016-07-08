@@ -80,6 +80,10 @@
             android:text="get loc"
             android:textColor="@color/black"
             android:onClick="localizeMe"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toSeq"/>
 
     </LinearLayout>
 
