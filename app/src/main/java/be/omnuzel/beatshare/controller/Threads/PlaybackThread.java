@@ -5,12 +5,16 @@ import android.util.Log;
 
 import java.util.Arrays;
 
-public class PlaybackThread implements Runnable {
+public class PlaybackThread extends Thread {
+
     private SoundPool soundPool;
     private int[] timestamps, sounds, sleeps;
 
     public PlaybackThread(String sequence, SoundPool soundPool) {
         this.soundPool = soundPool;
+
+        if (sequence.equals(""))
+            return;
 
         String[] soundArray = sequence.split(",");
         timestamps = new int[soundArray.length];
@@ -38,13 +42,16 @@ public class PlaybackThread implements Runnable {
 
     @Override
     public void run() {
+        if (sounds == null)
+            return;
 
         for (int i = 0; i < sounds.length; i++) {
             soundPool.play(sounds[i], 1, 1, 1, 0, 1);
 
             try {
                 Thread.sleep(sleeps[i]);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

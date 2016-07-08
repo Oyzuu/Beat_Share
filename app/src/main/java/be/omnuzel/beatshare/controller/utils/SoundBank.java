@@ -21,7 +21,7 @@ public class SoundBank {
         boolean hasRecordingStarted();
         void    startRecording();
 
-        void writeSound(int soundId);
+        void writeInSequence(int soundId);
     }
 
     public static SoundBank instance;
@@ -74,6 +74,7 @@ public class SoundBank {
 
     /**
      * Play the sound linked to the button
+     * If the sequencer is recording, call writeInSequence from callback
      * @param buttonId Identifier of pushed button
      */
     public void play(int buttonId) {
@@ -84,7 +85,8 @@ public class SoundBank {
             if (callback.isRecording()) {
                 if (!callback.hasRecordingStarted())
                     callback.startRecording();
-                callback.writeSound(soundId);
+
+                callback.writeInSequence(soundId);
             }
         }
     }

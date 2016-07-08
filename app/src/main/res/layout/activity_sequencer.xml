@@ -13,6 +13,8 @@
     tools:context=".controller.activities.SequencerActivity"
     tools:openDrawer="true">
 
+    <!-- TODO AppBarLayout & Toolbar ?-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -151,6 +153,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:id="@+id/seq_play_button"
                 android:text="@string/play"
                 android:layout_margin="4dp"
@@ -159,6 +162,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:text="@string/stop"
                 android:layout_margin="4dp"
                 android:background="@drawable/plain_button"
@@ -166,6 +170,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:id="@+id/seq_record_button"
                 android:text="@string/record"
                 android:layout_margin="4dp"

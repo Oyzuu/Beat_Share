@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/action_settings"
+        android:id="@+id/bar_menu_settings"
+        android:icon="@drawable/ic_tune_white_24dp"
+        android:showAsAction="always"/>
+    <item
+        android:title="Profile"
+        android:id="@+id/bar_menu_account"
+        android:icon="@drawable/ic_person_white_24dp"
+        android:showAsAction="always" />
+</menu>

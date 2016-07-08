@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/drawer_profile"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/drawer_account"
+            android:icon="@drawable/ic_person_white_24dp"
             android:title="Profile" />
         <item
-            android:id="@+id/draw_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_tune_white_24dp"
             android:title="Settings" />
         <item
             android:id="@+id/drawer_import"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_file_download_white_24dp"
             android:title="Import" />
         <item
             android:id="@+id/drawer_export"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_file_download_white_24dp"
             android:title="Export" />
+        <item
+            android:id="@+id/drawer_save"
+            android:icon="@drawable/ic_publish_white_24dp"
+            android:title="Save as..." />
     </group>
 
 </menu>

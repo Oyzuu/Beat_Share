@@ -1,18 +1,19 @@
 package be.omnuzel.beatshare.controller.activities;
 
-import android.content.Intent;
 import android.media.SoundPool;
-import android.support.design.widget.Snackbar;
+import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Timer;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.Threads.PlaybackThread;
@@ -23,17 +24,24 @@ import be.omnuzel.beatshare.model.User;
 // TODO will probably need its own fragment
 // TODO animate button activation --- IF TIME FOR IT
 
-public class SequencerActivity extends AppCompatActivity implements SoundBank.ISoundBank{
+public class SequencerActivity
+        extends
+            AppCompatActivity
+        implements
+            SoundBank.ISoundBank,
+            NavigationView.OnNavigationItemSelectedListener {
 
-    private SoundBank     soundBank;
-    private User          user;
-    private boolean       isPlaying,
-                          isRecording,
-                          recordingHasStarted;
-    private StringBuilder soundBuffer;
-    private long          startingTime,
-                          elapsedTime,
-                          endingTime;
+    private SoundBank      soundBank;
+    private User           user;
+    private boolean        isPlaying,
+                           isRecording,
+                           recordingHasStarted,
+                           threadWaiting;
+    private StringBuilder  soundBuffer;
+    private long           startingTime,
+                           elapsedTime,
+                           endingTime;
+    private PlaybackThread playbackThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,8 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
         isPlaying           = false;
         isRecording         = false;
         recordingHasStarted = false;
+        threadWaiting       = false;
+        soundBuffer         = new StringBuilder("");
 
         if (extras != null) {
             user = (User) extras.get("user");
@@ -69,11 +79,16 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
                     TextView headerMailText = (TextView) findViewById(R.id.header_mail);
                     if (headerMailText != null)
                         headerMailText.setText(user.getEmail());
+
+                    if (getSupportActionBar() != null)
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 }
 
                 @Override
                 public void onDrawerClosed(View drawerView) {
-
+                    if (getSupportActionBar() != null)
+                        getSupportActionBar().setIcon(getResources()
+                                .getDrawable(R.drawable.ic_menu_white_24dp));
                 }
 
                 @Override
@@ -81,6 +96,12 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
 
                 }
             });
+        }
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.sequencer_drawer);
+        if (navigationView != null) {
+            navigationView.setItemIconTintList(null);
+            navigationView.setNavigationItemSelectedListener(this);
         }
 
         // Init all the buttons with a setActionTouch
@@ -96,6 +117,92 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
 
         initSounds();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = new MenuInflater(this);
+        menuInflater.inflate(R.menu.bar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bar_menu_settings : toSettings(); break;
+            case R.id.bar_menu_account  : toAccount();  break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.drawer_account  : toAccount();      break;
+            case R.id.drawer_settings : toSettings();     break;
+            case R.id.drawer_import   : importSequence(); break;
+            case R.id.drawer_export   : exportSequence(); break;
+            case R.id.drawer_save     : saveSequence();   break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.sequencer_rootview);
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    @Override
+    public boolean isRecording() {
+        return isRecording;
+    }
+
+    @Override
+    public boolean hasRecordingStarted() {
+        return recordingHasStarted;
+    }
+
+    @Override
+    public void startRecording() {
+        recordingHasStarted = true;
+        startingTime        = System.currentTimeMillis();
+    }
+
+    @Override
+    public void writeInSequence(int soundId) {
+        elapsedTime = System.currentTimeMillis() - startingTime;
+
+        String stamp = String.format(
+                "%s-%s,", elapsedTime, soundId
+        );
+
+        Log.i("SOUND_STAMP", stamp);
+
+        soundBuffer.append(stamp);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    // TODO populate this
+    public void toSettings() {}
+    public void toAccount() {}
+    public void importSequence() {}
+    public void exportSequence() {}
+    public void saveSequence() {}
 
     /**
      * Load the sounds in the SoundBank and give a visual feedback of button activation
@@ -167,6 +274,7 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
     public void play(View view) {
         Button playButton = (Button) findViewById(R.id.seq_play_button);
 
+        // TODO Remove this in prod
 //        Intent intent = new Intent(this, Debug.class);
 //        intent.putExtra("debugInfo", soundBuffer.toString());
 //        startActivity(intent);
@@ -176,9 +284,8 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
             if (playButton != null)
                 playButton.setText(getString(R.string.pause));
 
-            PlaybackThread playbackThread =
-                    new PlaybackThread(soundBuffer.toString(), soundBank.getSoundPool());
-            new Thread(playbackThread).start();
+            playbackThread = new PlaybackThread(soundBuffer.toString(), soundBank.getSoundPool());
+            playbackThread.start();
         }
         else {
             isPlaying = false;
@@ -187,9 +294,7 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
         }
     }
 
-    public void stop(View view) {
-
-    }
+    public void stop(View view) {}
 
     public void record(View view) {
         Button recordButton = (Button) findViewById(R.id.seq_record_button);
@@ -205,40 +310,5 @@ public class SequencerActivity extends AppCompatActivity implements SoundBank.IS
             if (recordButton != null)
                 recordButton.setText(getString(R.string.record));
         }
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
-    @Override
-    public boolean isRecording() {
-        return isRecording;
-    }
-
-    @Override
-    public boolean hasRecordingStarted() {
-        return recordingHasStarted;
-    }
-
-    @Override
-    public void startRecording() {
-        recordingHasStarted = true;
-        soundBuffer         = new StringBuilder();
-        startingTime        = System.currentTimeMillis();
-    }
-
-    @Override
-    public void writeSound(int soundId) {
-        elapsedTime = System.currentTimeMillis() - startingTime;
-
-        String stamp = String.format(
-                "%s-%s,", elapsedTime, soundId
-        );
-
-        Log.i("SOUND_STAMP", stamp);
-
-        soundBuffer.append(stamp);
     }
 }
