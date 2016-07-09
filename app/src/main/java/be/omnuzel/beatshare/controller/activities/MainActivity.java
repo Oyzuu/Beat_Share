@@ -79,7 +79,13 @@ public class MainActivity
     // Ensures non null log in screen text fields
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (signUpFragment.isVisible()) {
+            flushSignUpForm();
+            getFragmentManager().popBackStackImmediate();
+        }
+        else {
+            super.onBackPressed();
+        }
         loginNameEdit = (EditText) findViewById(R.id.login_username);
         loginPassEdit = (EditText) findViewById(R.id.login_password);
     }
@@ -240,6 +246,7 @@ public class MainActivity
     @Override
     public void cancel(View view) {
         flushSignUpForm();
+        signUpFragment.onDestroy();
         onBackPressed();
     }
 

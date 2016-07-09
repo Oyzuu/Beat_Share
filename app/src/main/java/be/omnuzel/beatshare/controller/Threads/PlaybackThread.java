@@ -56,4 +56,35 @@ public class PlaybackThread extends Thread {
             }
         }
     }
+
+    private void sortSounds() {
+        boolean hasActions = false;
+
+        while (true) {
+            hasActions = false;
+
+            for (int i = 0; i < timestamps.length - 1; i++) {
+                int stampA = timestamps[i];
+                int stampB = timestamps[i+1];
+                int soundA = sounds[i];
+                int soundB = sounds[i+1];
+
+                if (timestamps[i] > timestamps[i+1]) {
+                    swap(timestamps, stampA, stampB);
+                    swap(sounds,     soundA, soundB);
+
+                    hasActions = true;
+                }
+            }
+
+            if (!hasActions)
+                break;
+        }
+    }
+
+    private void swap(int[] input, int a, int b) {
+        int tmp  = input[a];
+        input[a] = input[b];
+        input[b] = tmp;
+    }
 }

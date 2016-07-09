@@ -17,9 +17,6 @@ public class SoundBank {
 
     public interface ISoundBank {
         boolean isPlaying();
-        boolean isRecording();
-        boolean hasRecordingStarted();
-        void    startRecording();
 
         void writeInSequence(int soundId);
     }
@@ -82,12 +79,7 @@ public class SoundBank {
             int soundId = pads.get(buttonId);
             soundPool.play(soundId, 1, 1, 1, 0, 1);
 
-            if (callback.isRecording()) {
-                if (!callback.hasRecordingStarted())
-                    callback.startRecording();
-
-                callback.writeInSequence(soundId);
-            }
+            callback.writeInSequence(soundId);
         }
     }
 
