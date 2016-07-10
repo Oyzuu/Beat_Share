@@ -1,7 +1,7 @@
 package be.omnuzel.beatshare.controller.activities;
 
+import android.app.ActionBar;
 import android.graphics.drawable.Drawable;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -12,14 +12,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import be.omnuzel.beatshare.R;
-import be.omnuzel.beatshare.controller.Threads.PlaybackThread;
+import be.omnuzel.beatshare.controller.threads.PlaybackThread;
+import be.omnuzel.beatshare.controller.dialogs.AddSoundDialog;
+import be.omnuzel.beatshare.controller.dialogs.SetBMPDialog;
 import be.omnuzel.beatshare.controller.utils.SoundBank;
+import be.omnuzel.beatshare.model.Bar;
+import be.omnuzel.beatshare.model.Sequence;
 import be.omnuzel.beatshare.model.User;
 
 // TODO check AudioAttributes CONTENT_TYPE and USAGE
@@ -30,17 +32,18 @@ public class SequencerActivity
         extends
             AppCompatActivity
         implements
-            SoundBank.ISoundBank,
-            NavigationView.OnNavigationItemSelectedListener {
+            NavigationView.OnNavigationItemSelectedListener,
+            AddSoundDialog.SoundDialogListener,
+            SetBMPDialog.BPMDialogListener {
 
     private SoundBank      soundBank;
     private User           user;
-    private boolean        isPlaying = false;
-    private StringBuilder  soundBuffer;
-    private long           startingTime,
-                           elapsedTime;
     private PlaybackThread playbackThread;
     private int            bpm = 60;
+    private Sequence       sequence;
+    private Bar            firstBar;
+
+    private android.support.v7.app.ActionBar actionBar;
 
     private int[] activePads = {
             0, 0, 0, 0,
@@ -61,6 +64,10 @@ public class SequencerActivity
             Log.i("SEQUENCER", "Started for user : " + user.getUserName() + " - " + user.getEmail());
         }
 
+        actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(bpm + " BPM");
+
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
 
         if (drawerLayout != null) {
@@ -70,6 +77,12 @@ public class SequencerActivity
 
                 @Override
                 public void onDrawerOpened(View drawerView) {
+                    if (getSupportActionBar() != null)
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                    if (user == null)
+                        return;
+
                     TextView headerNameText = (TextView) findViewById(R.id.header_name);
                     if (headerNameText != null)
                         headerNameText.setText(user.getUserName());
@@ -77,9 +90,6 @@ public class SequencerActivity
                     TextView headerMailText = (TextView) findViewById(R.id.header_mail);
                     if (headerMailText != null)
                         headerMailText.setText(user.getEmail());
-
-                    if (getSupportActionBar() != null)
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 }
 
                 @Override
@@ -95,6 +105,10 @@ public class SequencerActivity
             navigationView.setItemIconTintList(null);
             navigationView.setNavigationItemSelectedListener(this);
         }
+
+        sequence = new Sequence();
+        firstBar = new Bar();
+        sequence.addBar(firstBar);
     }
 
     @Override
@@ -131,28 +145,10 @@ public class SequencerActivity
     }
 
     @Override
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
-    @Override
-    public void writeInSequence(int soundId) {
-        elapsedTime = System.currentTimeMillis() - startingTime;
-
-        String stamp = String.format(
-                "%s-%s,", elapsedTime, soundId
-        );
-
-        Log.i("SOUND_STAMP", stamp);
-
-        soundBuffer.append(stamp);
-    }
-
-    @Override
     public void onBackPressed() {
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
 
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
         else {
@@ -160,9 +156,26 @@ public class SequencerActivity
         }
     }
 
+    @Override
+    public void setSound(String soundName) {
+        snackThis(soundName);
+    }
+
+    @Override
+    public void setBPM(int bpm) {
+        this.bpm = bpm;
+        if (actionBar != null)
+            actionBar.setTitle(bpm + " BPM");
+    }
+
+    @Override
+    public int getBPM() {
+        return bpm;
+    }
+
     // TODO populate these
     public void toSettings() {
-        snackThis("settings");
+        new SetBMPDialog().show(getFragmentManager(), "set BPM");
     }
     public void toAccount() {
         snackThis("account");
@@ -178,6 +191,14 @@ public class SequencerActivity
     }
     public void play(View view) {}
     public void stop(View view) {}
+
+    public void addSound(View view) {
+        new AddSoundDialog().show(getFragmentManager(), "set sound");
+    }
+
+    public void addBar(View view) {
+
+    }
 
     public void activateButton(View view) {
         Drawable active   = getResources().getDrawable(R.drawable.sequencer_pad);

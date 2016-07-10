@@ -15,12 +15,6 @@ import java.util.LinkedList;
  */
 public class SoundBank {
 
-    public interface ISoundBank {
-        boolean isPlaying();
-
-        void writeInSequence(int soundId);
-    }
-
     public static SoundBank instance;
     public static SoundBank getInstance(Context context) {
         if (instance == null)
@@ -30,7 +24,6 @@ public class SoundBank {
 
     private SoundPool  soundPool;
     private Context    context;
-    private ISoundBank callback;
     private boolean    isLoaded;
     private int        maxSoundId;
 
@@ -38,7 +31,6 @@ public class SoundBank {
 
     public SoundBank(Context context) {
         this.context  = context;
-        this.callback = (ISoundBank) context;
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
@@ -78,8 +70,6 @@ public class SoundBank {
         if (pads.get(buttonId) != null) {
             int soundId = pads.get(buttonId);
             soundPool.play(soundId, 1, 1, 1, 0, 1);
-
-            callback.writeInSequence(soundId);
         }
     }
 

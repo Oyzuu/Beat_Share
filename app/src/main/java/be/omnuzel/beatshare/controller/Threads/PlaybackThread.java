@@ -1,4 +1,4 @@
-package be.omnuzel.beatshare.controller.Threads;
+package be.omnuzel.beatshare.controller.threads;
 
 import android.media.SoundPool;
 import android.util.Log;

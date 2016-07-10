@@ -27,7 +27,7 @@ public class SequencerActivityCopy extends AppCompatActivity {
 
     public void initSounds() {
         try {
-            InputStream         is  = getResources().openRawResource(R.raw.iamm_dd2_ride_cymbal_1);
+            InputStream         is  = getResources().openRawResource(R.raw.ride_cymbal);
             BufferedInputStream bis = new BufferedInputStream       (is, 8000);
             DataInputStream     dis = new DataInputStream           (bis);
 
