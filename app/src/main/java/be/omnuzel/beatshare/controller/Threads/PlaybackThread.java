@@ -1,90 +1,88 @@
 package be.omnuzel.beatshare.controller.threads;
 
+import android.content.Context;
 import android.media.SoundPool;
-import android.util.Log;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.TreeMap;
+
+import be.omnuzel.beatshare.controller.utils.SoundBank;
+import be.omnuzel.beatshare.model.Sequence;
 
 public class PlaybackThread extends Thread {
+    public interface PlaybackListener {
+        int getState();
+        int getBPM();
+    }
 
-    private SoundPool soundPool;
-    private int[] timestamps, sounds, sleeps;
+    public static final int
+            STOPPED = 0,
+            PLAYING = 1,
+            PAUSED  = 2,
 
-    public PlaybackThread(String sequence, SoundPool soundPool) {
-        this.soundPool = soundPool;
+            MINUTE  = 60000;
 
-        if (sequence.equals(""))
-            return;
+    private PlaybackListener callback;
+    private int              currentStep;
+    private Sequence         sequence;
+    private SoundBank        soundBank;
 
-        String[] soundArray = sequence.split(",");
-        timestamps = new int[soundArray.length];
-        sounds     = new int[soundArray.length];
-        sleeps     = new int[soundArray.length];
+    private TreeMap<Integer, ArrayList<Integer>> sequenceMap;
 
-        for (int i = 0; i < soundArray.length; i++) {
-            String[] details = soundArray[i].split("-");
+    public PlaybackThread(Context context, Sequence sequence) {
+        this.callback    = (PlaybackListener) context;
+        this.currentStep = 0;
+        this.sequence    = sequence;
+        this.sequenceMap = sequence.getSoundsMap();
 
-            timestamps[i] = Integer.parseInt(details[0]);
-            sounds[i]     = Integer.parseInt(details[1]);
+        soundBank = new SoundBank(context);
+        for (int soundId : sequence.getDistinctSoundsId()) {
+            soundBank.load(soundId);
         }
 
-        for (int i = 0; i < timestamps.length; i++) {
-            if (i == timestamps.length - 1)
-                sleeps[i] = 0;
-            else
-                sleeps[i] = timestamps[i+1] - timestamps[i];
-        }
+        soundBank.getSoundPool().setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 
-        Log.i("TIMESTAMPS", Arrays.toString(timestamps));
-        Log.i("SLEEPS",     Arrays.toString(sleeps));
-        Log.i("SOUNDS_ID",  Arrays.toString(sounds));
+            }
+        });
+
+        // TODO check readiness of soundpool !!!
     }
 
     @Override
     public void run() {
-        if (sounds == null)
-            return;
+        super.run();
 
-        for (int i = 0; i < sounds.length; i++) {
-            soundPool.play(sounds[i], 1, 1, 1, 0, 1);
+        while (true) {
+            int state = callback.getState();
+            if (state == STOPPED) {
+                currentStep = 0;
+                break;
+            }
+
+            if (state == PAUSED) {
+                break;
+            }
+
+            int sleepTime = MINUTE / callback.getBPM() / 4;
+
+            // TODO MAKE THIS LOOP HAPPEN !
+            for (int soundId : sequenceMap.get(currentStep)) {
+                soundBank.play(soundId);
+            }
 
             try {
-                Thread.sleep(sleeps[i]);
+                Thread.sleep(sleepTime);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-    }
 
-    private void sortSounds() {
-        boolean hasActions = false;
-
-        while (true) {
-            hasActions = false;
-
-            for (int i = 0; i < timestamps.length - 1; i++) {
-                int stampA = timestamps[i];
-                int stampB = timestamps[i+1];
-                int soundA = sounds[i];
-                int soundB = sounds[i+1];
-
-                if (timestamps[i] > timestamps[i+1]) {
-                    swap(timestamps, stampA, stampB);
-                    swap(sounds,     soundA, soundB);
-
-                    hasActions = true;
-                }
-            }
-
-            if (!hasActions)
+            if (currentStep == 63)
                 break;
-        }
-    }
 
-    private void swap(int[] input, int a, int b) {
-        int tmp  = input[a];
-        input[a] = input[b];
-        input[b] = tmp;
+            currentStep++;
+        }
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sounds">
+        <item>acoustic snare</item>
+        <item>closed hihat</item>
+        <item>drum kick</item>
+        <item>electric snare</item>
+        <item>open hihat</item>
+        <item>ride cymbal</item>
+    </string-array>
+</resources>

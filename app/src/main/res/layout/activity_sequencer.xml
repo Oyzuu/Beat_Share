@@ -11,34 +11,130 @@
     android:id="@+id/sequencer_rootview"
     android:orientation="vertical"
     tools:context=".controller.activities.SequencerActivity"
+    android:background="@color/colorPrimary"
     tools:openDrawer="true">
 
     <!-- TODO AppBarLayout & Toolbar ?-->
-
+    <!-- Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="16dp"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:id="@+id/current_bar"
-            android:text="@string/current_bar"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:id="@+id/current_sound"
-            android:text="@string/current_sound"/>
-
+        <!-- Bar Buttons and pads -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <!--  1 to  4 -->
+            <!-- Bar buttons and progress bars -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/button_bar1"
+                        android:text="@string/bar1"
+                        android:textColor="@color/colorAccent"
+                        android:onClick="selectBar"
+                        android:background="@drawable/secondary_button"/>
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:id="@+id/progress_bar1"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/button_bar2"
+                        android:text="@string/bar2"
+                        android:textColor="@color/colorAccent"
+                        android:onClick="selectBar"
+                        android:background="@drawable/secondary_button"/>
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:id="@+id/progress_bar2"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/button_bar3"
+                        android:text="@string/bar3"
+                        android:textColor="@color/colorAccent"
+                        android:onClick="selectBar"
+                        android:background="@drawable/secondary_button"/>
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:id="@+id/progress_bar3"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/button_bar4"
+                        android:text="@string/bar4"
+                        android:textColor="@color/colorAccent"
+                        android:onClick="selectBar"
+                        android:background="@drawable/secondary_button"/>
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:id="@+id/progress_bar4"
+                        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <!-- Spinner and add button -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <Spinner
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/sounds_spinner"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/secondary_button"
+                    android:text="@string/add"
+                    android:onClick="addSound"/>
+            </LinearLayout>
+
+
+
+            <!-- Buttons  1 to  4 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +168,7 @@
                     android:onClick="activateButton"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
-            <!--  5 to  8 -->
+            <!-- Buttons  5 to  8 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +202,7 @@
                     android:onClick="activateButton"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
-            <!--  9 to 12 -->
+            <!-- Buttons  9 to 12 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +236,7 @@
                     android:onClick="activateButton"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
-            <!-- 13 to 16 -->
+            <!-- Buttons 13 to 16 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -175,14 +271,14 @@
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
         </LinearLayout>
-
+        <!-- Play / Stop buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:padding="5dp"
                 android:id="@+id/seq_play_button"
                 android:text="@string/play"
@@ -191,37 +287,27 @@
                 android:onClick="play"/>
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:padding="5dp"
                 android:text="@string/stop"
                 android:layout_margin="4dp"
                 android:background="@drawable/plain_button"
                 android:onClick="stop"/>
         </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:id="@+id/seq_add_sound"
-                android:text="@string/add_sound"
-                android:layout_margin="4dp"
-                android:background="@drawable/plain_button"
-                android:onClick="addSound"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@string/add_bar"
-                android:layout_margin="4dp"
-                android:background="@drawable/plain_button"
-                android:onClick="addBar"/>
-        </LinearLayout>
+            android:id="@+id/activebar_debug"
+            android:text="@string/placeholder"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activesound_debug"
+            android:text="@string/placeholder"/>
+
     </LinearLayout>
+
+
 
     <!-- left drawer -->
     <android.support.design.widget.NavigationView

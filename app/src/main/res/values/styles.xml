@@ -7,12 +7,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/off_white</item>
-        <item name="android:background">@color/colorPrimary</item>
         <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/CustomSpinner</item>
     </style>
     
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomSpinner" parent="Base.Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -24,7 +24,12 @@
     <string name="current_bar"  >Current bar : </string>
     <string name="current_sound">Current sound : </string>
 
-    <string name="add_sound">Add a sound</string>
+    <string name="bar1">Bar 1</string>
+    <string name="bar2">Bar 2</string>
+    <string name="bar3">Bar 3</string>
+    <string name="bar4">Bar 4</string>
+
+    <string name="add"      >Add</string>
     <string name="add_bar"  >Add a bar</string>
 
     <string name="bpm_dialog"   >Beats per minute</string>

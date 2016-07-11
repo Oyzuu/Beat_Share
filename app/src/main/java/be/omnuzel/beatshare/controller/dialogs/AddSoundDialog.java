@@ -16,15 +16,6 @@ public class AddSoundDialog extends DialogFragment {
         void setSound(String soundName);
     }
 
-    private String[] sounds = {
-        "acoustic_snare",
-        "closed_hihat",
-        "drum_kick",
-        "electric_snare",
-        "open_hihat",
-        "ride_cymbal"
-    };
-
     private SoundDialogListener callback;
 
     @Override
@@ -38,6 +29,7 @@ public class AddSoundDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        final String[] sounds = getResources().getStringArray(R.array.sounds);
         builder .setTitle(getString(R.string.sounds_dialog))
                 .setItems(sounds, new DialogInterface.OnClickListener() {
                     @Override

@@ -76,9 +76,9 @@ public class MainActivity
         loginPassEdit = (EditText) findViewById(R.id.login_password);
     }
 
-    // Ensures non null log in screen text fields
     @Override
     public void onBackPressed() {
+        // Check if back order comes from the sig up fragment and then act accordingly
         if (signUpFragment.isVisible()) {
             flushSignUpForm();
             getFragmentManager().popBackStackImmediate();
@@ -86,6 +86,8 @@ public class MainActivity
         else {
             super.onBackPressed();
         }
+
+        // Ensure non null log in screen text fields
         loginNameEdit = (EditText) findViewById(R.id.login_username);
         loginPassEdit = (EditText) findViewById(R.id.login_password);
     }

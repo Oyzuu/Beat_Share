@@ -27,7 +27,7 @@ public class SoundBank {
     private boolean    isLoaded;
     private int        maxSoundId;
 
-    private HashMap<Integer, Integer> pads = new HashMap<>();
+    private HashMap<Integer, Integer> sounds = new HashMap<>();
 
     public SoundBank(Context context) {
         this.context  = context;
@@ -48,27 +48,17 @@ public class SoundBank {
         }
     }
 
-    /**
-     * Load a sound in the SoundPool and put key: button id, value: sound id in pads
-     * @param resourceId Identifier of the sound resource
-     * @param buttonId Identifier of the button to link with this sound
-     */
-    public void load(int resourceId, int buttonId) {
+    public void load(int resourceId) {
         int id = soundPool.load(context, resourceId, 0);
         Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
 
-        pads.put(buttonId, id);
+        sounds.put(resourceId, id);
         maxSoundId = id;
     }
 
-    /**
-     * Play the sound linked to the button
-     * If the sequencer is recording, call writeInSequence from callback
-     * @param buttonId Identifier of pushed button
-     */
-    public void play(int buttonId) {
-        if (pads.get(buttonId) != null) {
-            int soundId = pads.get(buttonId);
+    public void play(int resourceId) {
+        if (sounds.get(resourceId) != null) {
+            int soundId = sounds.get(resourceId);
             soundPool.play(soundId, 1, 1, 1, 0, 1);
         }
     }
@@ -83,10 +73,6 @@ public class SoundBank {
 
     public boolean getLoadingState() {
         return  isLoaded;
-    }
-
-    public LinkedList<Integer> getLoadedButtons() {
-        return new LinkedList<>(pads.keySet());
     }
 
     public int getMaxSoundId() {
