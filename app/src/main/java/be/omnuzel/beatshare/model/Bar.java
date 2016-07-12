@@ -13,6 +13,11 @@ public class Bar {
     public Bar() {
         activeSounds      = new ArrayList<>();
         activeSoundsNames = new ArrayList<>();
+
+
+        activeSoundsNames.add("empty");
+//        Sound emptySound = new Sound("empty", 0);
+//        activeSounds.add(emptySound);
     }
 
     public ArrayList<Sound> getActiveSounds() {
@@ -29,6 +34,9 @@ public class Bar {
      * @param matrix current matrix of the sound
      */
     public void updateSound(String soundName, int[] matrix) {
+        if (soundName.equals("empty"))
+            return;
+
         Sound sound = activeSounds.get(activeSoundsNames.indexOf(soundName));
         sound.setMatrix(matrix);
     }
@@ -43,7 +51,7 @@ public class Bar {
             activeSoundsNames.add(soundName);
             activeSounds     .add(new Sound(soundName, soundId));
 
-            Log.i("BAR", "Sound " + soundName + " added");
+//            Log.i("BAR", "Sound " + soundName + " added");
         }
     }
 
@@ -53,7 +61,7 @@ public class Bar {
      * @return  matrix of the sound
      */
     public int[] getSoundMatrix(String soundName) {
-        Log.i("MATRIX CHANGE SOUND", Arrays.toString(activeSounds.get(activeSoundsNames.indexOf(soundName)).getMatrix()));
+//        Log.i("MATRIX CHANGE SOUND", Arrays.toString(activeSounds.get(activeSoundsNames.indexOf(soundName)).getMatrix()));
         return activeSounds.get(activeSoundsNames.indexOf(soundName)).getMatrix();
     }
 
@@ -63,6 +71,9 @@ public class Bar {
      * @return string of the matrix
      */
     public String getReadableMatrixFromSound(String soundName) {
+        if (soundName.equals("empty"))
+            return Arrays.toString(new int[16]);
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(soundName);

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.util.Log;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Facilitate sound management with the sequencer
@@ -41,15 +40,9 @@ public class SoundBank {
 
     public void load(int resourceId) {
         int id = soundPool.load(context, resourceId, 0);
-        Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
+//        Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
 
         sounds.put(resourceId, id);
-    }
-
-    public void flush() {
-        for (int id : sounds.values()) {
-            soundPool.unload(id);
-        }
     }
 
     public void play(int resourceId) {

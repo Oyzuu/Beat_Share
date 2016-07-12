@@ -2,52 +2,64 @@ package be.omnuzel.beatshare.controller.threads;
 
 import android.content.Context;
 import android.media.SoundPool;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeMap;
 
+import be.omnuzel.beatshare.controller.activities.SequencerActivity;
 import be.omnuzel.beatshare.controller.utils.SoundBank;
 import be.omnuzel.beatshare.model.Sequence;
 
 public class PlaybackThread extends Thread {
     public interface PlaybackListener {
-        int getState();
-        int getBPM();
+        int      getState();
+        int      getBPM();
+        int      getCurrentStep();
+        Sequence getSequence();
+        void     setCurrentStep(int currentStep);
     }
 
     public static final int
-            STOPPED = 0,
-            PLAYING = 1,
-            PAUSED  = 2,
-
-            MINUTE  = 60000;
+            MINUTE        = 60000,
+            STEPS_PER_BAR = 16,
+            TIMES_PER_BAR = 4;
 
     private PlaybackListener callback;
     private int              currentStep;
-    private Sequence         sequence;
     private SoundBank        soundBank;
+    private int              totalSteps;
+    private Sequence         sequence;
 
     private TreeMap<Integer, ArrayList<Integer>> sequenceMap;
 
-    public PlaybackThread(Context context, Sequence sequence) {
+    public PlaybackThread(Context context) {
         this.callback    = (PlaybackListener) context;
-        this.currentStep = 0;
-        this.sequence    = sequence;
-        this.sequenceMap = sequence.getSoundsMap();
+        this.currentStep = callback.getCurrentStep();
+        this.sequence    = callback.getSequence();
+        sequence.build();
 
-        soundBank = new SoundBank(context);
-        for (int soundId : sequence.getDistinctSoundsId()) {
+        this.sequenceMap = sequence.getSoundsMap();
+        this.totalSteps  = sequence.getTotalBars() * STEPS_PER_BAR;
+
+        this.soundBank   = new SoundBank(context);
+
+//        Log.i("PLAYTHREAD", "Total steps : " + totalSteps);
+
+        final Set<Integer> distinctSounds = sequence.getDistinctSoundsId();
+        for (int soundId : distinctSounds) {
             soundBank.load(soundId);
         }
 
         soundBank.getSoundPool().setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-
+                if (sampleId == distinctSounds.size()) {
+                    start();
+                }
             }
         });
-
-        // TODO check readiness of soundpool !!!
     }
 
     @Override
@@ -55,34 +67,40 @@ public class PlaybackThread extends Thread {
         super.run();
 
         while (true) {
-            int state = callback.getState();
-            if (state == STOPPED) {
-                currentStep = 0;
+            this.sequence = callback.getSequence();
+            sequence.build();
+
+            int state     = callback.getState();
+            int sleepTime = MINUTE / callback.getBPM() / TIMES_PER_BAR;
+
+            if (state == SequencerActivity.STOPPED) {
                 break;
             }
 
-            if (state == PAUSED) {
+            if (state == SequencerActivity.PAUSED) {
+                callback.setCurrentStep(currentStep);
                 break;
             }
 
-            int sleepTime = MINUTE / callback.getBPM() / 4;
-
-            // TODO MAKE THIS LOOP HAPPEN !
             for (int soundId : sequenceMap.get(currentStep)) {
                 soundBank.play(soundId);
             }
 
             try {
-                Thread.sleep(sleepTime);
+                sleep(sleepTime);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            if (currentStep == 63)
-                break;
-
             currentStep++;
+//            Log.i("THREAD", currentStep + "");
+
+            if (currentStep == totalSteps) {
+                currentStep = 0;
+            }
         }
+
+//        Log.i("THREAD", "has stopped");
     }
 }

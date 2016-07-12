@@ -19,7 +19,7 @@ public class Sound {
         this.name   = name;
         this.matrix = pads;
         this.id     = id;
-        Log.i("CONSTRUCT_SOUND_MATR", Arrays.toString(this.matrix));
+//        Log.i("CONSTRUCT_SOUND_MATR", Arrays.toString(this.matrix));
     }
 
     public String getName() {

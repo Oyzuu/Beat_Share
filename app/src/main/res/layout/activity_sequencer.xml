@@ -35,6 +35,7 @@
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:layout_gravity="start"
                     android:orientation="vertical">
                     <Button
                         android:layout_width="match_parent"
@@ -55,13 +56,15 @@
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:id="@+id/bar2_layout"
+                    android:layout_gravity="start"
+                    android:visibility="gone"
                     android:orientation="vertical">
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/button_bar2"
                         android:text="@string/bar2"
-                        android:textColor="@color/colorAccent"
                         android:onClick="selectBar"
                         android:background="@drawable/secondary_button"/>
                     <ProgressBar
@@ -75,13 +78,15 @@
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:id="@+id/bar3_layout"
+                    android:layout_gravity="start"
+                    android:visibility="gone"
                     android:orientation="vertical">
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/button_bar3"
                         android:text="@string/bar3"
-                        android:textColor="@color/colorAccent"
                         android:onClick="selectBar"
                         android:background="@drawable/secondary_button"/>
                     <ProgressBar
@@ -95,13 +100,15 @@
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:id="@+id/bar4_layout"
+                    android:layout_gravity="start"
+                    android:visibility="gone"
                     android:orientation="vertical">
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/button_bar4"
                         android:text="@string/bar4"
-                        android:textColor="@color/colorAccent"
                         android:onClick="selectBar"
                         android:background="@drawable/secondary_button"/>
                     <ProgressBar
@@ -111,6 +118,15 @@
                         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
                 </LinearLayout>
 
+                <Button
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="start"
+                    android:id="@+id/add_bar_button"
+                    android:text="@string/add"
+                    android:background="@drawable/secondary_button"
+                    android:onClick="addBar"/>
+
 
             </LinearLayout>
             <!-- Spinner and add button -->
@@ -119,14 +135,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
                 <Spinner
-                    android:layout_width="260dp"
+                    android:layout_width="241dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="4dp"
                     android:id="@+id/sounds_spinner"/>
 
                 <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="4dp"
                     android:background="@drawable/secondary_button"
                     android:text="@string/add"
                     android:onClick="addSound"/>

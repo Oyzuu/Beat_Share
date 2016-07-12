@@ -15,21 +15,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.AddSoundDialog;
 import be.omnuzel.beatshare.controller.dialogs.SetBMPDialog;
 import be.omnuzel.beatshare.controller.threads.PlaybackThread;
-import be.omnuzel.beatshare.controller.utils.SoundBank;
 import be.omnuzel.beatshare.model.Bar;
 import be.omnuzel.beatshare.model.Sequence;
 import be.omnuzel.beatshare.model.User;
 
-// TODO check AudioAttributes CONTENT_TYPE and USAGE
-// TODO will probably need its own fragment
-// TODO animate button activation --- IF TIME FOR IT
+// TODO Option to remove bar / sound
+// TODO modify drawer menu to fit app needs
 
 public class SequencerActivity
         extends
@@ -45,12 +46,12 @@ public class SequencerActivity
             PLAYING = 1,
             PAUSED  = 2;
 
-    private User           user;
+    private User user;
 
     private int
-            bpm = 60,
-            state = STOPPED,
-            currentStep = 0;
+            bpm,
+            state,
+            currentStep;
 
     private Sequence sequence;
     private Bar
@@ -62,9 +63,9 @@ public class SequencerActivity
     private android.support.v7.app.ActionBar actionBar;
     private Spinner spinner;
 
-    private Bar       activeBar;
-    private String    activeSound;
-    private int[]     activePads = {
+    private Bar    activeBar;
+    private String activeSound;
+    private int[]  activePads = {
         0, 0, 0, 0,
         0, 0, 0, 0,
         0, 0, 0, 0,
@@ -77,15 +78,9 @@ public class SequencerActivity
         setContentView(R.layout.activity_sequencer);
 
         Bundle extras = getIntent().getExtras();
-
         if (extras != null) {
             user = (User) extras.get("user");
-            Log.i("SEQUENCER", "Started for user : " + user.getUserName() + " - " + user.getEmail());
         }
-
-        actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(bpm + " BPM");
 
         // Left drawer init and event management
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
@@ -128,21 +123,24 @@ public class SequencerActivity
 
         // Sequence init
         sequence = new Sequence();
-        bar1 = new Bar();
-        bar2 = new Bar();
-        bar3 = new Bar();
-        bar4 = new Bar();
+        bar1     = new Bar();
+        bar2     = new Bar();
+        bar3     = new Bar();
+        bar4     = new Bar();
+
         sequence.addBar(bar1);
-//        sequence.addBar(bar2);
-//        sequence.addBar(bar3);
-//        sequence.addBar(bar4);
+
+        // Sequencer init
         activeBar   = bar1;
         activeSound = "";
+        bpm         = 60;
+        state       = STOPPED;
+        currentStep = 0;
 
-        // First bar button init
-        View firstBarButton = findViewById(R.id.button_bar1);
-        if (firstBarButton != null)
-            firstBarButton.setBackground(getResources().getDrawable(R.drawable.plain_button));
+        // Display BPM in action bar
+        actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(bpm + " BPM");
 
         // Spinner init
         spinner = (Spinner) findViewById(R.id.sounds_spinner);
@@ -151,9 +149,16 @@ public class SequencerActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 activeSound = activeBar.getActiveSoundsNames().get(position);
-                activePads  = activeBar.getSoundMatrix(activeSound);
                 Log.i("SPINNER ITEM SELECTED", activeSound);
-                Log.i("SPINNER SELECT MATRIX", activeBar.getReadableMatrixFromSound(activeSound));
+
+                if (activeSound.equals("empty")) {
+                    resetActivePads();
+                }
+                else {
+                    activePads  = activeBar.getSoundMatrix(activeSound);
+                    Log.i("SPINNER SELECT MATRIX", activeBar.getReadableMatrixFromSound(activeSound));
+                }
+
                 refreshButtons();
             }
 
@@ -261,14 +266,13 @@ public class SequencerActivity
     public void play(View view) {
         if (state == STOPPED || state == PAUSED) {
             state = PLAYING;
-            refreshPlayButton(state);
-            sequence.build();
             new PlaybackThread(this);
         }
         else {
             state = PAUSED;
-            refreshPlayButton(state);
         }
+
+        refreshPlayButton(state);
     }
 
     public void stop(View view) {
@@ -283,6 +287,10 @@ public class SequencerActivity
 
     @Override
     public void setSound(String soundName) {
+        if (activeBar.getActiveSoundsNames().get(0).equals("empty")) {
+            activeBar.getActiveSoundsNames().remove(0);
+        }
+
         int id = getFileId(soundName);
         activeBar.addSound(soundName, id);
 
@@ -291,8 +299,8 @@ public class SequencerActivity
         refreshSpinner();
         spinner.setSelection(activeBar.getActiveSoundsNames().indexOf(soundName));
 
-        Log.i("FILE_NAME", getResources().getString(id));
-        Log.i("new sound matrix", activeBar.getReadableMatrixFromSound(soundName));
+//        Log.i("FILE_NAME", getResources().getString(id));
+//        Log.i("new sound matrix", activeBar.getReadableMatrixFromSound(soundName));
     }
 
     private int getFileId(String soundName) {
@@ -300,9 +308,47 @@ public class SequencerActivity
         return getResources().getIdentifier(fileName, "raw", getPackageName());
     }
 
-    public void addBar(View view) {}
+    public void addBar(View view) {
+        Button addBarButton = (Button) findViewById(R.id.add_bar_button);
+
+        switch (sequence.getTotalBars()) {
+            case 1 : activeBar = bar2; break;
+            case 2 : activeBar = bar3; break;
+            case 3 : activeBar = bar4;
+                if (addBarButton != null) addBarButton.setVisibility(View.GONE); break;
+        }
+        sequence.addBar(activeBar);
+
+        String layoutName = "bar" + sequence.getTotalBars() + "_layout";
+        int id = getResources().getIdentifier(layoutName, "id", getPackageName());
+        LinearLayout barLayout = (LinearLayout) findViewById(id);
+
+        if (barLayout != null) {
+            barLayout.setVisibility(View.VISIBLE);
+        }
+
+        String name = "button_bar" + sequence.getTotalBars();
+        id = getResources().getIdentifier(name, "id", getPackageName());
+        View button = findViewById(id);
+        resetActivePads();
+        selectBar(button);
+    }
 
     public void selectBar(View view) {
+        for (int i = 1; i <= 4; i++) {
+            String name = "button_bar" + i;
+            int id = getResources().getIdentifier(name, "id", getPackageName());
+            Button button = (Button) findViewById(id);
+            if (button != null) {
+                button.setTextColor (getResources().getColor(R.color.white));
+            }
+        }
+
+        Button button = (Button) findViewById(view.getId());
+        if (button != null) {
+            button.setTextColor (getResources().getColor(R.color.colorAccent));
+        }
+
         switch (view.getId()) {
             case R.id.button_bar1 : activeBar = bar1; break;
             case R.id.button_bar2 : activeBar = bar2; break;
@@ -310,28 +356,16 @@ public class SequencerActivity
             case R.id.button_bar4 : activeBar = bar4; break;
         }
 
-        Button barButton1 = (Button) findViewById(R.id.button_bar1);
-        if (barButton1 != null) {
-            barButton1.setBackground(getResources().getDrawable(R.drawable.secondary_button_still));
-        }
-        Button barButton2 = (Button) findViewById(R.id.button_bar2);
-        if (barButton2 != null) {
-            barButton2.setBackground(getResources().getDrawable(R.drawable.secondary_button_still));
-        }
-        Button barButton3 = (Button) findViewById(R.id.button_bar3);
-        if (barButton3 != null) {
-            barButton3.setBackground(getResources().getDrawable(R.drawable.secondary_button_still));
-        }
-        Button barButton4 = (Button) findViewById(R.id.button_bar4);
-        if (barButton4 != null) {
-            barButton4.setBackground(getResources().getDrawable(R.drawable.secondary_button_still));
-        }
-
         refreshButtons();
         refreshSpinner();
     }
 
     public void activateButton(View view) {
+        if (activeSound.equals("empty")) {
+            snackThis("Add a sound");
+            return;
+        }
+
         Drawable active   = getResources().getDrawable(R.drawable.sequencer_pad);
         Drawable inactive = getResources().getDrawable(R.drawable.disabled_sequencer_pad);
 
@@ -348,7 +382,7 @@ public class SequencerActivity
         }
 
         activeBar.updateSound(activeSound, activePads);
-        Log.i("Active pads for sound", activeBar.getReadableMatrixFromSound(activeSound));
+//        Log.i("Active pads for sound", activeBar.getReadableMatrixFromSound(activeSound));
     }
 
     private void snackThis(String message) {
@@ -372,10 +406,14 @@ public class SequencerActivity
             View view       = findViewById(id);
 
             if (activePads[i] == 1) {
-                if (view != null) view.setBackground(active);
+                if (view != null) {
+                    view.setBackground(active);
+                }
             }
             else {
-                if (view != null) view.setBackground(inactive);
+                if (view != null) {
+                    view.setBackground(inactive);
+                }
             }
         }
     }
@@ -391,10 +429,7 @@ public class SequencerActivity
             }
         }
     }
-
     private void resetActivePads() {
-        for (int i = 0; i < activePads.length; i++) {
-            activePads[i] = 0;
-        }
+        activePads = new int[16];
     }
 }
