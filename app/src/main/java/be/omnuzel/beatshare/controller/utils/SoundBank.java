@@ -15,17 +15,8 @@ import java.util.LinkedList;
  */
 public class SoundBank {
 
-    public static SoundBank instance;
-    public static SoundBank getInstance(Context context) {
-        if (instance == null)
-            instance = new SoundBank(context);
-        return instance;
-    }
-
     private SoundPool  soundPool;
     private Context    context;
-    private boolean    isLoaded;
-    private int        maxSoundId;
 
     private HashMap<Integer, Integer> sounds = new HashMap<>();
 
@@ -53,7 +44,12 @@ public class SoundBank {
         Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
 
         sounds.put(resourceId, id);
-        maxSoundId = id;
+    }
+
+    public void flush() {
+        for (int id : sounds.values()) {
+            soundPool.unload(id);
+        }
     }
 
     public void play(int resourceId) {
@@ -65,17 +61,5 @@ public class SoundBank {
 
     public SoundPool getSoundPool() {
         return soundPool;
-    }
-
-    public void setLoadingState(boolean state) {
-        isLoaded = state;
-    }
-
-    public boolean getLoadingState() {
-        return  isLoaded;
-    }
-
-    public int getMaxSoundId() {
-        return maxSoundId;
     }
 }

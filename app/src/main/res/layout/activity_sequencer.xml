@@ -289,21 +289,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:padding="5dp"
+                android:id="@+id/seq_stop_button"
                 android:text="@string/stop"
                 android:layout_margin="4dp"
                 android:background="@drawable/plain_button"
                 android:onClick="stop"/>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/activebar_debug"
-            android:text="@string/placeholder"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/activesound_debug"
-            android:text="@string/placeholder"/>
 
     </LinearLayout>
 

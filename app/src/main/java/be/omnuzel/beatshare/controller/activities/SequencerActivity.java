@@ -37,16 +37,20 @@ public class SequencerActivity
         implements
             NavigationView.OnNavigationItemSelectedListener,
             AddSoundDialog.SoundDialogListener,
-            SetBMPDialog.BPMDialogListener,
+            SetBMPDialog  .BPMDialogListener,
             PlaybackThread.PlaybackListener {
 
-    private SoundBank      soundBank;
+    public static final int
+            STOPPED = 0,
+            PLAYING = 1,
+            PAUSED  = 2;
+
     private User           user;
-    private PlaybackThread playbackThread;
 
     private int
             bpm = 60,
-            state = PlaybackThread.STOPPED;
+            state = STOPPED,
+            currentStep = 0;
 
     private Sequence sequence;
     private Bar
@@ -129,9 +133,9 @@ public class SequencerActivity
         bar3 = new Bar();
         bar4 = new Bar();
         sequence.addBar(bar1);
-        sequence.addBar(bar2);
-        sequence.addBar(bar3);
-        sequence.addBar(bar4);
+//        sequence.addBar(bar2);
+//        sequence.addBar(bar3);
+//        sequence.addBar(bar4);
         activeBar   = bar1;
         activeSound = "";
 
@@ -222,6 +226,21 @@ public class SequencerActivity
         return state;
     }
 
+    @Override
+    public int getCurrentStep() {
+        return currentStep;
+    }
+
+    @Override
+    public void setCurrentStep(int currentStep) {
+        this.currentStep = currentStep;
+    }
+
+    @Override
+    public Sequence getSequence() {
+        return sequence;
+    }
+
     // TODO populate these
     public void toSettings() {
         new SetBMPDialog().show(getFragmentManager(), "set BPM");
@@ -240,14 +259,22 @@ public class SequencerActivity
     }
 
     public void play(View view) {
-        sequence.build();
-        state = PlaybackThread.PLAYING;
-        PlaybackThread playbackThread = new PlaybackThread(this, sequence);
-        playbackThread.start();
+        if (state == STOPPED || state == PAUSED) {
+            state = PLAYING;
+            refreshPlayButton(state);
+            sequence.build();
+            new PlaybackThread(this);
+        }
+        else {
+            state = PAUSED;
+            refreshPlayButton(state);
+        }
     }
 
     public void stop(View view) {
-        state = PlaybackThread.STOPPED;
+        state       = STOPPED;
+        currentStep = 0;
+        refreshPlayButton(state);
     }
 
     public void addSound(View view) {
@@ -258,6 +285,8 @@ public class SequencerActivity
     public void setSound(String soundName) {
         int id = getFileId(soundName);
         activeBar.addSound(soundName, id);
+
+        stop(new View(this));
 
         refreshSpinner();
         spinner.setSelection(activeBar.getActiveSoundsNames().indexOf(soundName));
@@ -347,6 +376,18 @@ public class SequencerActivity
             }
             else {
                 if (view != null) view.setBackground(inactive);
+            }
+        }
+    }
+
+    private void refreshPlayButton(int state) {
+        Button playButton = (Button) findViewById(R.id.seq_play_button);
+
+        if (playButton != null) {
+            switch (state) {
+                case STOPPED :
+                case PAUSED  : playButton.setText(getString(R.string.play));  break;
+                case PLAYING : playButton.setText(getString(R.string.pause)); break;
             }
         }
     }

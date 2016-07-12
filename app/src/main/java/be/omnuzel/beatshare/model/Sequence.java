@@ -1,5 +1,7 @@
 package be.omnuzel.beatshare.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +27,8 @@ public class Sequence {
      * Build a map with sequence step as KEY and sounds to play at that step as VALUE
      */
     public void build() {
+//        long start = System.currentTimeMillis();
+
         for (int i = 0; i < bars.size() * 16; i++) {
             soundsMap.put(i, new ArrayList<Integer>());
         }
@@ -48,6 +52,13 @@ public class Sequence {
 
             i++;
         }
+
+//        for (Map.Entry<Integer, ArrayList<Integer>> entry : soundsMap.entrySet()) {
+//            Log.i("key", entry.getKey() + "");
+//            Log.i("value", entry.getValue() + "");
+//        }
+//        long elapsedTime = System.currentTimeMillis() - start;
+//        Log.i("SEQUENCE BUILD", elapsedTime + " ms");
     }
 
     public Set<Integer> getDistinctSoundsId() {
@@ -56,5 +67,9 @@ public class Sequence {
 
     public TreeMap<Integer, ArrayList<Integer>> getSoundsMap() {
         return soundsMap;
+    }
+
+    public int getTotalBars() {
+        return bars.size();
     }
 }
