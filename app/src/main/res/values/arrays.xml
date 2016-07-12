@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sounds">
+        <!-- percussions -->
         <item>acoustic snare</item>
-        <item>closed hihat</item>
-        <item>drum kick</item>
+        <item>bass drum forte</item>
+        <item>chimes chord</item>
+        <item>conga slap 1</item>
+        <item>conga slap 2</item>
+        <item>dry hit</item>
         <item>electric snare</item>
+        <item>kalimba a4</item>
+        <item>kalimba c4</item>
+        <item>kalimba e4</item>
+        <item>kalimba e4alt</item>
+        <item>kick a1</item>
         <item>open hihat</item>
         <item>ride cymbal</item>
+        <item>snare mezzo forte</item>
+        <item>snare piano</item>
+
+        <!-- synth basses -->
+        <item>dodongo b3</item>
+        <item>dodongo d4</item>
+        <item>dodongo e3</item>
+        <item>dodongo g3</item>
+        <item>samus b3</item>
+        <item>samus d4</item>
+        <item>samus e3</item>
+        <item>samus g3</item>
     </string-array>
 </resources>
