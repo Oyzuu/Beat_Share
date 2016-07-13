@@ -267,7 +267,7 @@ public class MainActivity
             }
         }
     }
-
+    // TODO ternary here
     /**
      * Remove text and error from every EditText in SignUpFragment
      */
@@ -350,17 +350,19 @@ public class MainActivity
     }
 
     public void localizeMe(View view) {
+        Log.wtf("MAIN", "in localizeMe()");
         Localizer localizer = new Localizer(this);
-
-        Location location   = localizer.getLocation(Criteria.ACCURACY_COARSE);
+        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
 
         if (location == null) {
             snackThis("NULL Location");
             return;
         }
 
+        Log.i("GEOLOCATION", location.toString());
+
         @SuppressLint("DefaultLocale")
-        String locString    = String.format(
+        String locString = String.format(
                 "Location : %.4f, %.4f - %s, %s, %s",
                 location.getLatitude(),
                 location.getLongitude(),
@@ -368,6 +370,7 @@ public class MainActivity
                 location.getNeighbourhood().getCity().getName(),
                 location.getNeighbourhood().getCity().getCountry().getName()
         );
+
         snackThis(locString);
     }
 

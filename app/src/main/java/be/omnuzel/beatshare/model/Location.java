@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -46,7 +47,7 @@ public class Location implements Parcelable {
         return neighbourhood;
     }
 
-    public void setNeighbourhood(Neighbourhood neighboqurhood) {
+    public void setNeighbourhood(Neighbourhood neighbourhood) {
         this.neighbourhood = neighbourhood;
     }
 
@@ -87,20 +88,30 @@ public class Location implements Parcelable {
         String   cityName           = cityCountryArray[0];
         String   countryName        = cityCountryArray[1];
 
+        Log.i("LOC HYDRATE", neighbourhoodName);
+        Log.i("LOC HYDRATE", cityName);
+        Log.i("LOC HYDRATE", countryName);
+
         Country country = new Country();
+
         country.setName(countryName);
 
         City city = new City();
-        city.setName(cityName);
+
+        city.setName   (cityName);
         city.setCountry(country);
 
         Neighbourhood neighbourhood = new Neighbourhood() ;
+
         neighbourhood.setName(neighbourhoodName);
         neighbourhood.setCity(city);
 
+        Log.i("LOC HYDRATE", "Neigh state : " + neighbourhood);
+
         Location location = new Location();
-        location.setLatitude(latitude);
-        location.setLongitude(longitude);
+
+        location.setLatitude     (latitude);
+        location.setLongitude    (longitude);
         location.setNeighbourhood(neighbourhood);
 
         return location;
@@ -131,7 +142,7 @@ public class Location implements Parcelable {
             location.setLongitude    (source.readDouble());
             location.setNeighbourhood(source.readTypedObject(Neighbourhood.CREATOR));
 
-            return null;
+            return location;
         }
 
         @Override

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class Neighbourhood implements Parcelable {
 
@@ -27,6 +28,7 @@ public class Neighbourhood implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+        Log.i("LOC-NEIGHBOUR", "neigh name : name");
     }
 
     public City getCity() {
@@ -35,6 +37,7 @@ public class Neighbourhood implements Parcelable {
 
     public void setCity(City city) {
         this.city = city;
+        Log.i("LOC-NEIGHBOUR", "city : " + city);
     }
 
     @Override

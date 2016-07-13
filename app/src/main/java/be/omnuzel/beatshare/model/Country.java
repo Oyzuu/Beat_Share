@@ -52,7 +52,8 @@ public class Country implements Parcelable {
 
             country.setId  (source.readLong());
             country.setName(source.readString());
-            return null;
+
+            return country;
         }
 
         @Override

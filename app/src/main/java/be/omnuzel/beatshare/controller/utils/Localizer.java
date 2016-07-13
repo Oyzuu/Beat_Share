@@ -13,7 +13,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import be.omnuzel.beatshare.controller.tasks.LocationJSONTask;
@@ -24,25 +26,29 @@ public class Localizer {
     private LocationManager           locationManager;
     private Context                   context;
     private android.location.Location receivedLocation;
-    private final LocationListener    locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(android.location.Location location) {
-            receivedLocation = location;
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-        @Override
-        public void onProviderEnabled(String provider) {}
-
-        @Override
-        public void onProviderDisabled(String provider) {}
-    };
+    private final LocationListener    locationListener;
 
     public Localizer(Context context) {
+        Log.i("LOCALIZER", "in constructor");
         this.context = context;
+
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+                receivedLocation = location;
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            @Override
+            public void onProviderEnabled(String provider) {}
+
+            @Override
+            public void onProviderDisabled(String provider) {}
+        };
     }
 
     /**
@@ -51,6 +57,7 @@ public class Localizer {
      * @return a fully hydrated be.omnuzel.beatshare.model.Location
      */
     public Location getLocation(int accuracy) {
+        Log.i("LOCALIZER", "in getLocation()");
         double[] coords = getCoords(accuracy);
         double lat = 0, lon = 0;
 
@@ -67,11 +74,14 @@ public class Localizer {
 
         try {
             json = locationJSONTask.get();
+            Log.i("LOCALIZER", "Json : " + json);
             location = Location.hydrateFromJSON(lat, lon, json);
         }
         catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        Log.i("LOCALIZER", "Location : " + location.toString());
 
         return location;
     }
@@ -82,6 +92,7 @@ public class Localizer {
      * @return coordinates in a double array
      */
     private double[] getCoords(int accuracy) {
+        Log.i("LOCALIZER", "in getCoords()");
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
@@ -114,6 +125,7 @@ public class Localizer {
 
         double[] coords = {lat, lon};
 
+        Log.i("LOCALIZER", "coords : " + Arrays.toString(coords));
         return coords;
     }
 
@@ -123,6 +135,7 @@ public class Localizer {
      * @return Criteria
      */
     private Criteria getCriteria(int accuracy) {
+        Log.i("LOCALIZER", "in getCriteria()");
         Criteria criteria = new Criteria();
 
         criteria.setAccuracy(accuracy);
@@ -132,6 +145,7 @@ public class Localizer {
         criteria.setAltitudeRequired(false);
         criteria.setBearingRequired(false);
 
+        Log.i("LOCALIZER", "criteria : " + criteria.toString());
         return criteria;
     }
 }

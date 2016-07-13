@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class City implements Parcelable {
 
@@ -27,6 +28,7 @@ public class City implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+        Log.i("LOC-CITY", "City name : " + name);
     }
 
     public Country getCountry() {
@@ -35,12 +37,14 @@ public class City implements Parcelable {
 
     public void setCountry(Country country) {
         this.country = country;
+        Log.i("LOC-CITY", "Country : " + country);
     }
 
     @Override
     public String toString() {
         return "City{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", country=" + country +
                 '}';
     }
@@ -67,6 +71,7 @@ public class City implements Parcelable {
             city.setId     (source.readLong());
             city.setName   (source.readString());
             city.setCountry(source.readTypedObject(Country.CREATOR));
+
             return city;
         }
 
