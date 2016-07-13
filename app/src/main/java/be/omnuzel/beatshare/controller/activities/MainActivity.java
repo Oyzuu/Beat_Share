@@ -11,8 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
@@ -33,8 +31,8 @@ public class MainActivity
         extends
             AppCompatActivity
         implements
-            LogInFragment.ILoginFragment,
-            SignUpFragment.ISignUpFragment {
+        LogInFragment .LoginListener,
+        SignUpFragment.SignUpListener {
 
     private UserDAO userDAO;
     private RoleDAO roleDAO;
@@ -231,7 +229,7 @@ public class MainActivity
         try {
             userDAO.create(user);
 
-            flushSignUpForm();
+            cancel(new View(this));
 
             Intent intent = new Intent(this, SequencerActivity.class);
             intent.putExtra("user", user);
@@ -248,7 +246,6 @@ public class MainActivity
     @Override
     public void cancel(View view) {
         flushSignUpForm();
-        signUpFragment.onDestroy();
         onBackPressed();
     }
 

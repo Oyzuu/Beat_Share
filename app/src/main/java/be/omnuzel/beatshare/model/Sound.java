@@ -1,9 +1,5 @@
 package be.omnuzel.beatshare.model;
 
-import android.util.Log;
-
-import java.util.Arrays;
-
 public class Sound {
     private String name;
     private int[]  matrix;
@@ -19,7 +15,6 @@ public class Sound {
         this.name   = name;
         this.matrix = pads;
         this.id     = id;
-//        Log.i("CONSTRUCT_SOUND_MATR", Arrays.toString(this.matrix));
     }
 
     public String getName() {

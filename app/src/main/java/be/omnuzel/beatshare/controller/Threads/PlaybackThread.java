@@ -43,11 +43,12 @@ public class PlaybackThread extends Thread {
         this.sequenceMap = sequence.getSoundsMap();
         this.totalSteps  = sequence.getTotalBars() * STEPS_PER_BAR;
 
-        this.soundBank   = new SoundBank(context);
+        final Set<Integer> distinctSounds = sequence.getDistinctSoundsId();
+
+        this.soundBank   = new SoundBank(context, distinctSounds.size());
 
 //        Log.i("PLAYTHREAD", "Total steps : " + totalSteps);
 
-        final Set<Integer> distinctSounds = sequence.getDistinctSoundsId();
         for (int soundId : distinctSounds) {
             soundBank.load(soundId);
         }

@@ -11,7 +11,7 @@
     android:id="@+id/sequencer_rootview"
     android:orientation="vertical"
     tools:context=".controller.activities.SequencerActivity"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/appbg"
     tools:openDrawer="true">
 
     <!-- TODO AppBarLayout & Toolbar ?-->
@@ -162,28 +162,28 @@
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_1"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_2"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_3"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_4"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
             <!-- Buttons  5 to  8 -->
@@ -196,28 +196,28 @@
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_5"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_6"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_7"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_8"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
             <!-- Buttons  9 to 12 -->
@@ -230,28 +230,28 @@
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_9"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_10"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_11"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_12"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
             <!-- Buttons 13 to 16 -->
@@ -264,28 +264,28 @@
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_13"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_14"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_15"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
                 <Button
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_margin="4dp"
                     android:id="@+id/seq_button_16"
-                    android:onClick="activateButton"
+                    android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad"/>
             </LinearLayout>
         </LinearLayout>
@@ -315,8 +315,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
 
     <!-- left drawer -->
     <android.support.design.widget.NavigationView

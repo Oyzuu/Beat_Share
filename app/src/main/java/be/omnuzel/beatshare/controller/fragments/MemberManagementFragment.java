@@ -10,34 +10,30 @@ import android.view.ViewGroup;
 
 import be.omnuzel.beatshare.R;
 
-public class LogInFragment extends Fragment {
+public class MemberManagementFragment extends Fragment {
 
-    public interface LoginListener {
-        void logIn(View view);
-        void toSignUp(View view);
-        void flushLogInForm();
-    }
+    public interface MemberManagementListener {}
 
-    public static LogInFragment instance;
+    public static MemberManagementFragment instance;
 
-    public static LogInFragment getInstance() {
+    public static MemberManagementFragment getInstance() {
         if (instance == null)
-            instance = new LogInFragment();
+            instance = new MemberManagementFragment();
 
         return instance;
     }
 
-    private LoginListener callback;
+    private MemberManagementListener callback;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (LoginListener) context;
+        this.callback = (MemberManagementListener) context;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_login, container, false);
+        return inflater.inflate(R.layout.frag_member_management  , container, false);
     }
 }

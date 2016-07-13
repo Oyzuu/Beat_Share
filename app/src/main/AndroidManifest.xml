@@ -22,8 +22,7 @@
         </activity>
         <activity android:name=".controller.activities.SequencerActivity"/>
         <activity android:name=".controller.activities.Debug"/>
-        <activity android:name=".controller.activities.AdminActivity"/>
-        <activity android:name=".controller.activities.MemberActivity"/>
+        <activity android:name=".controller.activities.ManagementActivity"/>
     </application>
 
 </manifest>

@@ -16,14 +16,16 @@ public class SoundBank {
 
     private SoundPool  soundPool;
     private Context    context;
+    private int        totalSounds;
 
     private HashMap<Integer, Integer> sounds = new HashMap<>();
 
-    public SoundBank(Context context) {
-        this.context  = context;
+    public SoundBank(Context context, int totalSounds) {
+        this.context     = context;
+        this.totalSounds = totalSounds;
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
+            soundPool = new SoundPool(totalSounds, AudioManager.STREAM_MUSIC, 0);
         }
         else {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -32,7 +34,7 @@ public class SoundBank {
                     .build         ();
 
             soundPool = new SoundPool.Builder()
-                    .setMaxStreams     (6)
+                    .setMaxStreams     (totalSounds)
                     .setAudioAttributes(audioAttributes)
                     .build             ();
         }

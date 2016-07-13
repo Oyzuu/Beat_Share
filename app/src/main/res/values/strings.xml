@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Beat Share</string>
+    <string name="app_name">Sequencer</string>
 
     <string name="placeholder">Placeholder</string>
 
@@ -11,43 +11,47 @@
     <string name="cancel" >Cancel</string>
 
     <string name="username"        >Username</string>
+    <string name="confirm_username">Confirm username</string>
     <string name="password"        >Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="mail"            >Mail</string>
     <string name="confirm_mail"    >Confirm mail</string>
+
+    <string name="change_username">Change user name</string>
+    <string name="change_password">Change password</string>
+    <string name="change_mail"    >Change mail</string>
+
+    <string name="input_error"          >Input error</string>
+    <string name="user_input_error"     >You need to enter a name</string>
+    <string name="password_input_error" >You need to enter a password</string>
+    <string name="mail_input_error"     >You need to enter an e-mail address</string>
+    <string name="pass_confirm_error"   >Confirmation password not matching</string>
+    <string name="mail_confirm_error"   >Confirmation mail not matching</string>
+    <string name="login_user_error"     >Wrong user name</string>
+    <string name="login_password_error" >Wrong password</string>
 
     <string name="play"   >play</string>
     <string name="pause"  >pause</string>
     <string name="stop"   >stop</string>
     <string name="record" >record</string>
 
-    <string name="current_bar"  >Current bar : </string>
-    <string name="current_sound">Current sound : </string>
-
     <string name="bar1">Bar 1</string>
     <string name="bar2">Bar 2</string>
     <string name="bar3">Bar 3</string>
     <string name="bar4">Bar 4</string>
 
-    <string name="add"      >Add</string>
-    <string name="add_bar"  >Add a bar</string>
+    <string name="add" >Add</string>
 
-    <string name="bpm_dialog"   >Beats per minute</string>
-    <string name="sounds_dialog">Select a sound</string>
+    <string name="bpm_dialog"     >Beats per minute</string>
+    <string name="sounds_dialog"  >Select a sound</string>
+    <string name="logout_dialog"  >Log out ?</string>
+    <string name="lougout_message">You will be disconnected</string>
 
-    <string name="input_error"               >Input error</string>
-    <string name="user_input_error"          >You need to enter a name</string>
-    <string name="password_input_error"      >You need to enter a password</string>
-    <string name="mail_input_error"          >You need to enter an e-mail address</string>
-    <string name="pass_confirm_error"        >Confirmation password not matching</string>
-    <string name="mail_confirm_error"        >Confirmation mail not matching</string>
-    <string name="login_user_error"          >Wrong user name</string>
-    <string name="login_password_error"      >Wrong password</string>
-
-    <string name="navigation_drawer_open" >Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
+    <string name="account"   >Account</string>
+    <string name="settings"  >Settings</string>
+    <string name="import_seq">Import sequence</string>
+    <string name="save_seq"  >Save sequence</string>
+    <string name="logout"    >Log out</string>
 
     <string name="bpm_short">BPM</string>
     <string name="bpm_long" >Beats Per Minute</string>

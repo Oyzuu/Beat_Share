@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import be.omnuzel.beatshare.R;
 
-public class
-SignUpFragment extends Fragment {
-    public interface ISignUpFragment {
+public class SignUpFragment extends Fragment {
+
+    public interface SignUpListener {
         void signUp(View view);
         void cancel(View view);
         void flushSignUpForm();
@@ -23,15 +23,16 @@ SignUpFragment extends Fragment {
     public static SignUpFragment getInstance() {
         if (instance == null)
             instance = new SignUpFragment();
+
         return instance;
     }
 
-    private ISignUpFragment callback;
+    private SignUpListener callback;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.callback = (ISignUpFragment) context;
+        this.callback = (SignUpListener) context;
     }
 
     @Nullable
