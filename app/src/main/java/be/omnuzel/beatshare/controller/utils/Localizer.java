@@ -51,7 +51,6 @@ public class Localizer {
      * @return a fully hydrated be.omnuzel.beatshare.model.Location
      */
     public Location getLocation(int accuracy) {
-
         double[] coords = getCoords(accuracy);
         double lat = 0, lon = 0;
 
@@ -114,6 +113,7 @@ public class Localizer {
         double lon = receivedLocation.getLongitude();
 
         double[] coords = {lat, lon};
+
         return coords;
     }
 

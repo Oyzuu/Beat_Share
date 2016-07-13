@@ -12,6 +12,19 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mem_manage_display_name"
+            android:text="@string/placeholder"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="32dp"
+            android:id="@+id/mem_manage_display_mail"
+            android:text="@string/placeholder"/>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,21 +37,6 @@
                 android:inputType="text"
                 android:textColor="@color/colorAccent"
                 android:hint="@string/change_username"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColorHint="@color/white">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/mem_manage_confirm_username"
-                android:inputType="text"
-                android:textColor="@color/colorAccent"
-                android:hint="@string/confirm_username"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -86,28 +84,14 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColorHint="@color/white"
-            android:layout_marginBottom="16dp">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/mem_manage_confirm_mail"
-                android:inputType="text"
-                android:textColor="@color/colorAccent"
-                android:hint="@string/confirm_mail"/>
-
-        </android.support.design.widget.TextInputLayout>
-
         <Button
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:text="@string/confirm"
-            android:onClick="signUp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/save"
+            android:onClick="save"
             android:background="@drawable/plain_button"/>
         <Button
             android:layout_width="180dp"

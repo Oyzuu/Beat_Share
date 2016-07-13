@@ -91,8 +91,10 @@ public class User implements Parcelable {
             user.setUserName(source.readString());
             user.setEmail   (source.readString());
             user.setPassword(source.readString());
-            // TODO check if this works
-            user.setRoles   (source.readArrayList(Role.class.getClassLoader()));
+
+            ArrayList<Role> arrayList = new ArrayList<>();
+            source.readTypedList(arrayList, Role.CREATOR);
+            user.setRoles(arrayList);
 
             return user;
         }

@@ -10,7 +10,8 @@
         <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
         <item name="android:spinnerDropDownItemStyle">@style/CustomSpinner</item>
     </style>
-    
+
+    <!-- TODO IF TIME FOR IT - - - white list item-->
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:background">@color/colorPrimary</item>

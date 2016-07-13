@@ -23,9 +23,9 @@ import be.omnuzel.beatshare.model.Location;
 import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
-// TODO Regex for log in / sign up --- IF TIME FOR IT
-// TODO make models parcelable (Sequence ?)
-// TODO Create developer account for Play Games Services
+// TODO IF TIME FOR IT - - - regex for log in / sign up
+// TODO !!! IMPORTANT !!! make models parcelable (Sequence ?)
+// TODO ___ PUBLISH ___ Create developer account for Play Games Services
 
 public class MainActivity
         extends
@@ -76,7 +76,7 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        // Check if back order comes from the sig up fragment and then act accordingly
+        // Check if back order comes from the sign up fragment and then act accordingly
         if (signUpFragment.isVisible()) {
             flushSignUpForm();
             getFragmentManager().popBackStackImmediate();
@@ -129,6 +129,11 @@ public class MainActivity
             loginPassEdit.setError(getString(R.string.login_password_error));
             return;
         }
+
+        String message = String.format("User : %s with roles : %s",
+                user.getUserName(), user.getRoles());
+
+        Log.i("LOG IN USER", message);
 
         flushLogInForm();
         Intent intent = new Intent(this, SequencerActivity.class);
@@ -224,10 +229,10 @@ public class MainActivity
         user.setEmail   (mail);
         user.setPassword(pass);
 
-        userDAO.open(DataAccessObject.WRITABLE);
-
         try {
+            userDAO.open(DataAccessObject.WRITABLE);
             userDAO.create(user);
+            user= userDAO.getByName(name);
 
             cancel(new View(this));
 

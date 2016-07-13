@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-// TODO Sequence and SequenceDAO when able
+// TODO !!! IMPORTANT !!! Sequence and SequenceDAO when able
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME    = "app.db";

@@ -15,8 +15,8 @@
             android:icon="@drawable/ic_file_download_white_24dp"
             android:title="@string/import_seq" />
         <item
-            android:id="@+id/drawer_export"
-            android:icon="@drawable/ic_file_download_white_24dp"
+            android:id="@+id/drawer_save"
+            android:icon="@drawable/ic_file_upload_white_24dp"
             android:title="@string/save_seq" />
         <item
             android:id="@+id/drawer_logout"

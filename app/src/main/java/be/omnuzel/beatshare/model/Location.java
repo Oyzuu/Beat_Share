@@ -46,7 +46,7 @@ public class Location implements Parcelable {
         return neighbourhood;
     }
 
-    public void setNeighbourhood(Neighbourhood neighbourhood) {
+    public void setNeighbourhood(Neighbourhood neighboqurhood) {
         this.neighbourhood = neighbourhood;
     }
 

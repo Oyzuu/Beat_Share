@@ -41,6 +41,8 @@
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/signin"
             android:background="@drawable/plain_button"
             android:onClick="logIn"/>
@@ -54,7 +56,7 @@
             android:id="@+id/button_to_signup"
             android:onClick="toSignUp"/>
 
-        <!-- TODO don't forget to remove debug buttons -->
+        <!-- TODO $$$ LAST CHECK $$$ don't forget to remove debug buttons -->
         <!-- DEBUG BUTTONS -->
         <!--<Button-->
             <!--android:layout_width="wrap_content"-->

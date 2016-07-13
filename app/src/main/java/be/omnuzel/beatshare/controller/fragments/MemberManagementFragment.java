@@ -12,7 +12,10 @@ import be.omnuzel.beatshare.R;
 
 public class MemberManagementFragment extends Fragment {
 
-    public interface MemberManagementListener {}
+    public interface MemberManagementListener {
+        void save(View view);
+        void cancel(View view);
+    }
 
     public static MemberManagementFragment instance;
 
@@ -34,6 +37,6 @@ public class MemberManagementFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_member_management  , container, false);
+        return inflater.inflate(R.layout.frag_member_management, container, false);
     }
 }

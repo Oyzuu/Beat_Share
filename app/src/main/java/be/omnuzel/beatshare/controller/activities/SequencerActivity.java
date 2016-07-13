@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,8 +31,7 @@ import be.omnuzel.beatshare.model.Bar;
 import be.omnuzel.beatshare.model.Sequence;
 import be.omnuzel.beatshare.model.User;
 
-// TODO Option to remove bar / sound
-// TODO modify drawer menu to fit app needs
+// TODO IF TIME FOR IT - - - Option to remove bar / sound
 
 public class SequencerActivity
         extends
@@ -76,6 +76,9 @@ public class SequencerActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null)
             user = (User) extras.get("user");
+
+        if (user != null && user.getRoles().get(0).getName().equals("admin"))
+            toAccount();
 
         // Left drawer init and event management
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
@@ -182,8 +185,8 @@ public class SequencerActivity
             case R.id.drawer_account  : toAccount();      break;
             case R.id.drawer_settings : toSettings();     break;
             case R.id.drawer_import   : importSequence(); break;
-            case R.id.drawer_export   : exportSequence(); break;
-            case R.id.drawer_logout   : logOut(true);   break;
+            case R.id.drawer_save     : saveSequence();   break;
+            case R.id.drawer_logout   : logOut(true);     break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.sequencer_rootview);
@@ -201,7 +204,7 @@ public class SequencerActivity
         if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
         else
-            logOut(false); // back press from the sequencer
+            logOut(false);
     }
 
     @Override
@@ -237,7 +240,6 @@ public class SequencerActivity
         return sequence;
     }
 
-    // TODO populate these
     public void toSettings() {
         new SetBMPDialog().show(getFragmentManager(), "set BPM");
     }
@@ -247,13 +249,18 @@ public class SequencerActivity
         intent.putExtra("user", user);
         startActivity(intent);
     }
+
+    // TODO !!! IMPORTANT !!! Importable sequence
     public void importSequence() {
         snackThis("import");
     }
-    public void exportSequence() {
+
+    // TODO !!! IMPORTANT !!! Exportable sequence
+    public void saveSequence() {
         snackThis("export");
     }
 
+    // Close activity if called from drawer or display a dialog if not
     public void logOut(boolean fromDrawer) {
         if (fromDrawer)
             finish();
@@ -261,7 +268,12 @@ public class SequencerActivity
             new LogOutDialog().show(getFragmentManager(), null);
     }
 
+    // TODO IF TIME FOR - - - async tasks for progress feedback
     public void play(View view) {
+        // TODO ___ PUBLISH ___ should be changed
+        if (bar1.getActiveSoundsNames().get(0).equals("empty"))
+            return;
+
         if (state == STOPPED || state == PAUSED) {
             state = PLAYING;
             new PlaybackThread(this);
@@ -440,6 +452,7 @@ public class SequencerActivity
             }
         }
     }
+
     private void resetActivePads() {
         activePads = new int[16];
     }
