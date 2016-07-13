@@ -321,7 +321,7 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:id="@+id/sequencer_drawer"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/sequencer_drawer"
