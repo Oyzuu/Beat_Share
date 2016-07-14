@@ -32,7 +32,7 @@
     <string name="mail_input_error">Vous devez entrer un courriel</string>
     <string name="save">Sauvegarder</string>
     <string name="save_seq">Sauvegarder</string>
-    <string name="save_string_format">La séquence %s a été sauvegardée</string>
+    <string name="save_string_format">\"%s\" a été sauvegardée</string>
     <string name="settings">Paramètres</string>
     <string name="signin">Connexion</string>
     <string name="signup">Enregistrement</string>
@@ -49,5 +49,5 @@
     <string name="ow_dialog">Écraser la séquence ?</string>
     <string name="ow_message">La séquence existe déjà</string>
     <string name="ow_pos_button">Écraser</string>
-    <string name="ow_string_format">La séquence %s a été écrasée</string>
+    <string name="ow_string_format">\"%s\" a été écrasée</string>
 </resources>

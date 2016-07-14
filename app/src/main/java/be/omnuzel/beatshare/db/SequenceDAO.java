@@ -101,7 +101,10 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
 
     public long alreadyPossess(String sequenceName, String userName) {
         Sequence sequence = getByName(sequenceName);
-        if (sequence != null && !getByName(sequenceName).getAuthor().equals(userName))
+
+        if (sequence == null)
+            return -1;
+        if (!getByName(sequenceName).getAuthor().equals(userName))
             return -1;
 
         return getByName(sequenceName).getId();

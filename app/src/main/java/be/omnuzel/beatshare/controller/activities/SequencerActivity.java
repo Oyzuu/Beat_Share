@@ -263,6 +263,7 @@ public class SequencerActivity
         snackThis("import");
     }
 
+    // TODO MockLocation for demo
     public void saveSequence() {
         Localizer localizer = new Localizer(this);
 //        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
@@ -290,22 +291,28 @@ public class SequencerActivity
         }
 
         else {
-            snackThis("Sequence : " + sequence.getName() + " has been saved");
-        }
+            String message = String.format(getString(R.string.save_string_format),
+                    sequence.getName());
 
-        sequenceDAO.create(sequence);
-        sequenceDAO.close();
+            snackThis(message);
+
+            sequenceDAO.create(sequence);
+            sequenceDAO.close();
+        }
     }
 
     @Override
     public void overwriteSave() {
-        sequenceDAO.open(DataAccessObject.WRITABLE);
 
         // TODO !!! IMPORTANT !!! SHOULD BE UPDATE NOT DELETE
         sequenceDAO.delete(sequenceToOverwrite.getId());
         sequenceDAO.create(sequenceToOverwrite);
         sequenceDAO.close();
-        snackThis("Sequence : " + sequence.getName() + " has been overwritten");
+
+        String message = String.format(getString(R.string.ow_string_format),
+                sequenceToOverwrite.getName());
+
+        snackThis(message);
     }
 
     // Close activity if called from drawer or display a dialog if not
