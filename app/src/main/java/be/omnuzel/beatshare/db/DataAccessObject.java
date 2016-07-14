@@ -32,9 +32,9 @@ public interface DataAccessObject<T> {
      */
     long create(T t) throws SQLiteException;
 
-    void delete(int id);
+    void delete(long id);
 
-    T get(int id);
+    T get(long id);
 
     T getFromCursor(Cursor cursor);
 

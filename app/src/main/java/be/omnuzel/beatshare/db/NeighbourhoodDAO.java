@@ -74,13 +74,13 @@ public class NeighbourhoodDAO implements DataAccessObject<Neighbourhood> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
         Log.i("NEIGHDAO", "Neighbourhood with id : " + id + " has been deleted");
     }
 
     @Override
-    public Neighbourhood get(int id) {
+    public Neighbourhood get(long id) {
         Cursor cursor = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (cursor.getCount() > 0) {

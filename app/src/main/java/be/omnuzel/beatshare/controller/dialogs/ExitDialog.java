@@ -9,7 +9,7 @@ import android.support.v7.app.AlertDialog;
 
 import be.omnuzel.beatshare.R;
 
-public class LogOutDialog extends DialogFragment {
+public class ExitDialog extends DialogFragment {
     private Activity activity;
 
     @Override
@@ -22,9 +22,9 @@ public class LogOutDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder .setTitle(R.string.logout_dialog)
-                .setMessage(R.string.logout_message)
-                .setPositiveButton(getString(R.string.logout), new DialogInterface.OnClickListener() {
+        builder .setTitle(R.string.exit_dialog)
+                .setMessage(R.string.exit_message)
+                .setPositiveButton(getString(R.string.exit_pos_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         activity.finish();

@@ -68,13 +68,13 @@ public class CountryDAO implements DataAccessObject<Country> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
         Log.i("COUNTRYDAO", "Country with id : " + id + " has been deleted");
     }
 
     @Override
-    public Country get(int id) {
+    public Country get(long id) {
         Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (c.getCount() > 0) {

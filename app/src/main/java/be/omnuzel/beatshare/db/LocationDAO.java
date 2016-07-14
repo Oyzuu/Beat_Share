@@ -80,13 +80,13 @@ public class LocationDAO implements DataAccessObject<Location> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
         Log.i("LOCATIONDAO", "Location with id : " + id + " has been deleted");
     }
 
     @Override
-    public Location get(int id) {
+    public Location get(long id) {
         Cursor cursor = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (cursor.getCount() > 0) {

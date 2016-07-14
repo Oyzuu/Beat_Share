@@ -84,13 +84,13 @@ public class RoleDAO implements DataAccessObject<Role> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
         Log.i("ROLEDAO", "Role with id : " + id + " has been deleted");
     }
 
     @Override
-    public Role get(int id) {
+    public Role get(long id) {
         Cursor c = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (c.getCount() > 0) {

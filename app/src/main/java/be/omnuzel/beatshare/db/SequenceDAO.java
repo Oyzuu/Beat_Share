@@ -20,13 +20,15 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
     TABLE_NAME         = "sequence",
 
     COLUMN_ID          = "id",
+    COLUMN_NAME        = "name",
     COLUMN_JSON        = "json",
 
     CREATE_TABLE       = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
+                    "%s TEXT NOT NULL," +
                     "%s TEXT NOT NULL)",
-            TABLE_NAME, COLUMN_ID, COLUMN_JSON
+            TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_JSON
     ),
 
     UPGRADE_TABLE      = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
@@ -65,6 +67,7 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
         ContentValues cv = new ContentValues();
 
         try {
+            cv.put(COLUMN_NAME, sequence.getName());
             cv.put(COLUMN_JSON, sequence.toJSON());
         }
         catch (JSONException e) {
@@ -79,14 +82,34 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
         Log.i("SEQUENCEDAO", "Sequence with id : " + id + " has been deleted");
     }
 
     @Override
-    public Sequence get(int id) {
+    public Sequence get(long id) {
         Cursor cursor = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            return getFromCursor(cursor);
+        }
+
+        return null;
+    }
+
+    public long alreadyPossess(String sequenceName, String userName) {
+        Sequence sequence = getByName(sequenceName);
+        if (sequence != null && !getByName(sequenceName).getAuthor().equals(userName))
+            return -1;
+
+        return getByName(sequenceName).getId();
+    }
+
+    public Sequence getByName(String name) {
+        Cursor cursor = db.query(TABLE_NAME, null, COLUMN_NAME + "='" + name + "'",
+                null, null, null, null);
 
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -101,32 +124,17 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
         int    id   = cursor.getInt   (cursor.getColumnIndex(COLUMN_ID));
         String json = cursor.getString(cursor.getColumnIndex(COLUMN_JSON));
 
-        String name, author, neigh, city, country;
-        double lat, lon;
 
-
+        Sequence sequence = null;
         try {
-            JSONObject jo = new JSONObject(json);
-
-            name   = jo.getString("name");
-            author = jo.getString("author");
-
-            JSONObject location = jo.getJSONObject("location");
-
+            sequence = Sequence.fromJSON(json);
+            sequence.setId(id);
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Sequence sequence = new Sequence();
-        sequence.setId(id);
-//        sequence.setName();
-//        sequence.setAuthor();
-//        sequence.setLocation();
-
-        // TODO !!! IMPORTANT !!! Complete this
-
-        return null;
+        return sequence;
     }
 
     @Override

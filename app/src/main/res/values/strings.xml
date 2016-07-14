@@ -7,7 +7,7 @@
     <string name="signup">Sign up</string>
 
     <string name="confirm">Confirm</string>
-    <string name="ok"     >OK</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="save"   >Save</string>
     <string name="cancel" >Cancel</string>
 
@@ -32,8 +32,8 @@
     <string name="login_password_error">Wrong password</string>
 
     <string name="play" >Play</string>
-    <string name="pause">Pause</string>
-    <string name="stop" >Stop</string>
+    <string name="pause" translatable="false">Pause</string>
+    <string name="stop" translatable="false">Stop</string>
 
     <string name="bar1">Bar 1</string>
     <string name="bar2">Bar 2</string>
@@ -45,14 +45,23 @@
     <string name="bpm_dialog"     >Beats per minute</string>
     <string name="sounds_dialog"  >Select a sound</string>
     <string name="logout_dialog"  >Log out ?</string>
-    <string name="lougout_message">You will be disconnected and all progress will be lost.</string>
+    <string name="logout_message" >You will be disconnected and unsaved progress will be lost.</string>
+    <string name="exit_dialog"    >Quit ?</string>
+    <string name="exit_message"   >You will quit the application.</string>
+    <string name="exit_pos_button">Quit</string>
+    <string name="ow_dialog"      >Overwrite sequence ?</string>
+    <string name="ow_message"     >Sequence already exists</string>
+    <string name="ow_pos_button"  >Overwrite</string>
+
+    <string name="save_string_format">Sequence : %s has been saved</string>
+    <string name="ow_string_format"  >Sequence : %s has been overwritten</string>
 
     <string name="account"   >Account</string>
     <string name="settings"  >Settings</string>
-    <string name="import_seq">Import sequence</string>
-    <string name="save_seq"  >Save sequence</string>
+    <string name="import_seq">Import</string>
+    <string name="save_seq"  >Save</string>
     <string name="logout"    >Log out</string>
 
-    <string name="bpm_short">BPM</string>
+    <string name="bpm_short" translatable="false">BPM</string>
     <string name="bpm_long" >Beats Per Minute</string>
 </resources>

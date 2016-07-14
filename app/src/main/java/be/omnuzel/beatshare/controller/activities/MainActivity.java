@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import be.omnuzel.beatshare.R;
+import be.omnuzel.beatshare.controller.dialogs.ExitDialog;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 import be.omnuzel.beatshare.controller.utils.Localizer;
@@ -82,7 +83,7 @@ public class MainActivity
             getFragmentManager().popBackStackImmediate();
         }
         else {
-//            super.onBackPressed();
+            new ExitDialog().show(getFragmentManager(), "quit");
         }
 
         // Ensure non null log in screen text fields

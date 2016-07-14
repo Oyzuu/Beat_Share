@@ -13,7 +13,7 @@ import be.omnuzel.beatshare.R;
 public class AddSoundDialog extends DialogFragment {
 
     public interface SoundDialogListener {
-        void setSound(String soundName);
+        void addSound(String soundName);
     }
 
     private SoundDialogListener callback;
@@ -34,7 +34,7 @@ public class AddSoundDialog extends DialogFragment {
                 .setItems(sounds, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        callback.setSound(sounds[which]);
+                        callback.addSound(sounds[which]);
                     }
                 });
 

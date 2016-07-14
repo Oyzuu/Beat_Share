@@ -1,5 +1,6 @@
 package be.omnuzel.beatshare.model;
 
+import android.os.Build;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -8,11 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import be.omnuzel.beatshare.db.UserDAO;
 
 public class Sequence {
 
@@ -132,8 +130,6 @@ public class Sequence {
     }
 
     public String toJSON() throws JSONException {
-        this.build();
-
         JSONObject jsonObject     = new JSONObject();
 
         jsonObject.put("name",   this.name);
@@ -141,41 +137,63 @@ public class Sequence {
         jsonObject.put("bpm",    this.bpm);
         jsonObject.put("author", this.author);
 
-        JSONObject location = new JSONObject();
+        JSONObject locationObject = new JSONObject();
 
-        location.put("latitude",      this.location.getLatitude());
-        location.put("longitude",     this.location.getLongitude());
+        locationObject.put("latitude",      this.location.getLatitude());
+        locationObject.put("longitude",     this.location.getLongitude());
         Neighbourhood neighbourhood = this.location.getNeighbourhood();
-        location.put("neighbourhood", neighbourhood.getName());
-        location.put("city",          neighbourhood.getCity().getName());
-        location.put("country",       neighbourhood.getCity().getCountry().getName());
+        locationObject.put("neighbourhood", neighbourhood.getName());
+        locationObject.put("city",          neighbourhood.getCity().getName());
+        locationObject.put("country",       neighbourhood.getCity().getCountry().getName());
 
-        jsonObject.put("location", location);
+        jsonObject.put("location", locationObject);
 
-        JSONObject sequence = new JSONObject();
+        JSONObject sequenceObject = new JSONObject();
 
-        for (Map.Entry<Integer, ArrayList<Integer>> entry : soundsMap.entrySet()) {
-            JSONArray stepArray = new JSONArray();
+        int barNumber = 1;
+        for (Bar bar : bars) {
+            JSONObject barObject = new JSONObject();
 
-            for (Integer soundId : entry.getValue())
-                stepArray.put(soundId);
+            int soundNumber = 1;
+            for (Sound sound : bar.getActiveSounds()) {
+                JSONObject soundObject = new JSONObject();
 
-            sequence.put(entry.getKey() + "", stepArray);
+                soundObject.put("name", sound.getName());
+                soundObject.put("id",   sound.getId());
+
+                JSONArray matrix;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    matrix = new JSONArray();
+
+                    for (int n : sound.getMatrix())
+                        matrix.put(n);
+                }
+                else
+                    matrix = new JSONArray(sound.getMatrix());
+
+                soundObject.put("matrix", matrix);
+                barObject.put("sound" + soundNumber, soundObject);
+
+                soundNumber++;
+            }
+
+            sequenceObject.put("bar" + barNumber, barObject);
+
+            barNumber++;
         }
 
-        jsonObject.put("sequence", sequence);
+        jsonObject.put("sequence", sequenceObject);
 
-        Log.i("JSON", jsonObject.toString(4));
         return jsonObject.toString();
     }
 
-    public void fromJSON(String json) throws JSONException {
+    public static Sequence fromJSON(String json) throws JSONException {
         JSONObject jsonObject = new JSONObject(json);
 
-        this.name   = jsonObject.getString("name");
-        this.genre  = jsonObject.getString("genre");
-        this.bpm    = jsonObject.getInt   ("bpm");
-        this.author = jsonObject.getString("author");
+        String name   = jsonObject.getString("name");
+        String genre  = jsonObject.getString("genre");
+        int    bpm    = jsonObject.getInt   ("bpm");
+        String author = jsonObject.getString("author");
 
         JSONObject locationObject = jsonObject.getJSONObject("location");
 
@@ -200,5 +218,59 @@ public class Sequence {
         location.setLatitude(lat);
         location.setLongitude(lon);
         location.setNeighbourhood(neighbourhood);
+
+        JSONObject sequenceObject = jsonObject.getJSONObject("sequence");
+
+        Sequence sequence = new Sequence();
+        sequence.setName    (name);
+        sequence.setGenre   (genre);
+        sequence.setBpm     (bpm);
+        sequence.setAuthor  (author);
+        sequence.setLocation(location);
+
+        Log.i("FROM JSON", "sequence object length : " + sequenceObject.names().length());
+        // bar loop
+        for (int barNumber = 1; barNumber <= sequenceObject.names().length(); barNumber++) {
+            JSONObject barObject = sequenceObject.getJSONObject("bar" + barNumber);
+            Bar bar = new Bar();
+            bar.getActiveSoundsNames().remove(0);
+
+            Log.i("FROM JSON", "bar object length : " + barObject.names().length());
+            // sound loop
+            for (int soundNumber = 1; soundNumber <= barObject.names().length(); soundNumber++) {
+                JSONObject soundObject = barObject.getJSONObject("sound" + soundNumber);
+
+                String soundName = soundObject.getString("name");
+                int    id        = soundObject.getInt("id");
+
+                int[] matrix = new int[16];
+                JSONArray matrixArray = soundObject.getJSONArray("matrix");
+
+                for (int i = 0; i < matrixArray.length(); i++)
+                    matrix[i] = matrixArray.getInt(i);
+
+                bar.addSound(soundName, id);
+                bar.updateSound(soundName, matrix);
+                Log.i("SOUNDLOOP", soundNumber + "");
+            }
+
+            sequence.addBar(bar);
+            Log.i("BARLOOP", barNumber + "");
+        }
+
+        Log.i("SEQ FROM JSON", sequence.toString());
+        return sequence;
+    }
+
+    @Override
+    public String toString() {
+        return "Sequence{" +
+                "bars=" + bars +
+                ", name='" + name + '\'' +
+                ", genre='" + genre + '\'' +
+                ", author='" + author + '\'' +
+                ", bpm=" + bpm +
+                ", location=" + location +
+                '}';
     }
 }

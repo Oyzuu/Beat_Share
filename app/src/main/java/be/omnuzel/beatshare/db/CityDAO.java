@@ -74,13 +74,13 @@ public class CityDAO implements DataAccessObject<City> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
         Log.i("CITYDAO", "City with id : " + id + " has been deleted");
     }
 
     @Override
-    public City get(int id) {
+    public City get(long id) {
         Cursor cursor = db.query(TABLE_NAME, null, COLUMN_ID + "=" + id, null, null, null, null);
 
         if (cursor.getCount() > 0) {

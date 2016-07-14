@@ -147,7 +147,7 @@
                     android:layout_margin="4dp"
                     android:background="@drawable/secondary_button"
                     android:text="@string/add"
-                    android:onClick="addSound"/>
+                    android:onClick="openAddSoundDialog"/>
             </LinearLayout>
 
 

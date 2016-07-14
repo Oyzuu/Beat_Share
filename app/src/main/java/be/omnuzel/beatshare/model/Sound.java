@@ -1,19 +1,15 @@
 package be.omnuzel.beatshare.model;
 
+import java.util.Arrays;
+
 public class Sound {
     private String name;
     private int[]  matrix;
     private int    id;
 
     public Sound(String name, int id) {
-        int[] pads = new int[16];
-
-        for (int i = 0; i < pads.length; i++){
-            pads[i] = 0;
-        }
-
         this.name   = name;
-        this.matrix = pads;
+        this.matrix = new int[16];
         this.id     = id;
     }
 
@@ -39,5 +35,14 @@ public class Sound {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Sound{" +
+                "name='" + name + '\'' +
+                ", matrix=" + Arrays.toString(matrix) +
+                ", id=" + id +
+                '}';
     }
 }

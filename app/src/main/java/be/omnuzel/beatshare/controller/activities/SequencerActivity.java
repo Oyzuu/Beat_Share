@@ -26,9 +26,12 @@ import org.json.JSONException;
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.AddSoundDialog;
 import be.omnuzel.beatshare.controller.dialogs.LogOutDialog;
+import be.omnuzel.beatshare.controller.dialogs.OverwriteSaveDialog;
 import be.omnuzel.beatshare.controller.dialogs.SetBMPDialog;
 import be.omnuzel.beatshare.controller.threads.PlaybackThread;
 import be.omnuzel.beatshare.controller.utils.Localizer;
+import be.omnuzel.beatshare.db.DataAccessObject;
+import be.omnuzel.beatshare.db.SequenceDAO;
 import be.omnuzel.beatshare.model.Bar;
 import be.omnuzel.beatshare.model.Location;
 import be.omnuzel.beatshare.model.Sequence;
@@ -40,10 +43,11 @@ public class SequencerActivity
         extends
             AppCompatActivity
         implements
-            NavigationView.OnNavigationItemSelectedListener,
-            AddSoundDialog.SoundDialogListener,
-            SetBMPDialog  .BPMDialogListener,
-            PlaybackThread.PlaybackListener {
+            NavigationView     .OnNavigationItemSelectedListener,
+            AddSoundDialog     .SoundDialogListener,
+            SetBMPDialog       .BPMDialogListener,
+            PlaybackThread     .PlaybackListener,
+            OverwriteSaveDialog.OverwriteSaveListener {
 
     public static final int
             STOPPED = 0,
@@ -57,7 +61,9 @@ public class SequencerActivity
             state,
             currentStep;
 
-    private Sequence sequence;
+    private SequenceDAO sequenceDAO;
+    private Sequence    sequence;
+    private Sequence    sequenceToOverwrite;
     private Bar
             bar1,
             bar2,
@@ -93,9 +99,6 @@ public class SequencerActivity
 
                 @Override
                 public void onDrawerOpened(View drawerView) {
-                    if (getSupportActionBar() != null)
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
                     if (user == null)
                         return;
 
@@ -121,6 +124,8 @@ public class SequencerActivity
             navigationView.setItemIconTintList(null);
             navigationView.setNavigationItemSelectedListener(this);
         }
+
+        sequenceDAO = new SequenceDAO(this);
 
         // Sequence init
         sequence = new Sequence();
@@ -189,7 +194,7 @@ public class SequencerActivity
             case R.id.drawer_settings : toSettings();     break;
             case R.id.drawer_import   : importSequence(); break;
             case R.id.drawer_save     : saveSequence();   break;
-            case R.id.drawer_logout   : logOut(true);     break;
+            case R.id.drawer_logout   : logOut();         break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.sequencer_rootview);
@@ -207,7 +212,7 @@ public class SequencerActivity
         if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
         else
-            logOut(false);
+            logOut();
     }
 
     @Override
@@ -258,33 +263,54 @@ public class SequencerActivity
         snackThis("import");
     }
 
-    // TODO !!! IMPORTANT !!! Exportable sequence
     public void saveSequence() {
         Localizer localizer = new Localizer(this);
-        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
+//        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
+//
+//        if (location == null)
+//            location = localizer.getMockLocation();
 
-        if (location == null)
-            location = localizer.getMockLocation();
+        Location location = localizer.getMockLocation();
+        String seq_name = "test sequence";
 
-        try {
-            sequence.setName("test sequence");
-            sequence.setGenre("default genre");
-            sequence.setBpm(this.bpm);
-            sequence.setAuthor(user.getName());
-            sequence.setLocation(location);
-            sequence.toJSON();
+        sequence.setName(seq_name);
+        sequence.setGenre("default genre");
+        sequence.setBpm(this.bpm);
+        sequence.setAuthor(user.getName());
+        sequence.setLocation(location);
+
+        sequenceDAO.open(DataAccessObject.WRITABLE);
+
+        long id = sequenceDAO.alreadyPossess(seq_name, user.getName());
+
+        if (id >= 0) {
+            sequenceToOverwrite = sequence;
+            sequenceToOverwrite.setId(id);
+            new OverwriteSaveDialog().show(getFragmentManager(), null);
         }
-        catch (JSONException e) {
-            e.printStackTrace();
+
+        else {
+            snackThis("Sequence : " + sequence.getName() + " has been saved");
         }
+
+        sequenceDAO.create(sequence);
+        sequenceDAO.close();
+    }
+
+    @Override
+    public void overwriteSave() {
+        sequenceDAO.open(DataAccessObject.WRITABLE);
+
+        // TODO !!! IMPORTANT !!! SHOULD BE UPDATE NOT DELETE
+        sequenceDAO.delete(sequenceToOverwrite.getId());
+        sequenceDAO.create(sequenceToOverwrite);
+        sequenceDAO.close();
+        snackThis("Sequence : " + sequence.getName() + " has been overwritten");
     }
 
     // Close activity if called from drawer or display a dialog if not
-    public void logOut(boolean fromDrawer) {
-        if (fromDrawer)
-            finish();
-        else
-            new LogOutDialog().show(getFragmentManager(), null);
+    public void logOut() {
+        new LogOutDialog().show(getFragmentManager(), null);
     }
 
     // TODO IF TIME FOR - - - async tasks for progress feedback
@@ -309,12 +335,12 @@ public class SequencerActivity
         refreshPlayButton(state);
     }
 
-    public void addSound(View view) {
+    public void openAddSoundDialog(View view) {
         new AddSoundDialog().show(getFragmentManager(), null);
     }
 
     @Override
-    public void setSound(String soundName) {
+    public void addSound(String soundName) {
         if (activeBar.getActiveSoundsNames().get(0).equals("empty"))
             activeBar.getActiveSoundsNames().remove(0);
 
