@@ -15,8 +15,9 @@ public class SignUpFragment extends Fragment {
     public interface SignUpListener {
         void signUp(View view);
         void cancel(View view);
-        void flushSignUpForm();
+        void flushForm();
     }
+
 
     public static SignUpFragment instance;
 

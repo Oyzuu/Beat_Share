@@ -20,11 +20,11 @@ public class User implements Parcelable {
         roles = new ArrayList<>();
     }
 
-    public String getUserName() {
+    public String getName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public void setName(String userName) {
         this.userName = userName;
     }
 
@@ -88,7 +88,7 @@ public class User implements Parcelable {
             User user = new User();
 
             user.setId      (source.readLong());
-            user.setUserName(source.readString());
+            user.setName(source.readString());
             user.setEmail   (source.readString());
             user.setPassword(source.readString());
 

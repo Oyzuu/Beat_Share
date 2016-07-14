@@ -81,7 +81,33 @@ public class Localizer {
             e.printStackTrace();
         }
 
-        Log.i("LOCALIZER", "Location : " + location.toString());
+        Log.i("LOCALIZER", "Location : " + (location != null ? location.toString() : null));
+
+        return location;
+    }
+
+    public Location getMockLocation() {
+        Log.i("LOCALIZER", "in getMockLocation()");
+        double
+                lat = 50.837722469761964,
+                lon =  4.353536367416382;
+
+        LocationJSONTask locationJSONTask = new LocationJSONTask();
+        locationJSONTask.execute(lat, lon);
+
+        String json;
+        Location location = null;
+
+        try {
+            json = locationJSONTask.get();
+            Log.i("LOCALIZER", "Json : " + json);
+            location = Location.hydrateFromJSON(lat, lon, json);
+        }
+        catch (JSONException | InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Log.i("LOCALIZER", "Location : " + (location != null ? location.toString() : null));
 
         return location;
     }

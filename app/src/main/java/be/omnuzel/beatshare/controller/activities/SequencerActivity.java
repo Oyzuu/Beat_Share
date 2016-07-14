@@ -2,15 +2,14 @@ package be.omnuzel.beatshare.controller.activities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,12 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.AddSoundDialog;
 import be.omnuzel.beatshare.controller.dialogs.LogOutDialog;
 import be.omnuzel.beatshare.controller.dialogs.SetBMPDialog;
 import be.omnuzel.beatshare.controller.threads.PlaybackThread;
+import be.omnuzel.beatshare.controller.utils.Localizer;
 import be.omnuzel.beatshare.model.Bar;
+import be.omnuzel.beatshare.model.Location;
 import be.omnuzel.beatshare.model.Sequence;
 import be.omnuzel.beatshare.model.User;
 
@@ -98,7 +101,7 @@ public class SequencerActivity
 
                     TextView headerNameText = (TextView) findViewById(R.id.header_name);
                     if (headerNameText != null)
-                        headerNameText.setText(user.getUserName());
+                        headerNameText.setText(user.getName());
 
                     TextView headerMailText = (TextView) findViewById(R.id.header_mail);
                     if (headerMailText != null)
@@ -257,7 +260,21 @@ public class SequencerActivity
 
     // TODO !!! IMPORTANT !!! Exportable sequence
     public void saveSequence() {
-        snackThis("export");
+        Localizer localizer = new Localizer(this);
+        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
+
+        if (location == null)
+            location = localizer.getMockLocation();
+
+        try {
+            sequence.setName("test sequence");
+            sequence.setAuthor(user);
+            sequence.setLocation(location);
+            sequence.toJSON();
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     // Close activity if called from drawer or display a dialog if not

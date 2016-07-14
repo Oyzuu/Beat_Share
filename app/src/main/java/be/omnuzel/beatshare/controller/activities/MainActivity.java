@@ -78,7 +78,7 @@ public class MainActivity
     public void onBackPressed() {
         // Check if back order comes from the sign up fragment and then act accordingly
         if (signUpFragment.isVisible()) {
-            flushSignUpForm();
+            flushForm();
             getFragmentManager().popBackStackImmediate();
         }
         else {
@@ -131,11 +131,11 @@ public class MainActivity
         }
 
         String message = String.format("User : %s with roles : %s",
-                user.getUserName(), user.getRoles());
+                user.getName(), user.getRoles());
 
         Log.i("LOG IN USER", message);
 
-        flushLogInForm();
+        flushForm();
         Intent intent = new Intent(this, SequencerActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
@@ -143,7 +143,7 @@ public class MainActivity
 
     @Override
     public void toSignUp(View view) {
-        flushLogInForm();
+        flushForm();
 
         getFragmentManager()
                 .beginTransaction()
@@ -225,7 +225,7 @@ public class MainActivity
         Log.i("MAIN", "Sign Up : " + name + " with mail : " + mail);
 
         User user = new User();
-        user.setUserName(name);
+        user.setName(name);
         user.setEmail   (mail);
         user.setPassword(pass);
 
@@ -238,6 +238,8 @@ public class MainActivity
 
             Intent intent = new Intent(this, SequencerActivity.class);
             intent.putExtra("user", user);
+
+            flushForm();
             startActivity(intent);
         }
         catch (SQLiteConstraintException e) {
@@ -250,16 +252,17 @@ public class MainActivity
 
     @Override
     public void cancel(View view) {
-        flushSignUpForm();
         onBackPressed();
     }
 
     /**
-     * Remove text and error from every EditText in LogInFragment
+     * Remove text and error from every EditText
      */
     @Override
-    public void flushLogInForm() {
-        EditText[] editTexts = {loginNameEdit, loginPassEdit};
+    public void flushForm() {
+        EditText[] editTexts = {loginNameEdit, loginPassEdit, nameEdit,
+                                passEdit, passConfirmEdit,mailEdit, mailConfirmEdit};
+
         for (EditText editText : editTexts) {
             if (editText != null) {
                 editText.setText("");
@@ -267,20 +270,7 @@ public class MainActivity
             }
         }
     }
-    // TODO ternary here
-    /**
-     * Remove text and error from every EditText in SignUpFragment
-     */
-    @Override
-    public void flushSignUpForm() {
-        EditText[] editTexts = {nameEdit, passEdit, passConfirmEdit, mailEdit, mailConfirmEdit};
-        for (EditText editText : editTexts) {
-            if (editText != null) {
-                editText.setText("");
-                editText.setError(null);
-            }
-        }
-    }
+
 
     /**
      * Display a message in a short-length Snackbar
@@ -375,6 +365,7 @@ public class MainActivity
     }
 
     public void toSeq(View view) {
+        flushForm();
         startActivity(new Intent(this, SequencerActivity.class));
     }
 }

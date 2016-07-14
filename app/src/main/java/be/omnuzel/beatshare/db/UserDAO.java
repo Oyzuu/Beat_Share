@@ -82,7 +82,7 @@ public class UserDAO implements DataAccessObject<User> {
     public long create(User user) throws SQLiteException {
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_USERNAME, user.getUserName());
+        cv.put(COLUMN_USERNAME, user.getName());
         cv.put(COLUMN_EMAIL,    user.getEmail());
         cv.put(COLUMN_PASSWORD, user.getPassword());
 
@@ -95,7 +95,7 @@ public class UserDAO implements DataAccessObject<User> {
 
         createUserRole(user, role);
 
-        Log.i("USERDAO", "User : " + user.getUserName() + " @ " + id);
+        Log.i("USERDAO", "User : " + user.getName() + " @ " + id);
 
         return id;
     }
@@ -109,12 +109,12 @@ public class UserDAO implements DataAccessObject<User> {
 
         User user = new User();
         user.setId      (1);
-        user.setUserName("admin");
+        user.setName("admin");
         user.setEmail   ("admin@admin.admin");
         user.setPassword("admin");
 
         cv.put(COLUMN_ID,       user.getId());
-        cv.put(COLUMN_USERNAME, user.getUserName());
+        cv.put(COLUMN_USERNAME, user.getName());
         cv.put(COLUMN_EMAIL,    user.getEmail());
         cv.put(COLUMN_PASSWORD, user.getPassword());
 
@@ -197,7 +197,7 @@ public class UserDAO implements DataAccessObject<User> {
 
         User user = new User();
         user.setId      (id);
-        user.setUserName(userName);
+        user.setName(userName);
         user.setEmail   (email);
         user.setPassword(password);
         user.setRoles   (roles);
