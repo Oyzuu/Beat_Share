@@ -73,6 +73,7 @@ public class LocationDAO implements DataAccessObject<Location> {
         long id = db.insertOrThrow(TABLE_NAME, null, cv);
         double latitude  = location.getLatitude();
         double longitude = location.getLongitude();
+
         Log.i("LOCATIONDAO", "Location : " + latitude + ", " + longitude + " @ " + id);
 
         return id;
@@ -98,10 +99,10 @@ public class LocationDAO implements DataAccessObject<Location> {
 
     @Override
     public Location getFromCursor(Cursor cursor) {
-        int id           = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+        int    id        = cursor.getInt   (cursor.getColumnIndex(COLUMN_ID));
         double latitude  = cursor.getDouble(cursor.getColumnIndex(COLUMN_LATITUDE));
         double longitude = cursor.getDouble(cursor.getColumnIndex(COLUMN_LONGITUDE));
-        int neigh_id     = cursor.getInt(cursor.getColumnIndex(COLUMN_NEIGH_ID));
+        int    neigh_id  = cursor.getInt   (cursor.getColumnIndex(COLUMN_NEIGH_ID));
 
         neighbourhoodDAO.open(READABLE);
         Neighbourhood neighbourhood = neighbourhoodDAO.get(neigh_id);

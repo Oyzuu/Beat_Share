@@ -268,7 +268,9 @@ public class SequencerActivity
 
         try {
             sequence.setName("test sequence");
-            sequence.setAuthor(user);
+            sequence.setGenre("default genre");
+            sequence.setBpm(this.bpm);
+            sequence.setAuthor(user.getName());
             sequence.setLocation(location);
             sequence.toJSON();
         }

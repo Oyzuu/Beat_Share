@@ -1,5 +1,7 @@
 package be.omnuzel.beatshare.model;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,14 +12,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import be.omnuzel.beatshare.db.UserDAO;
+
 public class Sequence {
 
+    // In a perfect world, soundsMap would be an <SoundMap> object
     private TreeMap<Integer, ArrayList<Integer>> soundsMap;
     private ArrayList<Bar>                       bars;
     private Set<Integer>                         distinctSoundsId;
 
-    private String   name;
-    private User     author;
+
+    private long     id;
+    private String   name,
+                     genre,
+                     author;
+    private int      bpm;
     private Location location;
 
     public Sequence() {
@@ -25,17 +34,43 @@ public class Sequence {
         this.soundsMap        = new TreeMap<>();
         this.distinctSoundsId = new HashSet<>();
 
-        this.name             = "";
-        this.author           = null;
-        this.location         = null;
+        this.name     = "";
+        this.genre    = "";
+        this.bpm      = 0;
+        this.author   = null;
+        this.location = null;
     }
 
-    public User getAuthor() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(int bpm) {
+        this.bpm = bpm;
     }
 
     public String getName() {
@@ -96,13 +131,15 @@ public class Sequence {
         return bars.size();
     }
 
-    public String toJSON() throws JSONException{
+    public String toJSON() throws JSONException {
         this.build();
 
-        JSONObject json     = new JSONObject();
+        JSONObject jsonObject     = new JSONObject();
 
-        json.put("name",   this.name);
-        json.put("author", this.author.getName());
+        jsonObject.put("name",   this.name);
+        jsonObject.put("genre",  this.genre);
+        jsonObject.put("bpm",    this.bpm);
+        jsonObject.put("author", this.author);
 
         JSONObject location = new JSONObject();
 
@@ -113,7 +150,7 @@ public class Sequence {
         location.put("city",          neighbourhood.getCity().getName());
         location.put("country",       neighbourhood.getCity().getCountry().getName());
 
-        json.put("location", location);
+        jsonObject.put("location", location);
 
         JSONObject sequence = new JSONObject();
 
@@ -126,9 +163,42 @@ public class Sequence {
             sequence.put(entry.getKey() + "", stepArray);
         }
 
-        json.put("sequence", sequence);
+        jsonObject.put("sequence", sequence);
 
-        System.out.println(json.toString(4));
-        return json.toString();
+        Log.i("JSON", jsonObject.toString(4));
+        return jsonObject.toString();
+    }
+
+    public void fromJSON(String json) throws JSONException {
+        JSONObject jsonObject = new JSONObject(json);
+
+        this.name   = jsonObject.getString("name");
+        this.genre  = jsonObject.getString("genre");
+        this.bpm    = jsonObject.getInt   ("bpm");
+        this.author = jsonObject.getString("author");
+
+        JSONObject locationObject = jsonObject.getJSONObject("location");
+
+        double lat         = locationObject.getDouble("latitude");
+        double lon         = locationObject.getDouble("longitude");
+        String neighName   = locationObject.getString("neighbourhood");
+        String cityName    = locationObject.getString("city");
+        String countryName = locationObject.getString("country");
+
+        Country country = new Country();
+        country.setName(countryName);
+
+        City city = new City();
+        city.setName(cityName);
+        city.setCountry(country);
+
+        Neighbourhood neighbourhood = new Neighbourhood();
+        neighbourhood.setName(neighName);
+        neighbourhood.setCity(city);
+
+        Location location = new Location();
+        location.setLatitude(lat);
+        location.setLongitude(lon);
+        location.setNeighbourhood(neighbourhood);
     }
 }

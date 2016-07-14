@@ -69,7 +69,7 @@ public class Location implements Parcelable {
      * @return Location
      * @throws JSONException
      */
-    public static Location hydrateFromJSON(double latitude, double longitude, String json) throws JSONException {
+    public static Location fromJSON(double latitude, double longitude, String json) throws JSONException {
         JSONObject jo = new JSONObject(json);
 
         JSONArray  results                 = jo     .getJSONArray("results");

@@ -46,6 +46,10 @@ public class ManagementActivity
     }
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     public void save(View view) {
 
     }

@@ -82,7 +82,7 @@ public class MainActivity
             getFragmentManager().popBackStackImmediate();
         }
         else {
-            super.onBackPressed();
+//            super.onBackPressed();
         }
 
         // Ensure non null log in screen text fields

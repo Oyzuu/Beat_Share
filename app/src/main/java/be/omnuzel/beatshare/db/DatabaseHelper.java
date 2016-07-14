@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CityDAO         .CREATE_TABLE);
         db.execSQL(NeighbourhoodDAO.CREATE_TABLE);
         db.execSQL(LocationDAO     .CREATE_TABLE);
+        db.execSQL(SequenceDAO     .CREATE_TABLE);
 
         UserDAO.createAdmin(db);
     }
@@ -37,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CityDAO         .UPGRADE_TABLE);
         db.execSQL(NeighbourhoodDAO.UPGRADE_TABLE);
         db.execSQL(LocationDAO     .UPGRADE_TABLE);
+        db.execSQL(SequenceDAO     .UPGRADE_TABLE);
 
         onCreate(db);
     }

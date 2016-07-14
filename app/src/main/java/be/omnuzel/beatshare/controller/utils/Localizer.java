@@ -13,7 +13,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -75,7 +74,7 @@ public class Localizer {
         try {
             json = locationJSONTask.get();
             Log.i("LOCALIZER", "Json : " + json);
-            location = Location.hydrateFromJSON(lat, lon, json);
+            location = Location.fromJSON(lat, lon, json);
         }
         catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -101,7 +100,7 @@ public class Localizer {
         try {
             json = locationJSONTask.get();
             Log.i("LOCALIZER", "Json : " + json);
-            location = Location.hydrateFromJSON(lat, lon, json);
+            location = Location.fromJSON(lat, lon, json);
         }
         catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
