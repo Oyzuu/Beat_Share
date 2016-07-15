@@ -144,7 +144,7 @@ public class UserDAO implements DataAccessObject<User> {
         cv.put(COLUMN_USERNAME, user.getName());
         cv.put(COLUMN_EMAIL,    user.getEmail());
         cv.put(COLUMN_PASSWORD, hashedPassword);
-        cv.put(COLUMN_SALT,     ChocolateSaltyBalls.getInstance().generateSalt());
+        cv.put(COLUMN_SALT,     salt);
 
         db.insert(TABLE_NAME, null, cv);
 

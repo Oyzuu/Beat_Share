@@ -46,16 +46,12 @@ public class ManagementActivity
     }
 
     @Override
-    public void onBackPressed() {
-    }
-
-    @Override
     public void save(View view) {
 
     }
 
     @Override
     public void cancel(View view) {
-        finish();
+        onBackPressed();
     }
 }

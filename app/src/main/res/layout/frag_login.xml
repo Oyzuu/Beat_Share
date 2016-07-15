@@ -56,37 +56,6 @@
             android:id="@+id/button_to_signup"
             android:onClick="toSignUp"/>
 
-        <!-- TODO $$$ LAST CHECK $$$ don't forget to remove debug buttons -->
-        <!-- DEBUG BUTTONS -->
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="get all users"-->
-            <!--android:onClick="allUsers"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="get all roles"-->
-            <!--android:onClick="allRoles"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="get user_role"-->
-            <!--android:onClick="allUserRoles"/>-->
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="get loc"
-            android:textColor="@color/black"
-            android:onClick="localizeMe"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="toSeq"/>
-
     </LinearLayout>
 
 </FrameLayout>

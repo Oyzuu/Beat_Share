@@ -62,18 +62,6 @@ public class MainActivity
         logInFragment  = LogInFragment.getInstance();
         signUpFragment = SignUpFragment.getInstance();
 
-        for (int i = 0; i < 10; i++) {
-            String password = "hello";
-            String salt     = ChocolateSaltyBalls.getInstance().generateSalt();
-
-            try {
-                ChocolateSaltyBalls.getInstance().hash(salt + password);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         getFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -141,8 +129,6 @@ public class MainActivity
         }
 
         String hashedPassword = "";
-        Log.i("HASHEDPASSWORD", hashedPassword);
-        Log.i("USERPASSWORD",   user.getPassword());
         try {
             hashedPassword = ChocolateSaltyBalls.getInstance().hash(pass + salt);
         }
@@ -157,9 +143,6 @@ public class MainActivity
 
         String message = String.format("User : %s with roles : %s",
                 user.getName(), user.getRoles());
-
-        Log.i("LOG IN USER", message);
-
         flushForm();
         Intent intent = new Intent(this, SequencerActivity.class);
         intent.putExtra("user", user);
@@ -306,91 +289,5 @@ public class MainActivity
 
         if (view != null)
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
-    }
-
-    // DEBUG METHODS
-
-    public void allUsers(View view) {
-        userDAO.open(DataAccessObject.READABLE);
-
-        if (userDAO.getAll() == null) {
-            snackThis("getAll() returns NULL");
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (User user : userDAO.getAll()) {
-            sb.append(user.toString() + "\n");
-        }
-
-        Intent intent = new Intent(this, Debug.class);
-        intent.putExtra("debugInfo", sb.toString());
-        startActivity(intent);
-    }
-
-    public void allRoles(View view) {
-        roleDAO.open(DataAccessObject.READABLE);
-
-        if (roleDAO.getAll() == null) {
-            snackThis("getAll() returns NULL");
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (Role role : roleDAO.getAll()) {
-            sb.append(role.toString() + "\n");
-        }
-
-        Intent intent = new Intent(this, Debug.class);
-        intent.putExtra("debugInfo", sb.toString());
-        startActivity(intent);
-    }
-
-    public void allUserRoles(View view) {
-        userDAO.open(DataAccessObject.READABLE);
-
-        if (userDAO.getAllUserRoles() == null) {
-            snackThis("getAll() returns NULL");
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (String s : userDAO.getAllUserRoles()) {
-            sb.append(s + "\n");
-        }
-
-        Intent intent = new Intent(this, Debug.class);
-        intent.putExtra("debugInfo", sb.toString());
-        startActivity(intent);
-    }
-
-    public void localizeMe(View view) {
-        Log.wtf("MAIN", "in localizeMe()");
-        Localizer localizer = new Localizer(this);
-        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
-
-        if (location == null) {
-            snackThis("NULL Location");
-            return;
-        }
-
-        Log.i("GEOLOCATION", location.toString());
-
-        @SuppressLint("DefaultLocale")
-        String locString = String.format(
-                "Location : %.4f, %.4f - %s, %s, %s",
-                location.getLatitude(),
-                location.getLongitude(),
-                location.getNeighbourhood().getName(),
-                location.getNeighbourhood().getCity().getName(),
-                location.getNeighbourhood().getCity().getCountry().getName()
-        );
-
-        snackThis(locString);
-    }
-
-    public void toSeq(View view) {
-        flushForm();
-        startActivity(new Intent(this, SequencerActivity.class));
     }
 }

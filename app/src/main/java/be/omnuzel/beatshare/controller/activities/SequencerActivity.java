@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -279,6 +280,8 @@ public class SequencerActivity
         sequence.setBpm(this.bpm);
         sequence.setAuthor(user.getName());
         sequence.setLocation(location);
+
+        Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show();
 
         sequenceDAO.open(DataAccessObject.WRITABLE);
 
