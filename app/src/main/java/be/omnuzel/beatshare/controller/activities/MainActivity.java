@@ -16,6 +16,7 @@ import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.ExitDialog;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
+import be.omnuzel.beatshare.controller.utils.ChocolateSaltyBalls;
 import be.omnuzel.beatshare.controller.utils.Localizer;
 import be.omnuzel.beatshare.db.DataAccessObject;
 import be.omnuzel.beatshare.db.RoleDAO;
@@ -60,6 +61,18 @@ public class MainActivity
 
         logInFragment  = LogInFragment.getInstance();
         signUpFragment = SignUpFragment.getInstance();
+
+        for (int i = 0; i < 10; i++) {
+            String password = "hello";
+            String salt     = ChocolateSaltyBalls.getInstance().generateSalt();
+
+            try {
+                ChocolateSaltyBalls.getInstance().hash(salt + password);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         getFragmentManager()
                 .beginTransaction()
@@ -119,6 +132,7 @@ public class MainActivity
 
         userDAO.open(DataAccessObject.READABLE);
         User user = userDAO.getByName(name);
+        String salt = userDAO.getSalt(user);
         userDAO.close();
 
         if (user == null) {
@@ -126,7 +140,17 @@ public class MainActivity
             return;
         }
 
-        if (!user.getPassword().equals(pass)) {
+        String hashedPassword = "";
+        Log.i("HASHEDPASSWORD", hashedPassword);
+        Log.i("USERPASSWORD",   user.getPassword());
+        try {
+            hashedPassword = ChocolateSaltyBalls.getInstance().hash(pass + salt);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!user.getPassword().equals(hashedPassword)) {
             loginPassEdit.setError(getString(R.string.login_password_error));
             return;
         }

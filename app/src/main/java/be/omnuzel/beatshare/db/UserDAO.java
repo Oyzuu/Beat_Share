@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import be.omnuzel.beatshare.controller.utils.ChocolateSaltyBalls;
 import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
@@ -22,18 +23,21 @@ public class UserDAO implements DataAccessObject<User> {
     COLUMN_USERNAME   = "firstName",
     COLUMN_EMAIL      = "email",
     COLUMN_PASSWORD   = "password",
+    COLUMN_SALT       = "salt",
 
     CREATE_TABLE      = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL UNIQUE," +
                     "%s TEXT NOT NULL UNIQUE," +
+                    "%s TEXT NOT NULL," +
                     "%s TEXT NOT NULL)",
             TABLE_NAME,
             COLUMN_ID,
             COLUMN_USERNAME,
             COLUMN_EMAIL,
-            COLUMN_PASSWORD),
+            COLUMN_PASSWORD,
+            COLUMN_SALT),
 
     UPGRADE_TABLE    = "DROP TABLE " + TABLE_NAME + ";" + CREATE_TABLE,
 
@@ -80,11 +84,23 @@ public class UserDAO implements DataAccessObject<User> {
 
     @Override
     public long create(User user) throws SQLiteException {
-        ContentValues cv = new ContentValues();
+        ContentValues       cv  = new ContentValues();
+        ChocolateSaltyBalls csb = ChocolateSaltyBalls.getInstance();
+
+        String salt            = csb.generateSalt();
+        String hashedPassword  = "";
+
+        try {
+            hashedPassword  = csb.hash(user.getPassword() + salt);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         cv.put(COLUMN_USERNAME, user.getName());
         cv.put(COLUMN_EMAIL,    user.getEmail());
-        cv.put(COLUMN_PASSWORD, user.getPassword());
+        cv.put(COLUMN_PASSWORD, hashedPassword);
+        cv.put(COLUMN_SALT,     salt);
 
         long id = db.insertOrThrow(TABLE_NAME, null, cv);
         user.setId(id);
@@ -109,14 +125,26 @@ public class UserDAO implements DataAccessObject<User> {
 
         User user = new User();
         user.setId      (1);
-        user.setName("admin");
+        user.setName    ("admin");
         user.setEmail   ("admin@admin.admin");
         user.setPassword("admin");
+
+        ChocolateSaltyBalls csb = ChocolateSaltyBalls.getInstance();
+        String salt             = csb.generateSalt();
+        String hashedPassword   = "";
+
+        try {
+            hashedPassword  = csb.hash(user.getPassword() + salt);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         cv.put(COLUMN_ID,       user.getId());
         cv.put(COLUMN_USERNAME, user.getName());
         cv.put(COLUMN_EMAIL,    user.getEmail());
-        cv.put(COLUMN_PASSWORD, user.getPassword());
+        cv.put(COLUMN_PASSWORD, hashedPassword);
+        cv.put(COLUMN_SALT,     ChocolateSaltyBalls.getInstance().generateSalt());
 
         db.insert(TABLE_NAME, null, cv);
 
@@ -175,12 +203,25 @@ public class UserDAO implements DataAccessObject<User> {
     }
 
     public User getByEmail(String email) {
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_USERNAME + "='" + email + "'",
+        Cursor c = db.query(TABLE_NAME, null, COLUMN_EMAIL + "='" + email + "'",
                 null, null, null, null);
 
         if (c.getCount() > 0) {
             c.moveToFirst();
             return getFromCursor(c);
+        }
+        else
+            return null;
+    }
+
+    public String getSalt(User user) {
+        Cursor c = db.query(TABLE_NAME, new String[]{COLUMN_SALT}, COLUMN_USERNAME + "='" +
+                user.getName() + "'", null, null, null, null);
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+
+            return c.getString(c.getColumnIndex(COLUMN_SALT));
         }
         else
             return null;
