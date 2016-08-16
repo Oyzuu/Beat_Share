@@ -39,6 +39,7 @@ import be.omnuzel.beatshare.model.Sequence;
 import be.omnuzel.beatshare.model.User;
 
 // TODO IF TIME FOR IT - - - Option to remove bar / sound
+// TODO stop PlaybackThread when log off
 
 public class SequencerActivity
         extends
@@ -50,33 +51,33 @@ public class SequencerActivity
             PlaybackThread     .PlaybackListener,
             OverwriteSaveDialog.OverwriteSaveListener {
 
-    public static final int
-            STOPPED = 0,
-            PLAYING = 1,
-            PAUSED  = 2;
+
+    // STATE CONSTANTS
+    public static final int STOPPED = 0,
+                            PLAYING = 1,
+                            PAUSED  = 2;
 
     private User user;
 
-    private int
-            bpm,
-            state,
-            currentStep;
-
+    // SEQUENCE
     private SequenceDAO sequenceDAO;
     private Sequence    sequence;
     private Sequence    sequenceToOverwrite;
-    private Bar
-            bar1,
-            bar2,
-            bar3,
-            bar4;
+    private Bar         bar1,
+                        bar2,
+                        bar3,
+                        bar4;
 
     private android.support.v7.app.ActionBar actionBar;
     private Spinner spinner;
 
+    // SEQUENCER STATE
     private Bar    activeBar;
     private String activeSound;
     private int[]  activePads;
+    private int    bpm,
+                   state,
+                   currentStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,10 +276,10 @@ public class SequencerActivity
         Location location = localizer.getMockLocation();
         String seq_name = "test sequence";
 
-        sequence.setName(seq_name);
-        sequence.setGenre("default genre");
-        sequence.setBpm(this.bpm);
-        sequence.setAuthor(user.getName());
+        sequence.setName    (seq_name);
+        sequence.setGenre   ("default genre");
+        sequence.setBpm     (this.bpm);
+        sequence.setAuthor  (user.getName());
         sequence.setLocation(location);
 
         Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show();
