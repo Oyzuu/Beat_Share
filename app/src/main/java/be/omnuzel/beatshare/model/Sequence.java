@@ -139,9 +139,11 @@ public class Sequence {
 
         JSONObject locationObject = new JSONObject();
 
-        locationObject.put("latitude",      this.location.getLatitude());
-        locationObject.put("longitude",     this.location.getLongitude());
+        locationObject.put("latitude",  this.location.getLatitude());
+        locationObject.put("longitude", this.location.getLongitude());
+
         Neighbourhood neighbourhood = this.location.getNeighbourhood();
+
         locationObject.put("neighbourhood", neighbourhood.getName());
         locationObject.put("city",          neighbourhood.getCity().getName());
         locationObject.put("country",       neighbourhood.getCity().getCountry().getName());

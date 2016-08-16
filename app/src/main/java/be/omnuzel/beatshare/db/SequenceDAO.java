@@ -127,7 +127,6 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
         int    id   = cursor.getInt   (cursor.getColumnIndex(COLUMN_ID));
         String json = cursor.getString(cursor.getColumnIndex(COLUMN_JSON));
 
-
         Sequence sequence = null;
         try {
             sequence = Sequence.fromJSON(json);

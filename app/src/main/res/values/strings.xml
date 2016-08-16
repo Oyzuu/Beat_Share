@@ -7,7 +7,7 @@
     <string name="signup">Sign up</string>
 
     <string name="confirm">Confirm</string>
-    <string name="ok" translatable="false">OK</string>
+    <string name="ok">OK</string>
     <string name="save"   >Save</string>
     <string name="cancel" >Cancel</string>
 
@@ -32,8 +32,8 @@
     <string name="login_password_error">Wrong password</string>
 
     <string name="play" >Play</string>
-    <string name="pause" translatable="false">Pause</string>
-    <string name="stop" translatable="false">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
 
     <string name="bar1">Bar 1</string>
     <string name="bar2">Bar 2</string>
@@ -62,6 +62,6 @@
     <string name="save_seq"  >Save</string>
     <string name="logout"    >Log out</string>
 
-    <string name="bpm_short" translatable="false">BPM</string>
+    <string name="bpm_short">BPM</string>
     <string name="bpm_long" >Beats Per Minute</string>
 </resources>

@@ -13,8 +13,6 @@ import be.omnuzel.beatshare.controller.utils.ChocolateSaltyBalls;
 import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
-// TODO IF TIME FOR IT - - - Salt the password
-
 public class UserDAO implements DataAccessObject<User> {
     public static String
     TABLE_NAME        = "User",

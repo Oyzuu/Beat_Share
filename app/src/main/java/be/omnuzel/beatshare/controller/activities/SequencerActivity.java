@@ -320,12 +320,12 @@ public class SequencerActivity
 
     // Close activity if called from drawer or display a dialog if not
     public void logOut() {
+        stop(new View(this));
         new LogOutDialog().show(getFragmentManager(), null);
     }
 
     // TODO IF TIME FOR - - - async tasks for progress feedback
     public void play(View view) {
-        // TODO ___ PUBLISH ___ should be changed
         if (bar1.getActiveSoundsNames().get(0).equals("empty"))
             return;
 

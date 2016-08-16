@@ -1,10 +1,8 @@
 package be.omnuzel.beatshare.controller.activities;
 
-import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
-import android.location.Criteria;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,15 +15,12 @@ import be.omnuzel.beatshare.controller.dialogs.ExitDialog;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 import be.omnuzel.beatshare.controller.utils.ChocolateSaltyBalls;
-import be.omnuzel.beatshare.controller.utils.Localizer;
 import be.omnuzel.beatshare.db.DataAccessObject;
 import be.omnuzel.beatshare.db.RoleDAO;
 import be.omnuzel.beatshare.db.UserDAO;
-import be.omnuzel.beatshare.model.Location;
-import be.omnuzel.beatshare.model.Role;
 import be.omnuzel.beatshare.model.User;
 
-// TODO IF TIME FOR IT - - - regex for log in / sign up
+
 // TODO !!! IMPORTANT !!! make models parcelable (Sequence ?)
 // TODO ___ PUBLISH ___ Create developer account for Play Games Services
 
@@ -120,15 +115,17 @@ public class MainActivity
 
         userDAO.open(DataAccessObject.READABLE);
         User user = userDAO.getByName(name);
-        String salt = userDAO.getSalt(user);
-        userDAO.close();
 
         if (user == null) {
             loginNameEdit.setError(getString(R.string.login_user_error));
             return;
         }
 
+        String salt = userDAO.getSalt(user);
+        userDAO.close();
+
         String hashedPassword = "";
+
         try {
             hashedPassword = ChocolateSaltyBalls.getInstance().hash(pass + salt);
         }
@@ -278,7 +275,6 @@ public class MainActivity
             }
         }
     }
-
 
     /**
      * Display a message in a short-length Snackbar
