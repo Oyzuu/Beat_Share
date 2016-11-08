@@ -15,23 +15,23 @@ public class ChocolateSaltyBalls {
         return instance;
     }
 
-    private char[] upperLetters = new char[26],
-                   lowerLetters = new char[26];
+    private final char[] upperLetters = new char[26];
+    private final char[] lowerLetters = new char[26];
 
     public ChocolateSaltyBalls() {
         for (int charNumber = 65, i = 0; charNumber <= 90; charNumber++, i++)
-            upperLetters[i] = (char)charNumber;
+            upperLetters[i] = (char) charNumber;
 
         for (int charNumber = 97, i = 0; charNumber <= 122; charNumber++, i++)
-            lowerLetters[i] = (char)charNumber;
+            lowerLetters[i] = (char) charNumber;
     }
 
     public String generateSalt() {
-        Random        random        = new Random();
+        Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < 10; i++) {
-            if ((int)(Math.random() + .5) == 0)
+            if ((int) (Math.random() + .5) == 0)
                 stringBuilder.append(lowerLetters[random.nextInt(25)]);
             else
                 stringBuilder.append(upperLetters[random.nextInt(25)]);
@@ -41,9 +41,9 @@ public class ChocolateSaltyBalls {
         return stringBuilder.toString();
     }
 
-    public String hash(String stringToHash) throws Exception{
-        MessageDigest digest    = MessageDigest.getInstance("SHA-512");
-        byte[]        hash      = digest.digest(stringToHash.getBytes("UTF-8"));
+    public String hash(String stringToHash) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        byte[] hash = digest.digest(stringToHash.getBytes("UTF-8"));
         StringBuilder hexString = new StringBuilder();
 
         for (byte mByte : hash) {

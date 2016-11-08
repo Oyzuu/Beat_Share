@@ -22,10 +22,10 @@ import be.omnuzel.beatshare.model.Location;
 
 public class Localizer {
 
-    private LocationManager           locationManager;
-    private Context                   context;
+    private final LocationManager locationManager;
+    private final Context context;
     private android.location.Location receivedLocation;
-    private final LocationListener    locationListener;
+    private final LocationListener locationListener;
 
     public Localizer(Context context) {
         Log.i("LOCALIZER", "in constructor");
@@ -40,18 +40,22 @@ public class Localizer {
             }
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
 
             @Override
-            public void onProviderEnabled(String provider) {}
+            public void onProviderEnabled(String provider) {
+            }
 
             @Override
-            public void onProviderDisabled(String provider) {}
+            public void onProviderDisabled(String provider) {
+            }
         };
     }
 
     /**
      * Get a hydrated location with a JSON from Google geocode API
+     *
      * @param accuracy accuracy constant (Criteria.ACCURACY_FINE or Criteria.ACCURACY_COARSE)
      * @return a fully hydrated be.omnuzel.beatshare.model.Location
      */
@@ -75,8 +79,7 @@ public class Localizer {
             json = locationJSONTask.get();
             Log.i("LOCALIZER", "Json : " + json);
             location = Location.fromJSON(lat, lon, json);
-        }
-        catch (JSONException | InterruptedException | ExecutionException e) {
+        } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -89,7 +92,7 @@ public class Localizer {
         Log.i("LOCALIZER", "in getMockLocation()");
         double
                 lat = 50.837722469761964,
-                lon =  4.353536367416382;
+                lon = 4.353536367416382;
 
         LocationJSONTask locationJSONTask = new LocationJSONTask();
         locationJSONTask.execute(lat, lon);
@@ -101,8 +104,7 @@ public class Localizer {
             json = locationJSONTask.get();
             Log.i("LOCALIZER", "Json : " + json);
             location = Location.fromJSON(lat, lon, json);
-        }
-        catch (JSONException | InterruptedException | ExecutionException e) {
+        } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -113,6 +115,7 @@ public class Localizer {
 
     /**
      * Get coordinates from the location manager
+     *
      * @param accuracy accuracy constant (Criteria.ACCURACY_FINE or Criteria.ACCURACY_COARSE)
      * @return coordinates in a double array
      */
@@ -123,12 +126,11 @@ public class Localizer {
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-            }
-            else {
-                ActivityCompat.requestPermissions((Activity)context,
+            } else {
+                ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
             }
         }
@@ -156,6 +158,7 @@ public class Localizer {
 
     /**
      * Return a default criteria given the accuracy parameter
+     *
      * @param accuracy accuracy constant (Criteria.ACCURACY_FINE or Criteria.ACCURACY_COARSE)
      * @return Criteria
      */

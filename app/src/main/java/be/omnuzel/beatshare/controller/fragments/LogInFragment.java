@@ -14,7 +14,9 @@ public class LogInFragment extends Fragment {
 
     public interface LoginListener {
         void logIn(View view);
+
         void toSignUp(View view);
+
         void flushForm();
     }
 

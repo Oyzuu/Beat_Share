@@ -5,7 +5,6 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
-import android.util.Log;
 
 import java.util.HashMap;
 
@@ -14,29 +13,28 @@ import java.util.HashMap;
  */
 public class SoundBank {
 
-    private SoundPool  soundPool;
-    private Context    context;
-    private int        totalSounds;
+    private final SoundPool soundPool;
+    private final Context context;
+    private final int totalSounds;
 
-    private HashMap<Integer, Integer> sounds = new HashMap<>();
+    private final HashMap<Integer, Integer> sounds = new HashMap<>();
 
     public SoundBank(Context context, int totalSounds) {
-        this.context     = context;
+        this.context = context;
         this.totalSounds = totalSounds;
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             soundPool = new SoundPool(totalSounds, AudioManager.STREAM_MUSIC, 0);
-        }
-        else {
+        } else {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage      (AudioAttributes.USAGE_GAME)
-                    .build         ();
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .build();
 
             soundPool = new SoundPool.Builder()
-                    .setMaxStreams     (totalSounds)
+                    .setMaxStreams(totalSounds)
                     .setAudioAttributes(audioAttributes)
-                    .build             ();
+                    .build();
         }
     }
 

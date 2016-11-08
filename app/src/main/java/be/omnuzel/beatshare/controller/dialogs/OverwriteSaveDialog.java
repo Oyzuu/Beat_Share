@@ -8,9 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 import be.omnuzel.beatshare.R;
-import be.omnuzel.beatshare.model.Sequence;
 
-public class OverwriteSaveDialog extends DialogFragment{
+public class OverwriteSaveDialog extends DialogFragment {
     public interface OverwriteSaveListener {
         void overwriteSave();
     }
@@ -29,7 +28,7 @@ public class OverwriteSaveDialog extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder .setTitle(R.string.ow_dialog)
+        builder.setTitle(R.string.ow_dialog)
                 .setMessage(R.string.ow_message)
                 .setPositiveButton(getString(R.string.ow_pos_button), new DialogInterface.OnClickListener() {
                     @Override

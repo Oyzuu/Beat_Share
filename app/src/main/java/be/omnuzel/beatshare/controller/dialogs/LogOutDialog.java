@@ -22,7 +22,7 @@ public class LogOutDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder .setTitle(R.string.logout_dialog)
+        builder.setTitle(R.string.logout_dialog)
                 .setMessage(R.string.logout_message)
                 .setPositiveButton(getString(R.string.logout), new DialogInterface.OnClickListener() {
                     @Override

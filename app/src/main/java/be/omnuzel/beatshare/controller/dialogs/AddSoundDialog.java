@@ -30,7 +30,7 @@ public class AddSoundDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         final String[] sounds = getResources().getStringArray(R.array.sounds);
-        builder .setTitle(getString(R.string.sounds_dialog))
+        builder.setTitle(getString(R.string.sounds_dialog))
                 .setItems(sounds, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

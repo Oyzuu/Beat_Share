@@ -19,10 +19,10 @@ public class LocationJSONTask extends AsyncTask<Double, String, String> {
     @Override
     protected String doInBackground(Double... coords) {
         HttpURLConnection connection;
-        String            json = "";
+        String json = "";
 
         @SuppressLint("DefaultLocale")
-        String urlString  = String.format(
+        String urlString = String.format(
                 "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f",
                 coords[0], coords[1]
         );
@@ -33,7 +33,7 @@ public class LocationJSONTask extends AsyncTask<Double, String, String> {
             connection.setRequestMethod("GET");
             connection.connect();
 
-            InputStream    is     = new BufferedInputStream(connection.getInputStream());
+            InputStream is = new BufferedInputStream(connection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder("");
@@ -43,12 +43,11 @@ public class LocationJSONTask extends AsyncTask<Double, String, String> {
                 sb.append(line);
             }
 
-            is    .close();
+            is.close();
             reader.close();
 
             json = sb.toString();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

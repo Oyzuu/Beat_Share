@@ -2,7 +2,6 @@ package be.omnuzel.beatshare.controller.threads;
 
 import android.content.Context;
 import android.media.SoundPool;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -14,38 +13,42 @@ import be.omnuzel.beatshare.model.Sequence;
 
 public class PlaybackThread extends Thread {
     public interface PlaybackListener {
-        int      getState();
-        int      getBPM();
-        int      getCurrentStep();
+        int getState();
+
+        int getBPM();
+
+        int getCurrentStep();
+
         Sequence getSequence();
-        void     setCurrentStep(int currentStep);
+
+        void setCurrentStep(int currentStep);
     }
 
     public static final int
-            MINUTE        = 60000,
+            MINUTE = 60000,
             STEPS_PER_BAR = 16,
             TIMES_PER_BAR = 4;
 
-    private PlaybackListener callback;
-    private int              currentStep;
-    private SoundBank        soundBank;
-    private int              totalSteps;
-    private Sequence         sequence;
+    private final PlaybackListener callback;
+    private int currentStep;
+    private final SoundBank soundBank;
+    private final int totalSteps;
+    private Sequence sequence;
 
-    private TreeMap<Integer, ArrayList<Integer>> sequenceMap;
+    private final TreeMap<Integer, ArrayList<Integer>> sequenceMap;
 
     public PlaybackThread(Context context) {
-        this.callback    = (PlaybackListener) context;
+        this.callback = (PlaybackListener) context;
         this.currentStep = callback.getCurrentStep();
-        this.sequence    = callback.getSequence();
+        this.sequence = callback.getSequence();
         sequence.build();
 
         this.sequenceMap = sequence.getSoundsMap();
-        this.totalSteps  = sequence.getTotalBars() * STEPS_PER_BAR;
+        this.totalSteps = sequence.getTotalBars() * STEPS_PER_BAR;
 
         final Set<Integer> distinctSounds = sequence.getDistinctSoundsId();
 
-        this.soundBank   = new SoundBank(context, distinctSounds.size());
+        this.soundBank = new SoundBank(context, distinctSounds.size());
 
 //        Log.i("PLAYTHREAD", "Total steps : " + totalSteps);
 
@@ -71,7 +74,7 @@ public class PlaybackThread extends Thread {
             this.sequence = callback.getSequence();
             sequence.build();
 
-            int state     = callback.getState();
+            int state = callback.getState();
             int sleepTime = MINUTE / callback.getBPM() / TIMES_PER_BAR;
 
             if (state == SequencerActivity.STOPPED) {
@@ -89,8 +92,7 @@ public class PlaybackThread extends Thread {
 
             try {
                 sleep(sleepTime);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 

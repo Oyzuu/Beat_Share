@@ -14,6 +14,7 @@ public class MemberManagementFragment extends Fragment {
 
     public interface MemberManagementListener {
         void save(View view);
+
         void cancel(View view);
     }
 

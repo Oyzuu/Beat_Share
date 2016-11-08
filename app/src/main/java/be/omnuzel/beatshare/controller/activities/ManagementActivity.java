@@ -1,9 +1,8 @@
 package be.omnuzel.beatshare.controller.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.fragments.MemberManagementFragment;
@@ -15,11 +14,11 @@ import be.omnuzel.beatshare.model.User;
 
 public class ManagementActivity
         extends
-            AppCompatActivity
+        AppCompatActivity
         implements
-            MemberManagementFragment.MemberManagementListener {
+        MemberManagementFragment.MemberManagementListener {
 
-    private User    user;
+    private User user;
     private UserDAO userDAO;
 
     private MemberManagementFragment memberManagementFragment;

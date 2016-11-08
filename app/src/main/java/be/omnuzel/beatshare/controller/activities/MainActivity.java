@@ -24,12 +24,7 @@ import be.omnuzel.beatshare.model.User;
 // TODO !!! IMPORTANT !!! make models parcelable (Sequence ?)
 // TODO ___ PUBLISH ___ Create developer account for Play Games Services
 
-public class MainActivity
-        extends
-            AppCompatActivity
-        implements
-        LogInFragment .LoginListener,
-        SignUpFragment.SignUpListener {
+public class MainActivity extends AppCompatActivity implements LogInFragment.LoginListener, SignUpFragment.SignUpListener {
 
     private UserDAO userDAO;
     private RoleDAO roleDAO;
@@ -43,7 +38,7 @@ public class MainActivity
             loginNameEdit,
             loginPassEdit;
 
-    private LogInFragment  logInFragment;
+    private LogInFragment logInFragment;
     private SignUpFragment signUpFragment;
 
     @Override
@@ -54,7 +49,7 @@ public class MainActivity
         userDAO = new UserDAO(this);
         roleDAO = new RoleDAO(this);
 
-        logInFragment  = LogInFragment.getInstance();
+        logInFragment = LogInFragment.getInstance();
         signUpFragment = SignUpFragment.getInstance();
 
         getFragmentManager()
@@ -77,8 +72,7 @@ public class MainActivity
         if (signUpFragment.isVisible()) {
             flushForm();
             getFragmentManager().popBackStackImmediate();
-        }
-        else {
+        } else {
             new ExitDialog().show(getFragmentManager(), "quit");
         }
 
@@ -128,8 +122,7 @@ public class MainActivity
 
         try {
             hashedPassword = ChocolateSaltyBalls.getInstance().hash(pass + salt);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -160,10 +153,10 @@ public class MainActivity
         // Force commit to avoid null on views
         getFragmentManager().executePendingTransactions();
 
-        nameEdit        = (EditText) findViewById(R.id.signup_username);
-        passEdit        = (EditText) findViewById(R.id.signup_password);
+        nameEdit = (EditText) findViewById(R.id.signup_username);
+        passEdit = (EditText) findViewById(R.id.signup_password);
         passConfirmEdit = (EditText) findViewById(R.id.signup_confirm_password);
-        mailEdit        = (EditText) findViewById(R.id.signup_mail);
+        mailEdit = (EditText) findViewById(R.id.signup_mail);
         mailConfirmEdit = (EditText) findViewById(R.id.signup_confirm_mail);
     }
 
@@ -172,16 +165,16 @@ public class MainActivity
         boolean formIsOK = true;
 
         // non null verification with an empty string as fallback value
-        String name        = nameEdit        != null ? nameEdit       .getText().toString() : "";
-        String pass        = passEdit        != null ? passEdit       .getText().toString() : "";
+        String name = nameEdit != null ? nameEdit.getText().toString() : "";
+        String pass = passEdit != null ? passEdit.getText().toString() : "";
         String passConfirm = passConfirmEdit != null ? passConfirmEdit.getText().toString() : "";
-        String mail        = mailEdit        != null ? mailEdit       .getText().toString() : "";
+        String mail = mailEdit != null ? mailEdit.getText().toString() : "";
         String mailConfirm = mailConfirmEdit != null ? mailConfirmEdit.getText().toString() : "";
 
-        name        = name       .trim();
-        pass        = pass       .trim();
+        name = name.trim();
+        pass = pass.trim();
         passConfirm = passConfirm.trim();
-        mail        = mail       .trim();
+        mail = mail.trim();
         mailConfirm = mailConfirm.trim();
 
         Log.i("MAIN", String.format("name : %s, pass : %s, mail : %s", name, pass, mail));
@@ -231,13 +224,13 @@ public class MainActivity
 
         User user = new User();
         user.setName(name);
-        user.setEmail   (mail);
+        user.setEmail(mail);
         user.setPassword(pass);
 
         try {
             userDAO.open(DataAccessObject.WRITABLE);
             userDAO.create(user);
-            user= userDAO.getByName(name);
+            user = userDAO.getByName(name);
 
             cancel(new View(this));
 
@@ -246,12 +239,10 @@ public class MainActivity
 
             flushForm();
             startActivity(intent);
-        }
-        catch (SQLiteConstraintException e) {
+        } catch (SQLiteConstraintException e) {
             snackThis("SQLite Constraint error");
-        }
-        finally {
-            userDAO.close ();
+        } finally {
+            userDAO.close();
         }
     }
 
@@ -266,7 +257,7 @@ public class MainActivity
     @Override
     public void flushForm() {
         EditText[] editTexts = {loginNameEdit, loginPassEdit, nameEdit,
-                                passEdit, passConfirmEdit,mailEdit, mailConfirmEdit};
+                passEdit, passConfirmEdit, mailEdit, mailConfirmEdit};
 
         for (EditText editText : editTexts) {
             if (editText != null) {
@@ -278,6 +269,7 @@ public class MainActivity
 
     /**
      * Display a message in a short-length Snackbar
+     *
      * @param message The string you want to display
      */
     private void snackThis(String message) {

@@ -22,7 +22,7 @@ public class ExitDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder .setTitle(R.string.exit_dialog)
+        builder.setTitle(R.string.exit_dialog)
                 .setMessage(R.string.exit_message)
                 .setPositiveButton(getString(R.string.exit_pos_button), new DialogInterface.OnClickListener() {
                     @Override

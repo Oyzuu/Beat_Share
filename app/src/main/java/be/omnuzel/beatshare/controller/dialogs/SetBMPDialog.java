@@ -17,6 +17,7 @@ public class SetBMPDialog extends DialogFragment {
 
     public interface BPMDialogListener {
         void setBPM(int bpm);
+
         int getBPM();
     }
 
@@ -35,7 +36,7 @@ public class SetBMPDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = LayoutInflater.from((Context) callback);
-        View view               = inflater.inflate(R.layout.bpm_edit, null);
+        View view = inflater.inflate(R.layout.bpm_edit, null);
         final EditText editText = (EditText) view;
 
         editText.setText(callback.getBPM() + "");

@@ -2,7 +2,6 @@ package be.omnuzel.beatshare.controller.activities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -21,8 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONException;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.AddSoundDialog;
@@ -43,41 +40,41 @@ import be.omnuzel.beatshare.model.User;
 
 public class SequencerActivity
         extends
-            AppCompatActivity
+        AppCompatActivity
         implements
-            NavigationView     .OnNavigationItemSelectedListener,
-            AddSoundDialog     .SoundDialogListener,
-            SetBMPDialog       .BPMDialogListener,
-            PlaybackThread     .PlaybackListener,
-            OverwriteSaveDialog.OverwriteSaveListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        AddSoundDialog.SoundDialogListener,
+        SetBMPDialog.BPMDialogListener,
+        PlaybackThread.PlaybackListener,
+        OverwriteSaveDialog.OverwriteSaveListener {
 
 
     // STATE CONSTANTS
     public static final int STOPPED = 0,
-                            PLAYING = 1,
-                            PAUSED  = 2;
+            PLAYING = 1,
+            PAUSED = 2;
 
     private User user;
 
     // SEQUENCE
     private SequenceDAO sequenceDAO;
-    private Sequence    sequence;
-    private Sequence    sequenceToOverwrite;
-    private Bar         bar1,
-                        bar2,
-                        bar3,
-                        bar4;
+    private Sequence sequence;
+    private Sequence sequenceToOverwrite;
+    private Bar bar1,
+            bar2,
+            bar3,
+            bar4;
 
     private android.support.v7.app.ActionBar actionBar;
     private Spinner spinner;
 
     // SEQUENCER STATE
-    private Bar    activeBar;
+    private Bar activeBar;
     private String activeSound;
-    private int[]  activePads;
-    private int    bpm,
-                   state,
-                   currentStep;
+    private int[] activePads;
+    private int bpm,
+            state,
+            currentStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +94,8 @@ public class SequencerActivity
         if (drawerLayout != null) {
             drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
                 @Override
-                public void onDrawerSlide(View drawerView, float slideOffset) {}
+                public void onDrawerSlide(View drawerView, float slideOffset) {
+                }
 
                 @Override
                 public void onDrawerOpened(View drawerView) {
@@ -114,10 +112,12 @@ public class SequencerActivity
                 }
 
                 @Override
-                public void onDrawerClosed(View drawerView) {}
+                public void onDrawerClosed(View drawerView) {
+                }
 
                 @Override
-                public void onDrawerStateChanged(int newState) {}
+                public void onDrawerStateChanged(int newState) {
+                }
             });
         }
 
@@ -131,18 +131,18 @@ public class SequencerActivity
 
         // Sequence init
         sequence = new Sequence();
-        bar1     = new Bar();
-        bar2     = new Bar();
-        bar3     = new Bar();
-        bar4     = new Bar();
+        bar1 = new Bar();
+        bar2 = new Bar();
+        bar3 = new Bar();
+        bar4 = new Bar();
 
         sequence.addBar(bar1);
 
         // Sequencer init
-        activeBar   = bar1;
-        activePads  = new int[16];
-        bpm         = 60;
-        state       = STOPPED;
+        activeBar = bar1;
+        activePads = new int[16];
+        bpm = 60;
+        state = STOPPED;
         currentStep = 0;
 
         // Display BPM in action bar
@@ -162,13 +162,14 @@ public class SequencerActivity
                 if (activeSound.equals("empty"))
                     resetActivePads();
                 else
-                    activePads  = activeBar.getSoundMatrix(activeSound);
+                    activePads = activeBar.getSoundMatrix(activeSound);
 
                 refreshButtons();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
     }
 
@@ -182,8 +183,12 @@ public class SequencerActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.bar_menu_settings : toSettings(); break;
-            case R.id.bar_menu_account  : toAccount();  break;
+            case R.id.bar_menu_settings:
+                toSettings();
+                break;
+            case R.id.bar_menu_account:
+                toAccount();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -192,11 +197,21 @@ public class SequencerActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.drawer_account  : toAccount();      break;
-            case R.id.drawer_settings : toSettings();     break;
-            case R.id.drawer_import   : importSequence(); break;
-            case R.id.drawer_save     : saveSequence();   break;
-            case R.id.drawer_logout   : logOut();         break;
+            case R.id.drawer_account:
+                toAccount();
+                break;
+            case R.id.drawer_settings:
+                toSettings();
+                break;
+            case R.id.drawer_import:
+                importSequence();
+                break;
+            case R.id.drawer_save:
+                saveSequence();
+                break;
+            case R.id.drawer_logout:
+                logOut();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.sequencer_rootview);
@@ -276,10 +291,10 @@ public class SequencerActivity
         Location location = localizer.getMockLocation();
         String seq_name = "test sequence";
 
-        sequence.setName    (seq_name);
-        sequence.setGenre   ("default genre");
-        sequence.setBpm     (this.bpm);
-        sequence.setAuthor  (user.getName());
+        sequence.setName(seq_name);
+        sequence.setGenre("default genre");
+        sequence.setBpm(this.bpm);
+        sequence.setAuthor(user.getName());
         sequence.setLocation(location);
 
         Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show();
@@ -292,9 +307,7 @@ public class SequencerActivity
             sequenceToOverwrite = sequence;
             sequenceToOverwrite.setId(id);
             new OverwriteSaveDialog().show(getFragmentManager(), null);
-        }
-
-        else {
+        } else {
             String message = String.format(getString(R.string.save_string_format),
                     sequence.getName());
 
@@ -333,15 +346,14 @@ public class SequencerActivity
         if (state == STOPPED || state == PAUSED) {
             state = PLAYING;
             new PlaybackThread(this);
-        }
-        else
+        } else
             state = PAUSED;
 
         refreshPlayButton(state);
     }
 
     public void stop(View view) {
-        state       = STOPPED;
+        state = STOPPED;
         currentStep = 0;
         refreshPlayButton(state);
     }
@@ -374,10 +386,16 @@ public class SequencerActivity
         Button addBarButton = (Button) findViewById(R.id.add_bar_button);
 
         switch (sequence.getTotalBars()) {
-            case 1 : activeBar = bar2; break;
-            case 2 : activeBar = bar3; break;
-            case 3 : activeBar = bar4;
-                if (addBarButton != null) addBarButton.setVisibility(View.GONE); break;
+            case 1:
+                activeBar = bar2;
+                break;
+            case 2:
+                activeBar = bar3;
+                break;
+            case 3:
+                activeBar = bar4;
+                if (addBarButton != null) addBarButton.setVisibility(View.GONE);
+                break;
         }
 
         sequence.addBar(activeBar);
@@ -407,19 +425,27 @@ public class SequencerActivity
 
             Button button = (Button) findViewById(id);
             if (button != null)
-                button.setTextColor (getResources().getColor(R.color.white));
+                button.setTextColor(getResources().getColor(R.color.white));
         }
 
         // Change currently selected bar text color
         Button button = (Button) findViewById(view.getId());
         if (button != null)
-            button.setTextColor (getResources().getColor(R.color.colorAccent));
+            button.setTextColor(getResources().getColor(R.color.colorAccent));
 
         switch (view.getId()) {
-            case R.id.button_bar1 : activeBar = bar1; break;
-            case R.id.button_bar2 : activeBar = bar2; break;
-            case R.id.button_bar3 : activeBar = bar3; break;
-            case R.id.button_bar4 : activeBar = bar4; break;
+            case R.id.button_bar1:
+                activeBar = bar1;
+                break;
+            case R.id.button_bar2:
+                activeBar = bar2;
+                break;
+            case R.id.button_bar3:
+                activeBar = bar3;
+                break;
+            case R.id.button_bar4:
+                activeBar = bar4;
+                break;
         }
 
         refreshButtons();
@@ -435,14 +461,13 @@ public class SequencerActivity
 
         // Fetch button by name
         String[] buttonName = getResources().getResourceName(view.getId()).split("_");
-        int buttonNumber    = Integer.parseInt(buttonName[2]);
-        Button button       = (Button) view;
+        int buttonNumber = Integer.parseInt(buttonName[2]);
+        Button button = (Button) view;
 
         if (activePads[buttonNumber - 1] == 0) {
             changeButtonBackground(button, true);
             activePads[buttonNumber - 1] = 1;
-        }
-        else {
+        } else {
             changeButtonBackground(button, false);
             activePads[buttonNumber - 1] = 0;
         }
@@ -458,7 +483,7 @@ public class SequencerActivity
     }
 
     private void refreshSpinner() {
-        ArrayAdapter<String> spinnerAdapter =  new ArrayAdapter<>(this,
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, activeBar.getActiveSoundsNames());
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -467,9 +492,9 @@ public class SequencerActivity
 
     private void refreshButtons() {
         for (int i = 0; i < activePads.length; i++) {
-            String buttonId = "seq_button_" + (i+1);
-            int    id       = getResources().getIdentifier(buttonId, "id", getPackageName());
-            Button button   = (Button) findViewById(id);
+            String buttonId = "seq_button_" + (i + 1);
+            int id = getResources().getIdentifier(buttonId, "id", getPackageName());
+            Button button = (Button) findViewById(id);
 
             if (activePads[i] == 1)
                 changeButtonBackground(button, true);
@@ -483,11 +508,10 @@ public class SequencerActivity
         Drawable inactive;
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            active   = getResources().getDrawable(R.drawable.sequencer_pad);
+            active = getResources().getDrawable(R.drawable.sequencer_pad);
             inactive = getResources().getDrawable(R.drawable.disabled_sequencer_pad);
-        }
-        else {
-            active   = getResources().getDrawable(R.drawable.sequencer_pad, null);
+        } else {
+            active = getResources().getDrawable(R.drawable.sequencer_pad, null);
             inactive = getResources().getDrawable(R.drawable.disabled_sequencer_pad, null);
         }
 
@@ -502,9 +526,13 @@ public class SequencerActivity
 
         if (playButton != null) {
             switch (state) {
-                case STOPPED :
-                case PAUSED  : playButton.setText(getString(R.string.play));  break;
-                case PLAYING : playButton.setText(getString(R.string.pause)); break;
+                case STOPPED:
+                case PAUSED:
+                    playButton.setText(getString(R.string.play));
+                    break;
+                case PLAYING:
+                    playButton.setText(getString(R.string.pause));
+                    break;
             }
         }
     }
