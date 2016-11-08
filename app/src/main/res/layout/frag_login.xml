@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,29 +14,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColorHint="@color/white">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/login_username"
                 android:inputType="text"
                 android:textColor="@color/colorAccent"
-                android:hint="@string/username"/>
+                android:hint="@string/username" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColorHint="@color/white">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/login_password"
                 android:inputType="textPassword"
                 android:textColor="@color/colorAccent"
-                android:hint="@string/password"/>
+                android:hint="@string/password" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/sign_in_button"
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -45,16 +47,17 @@
             android:layout_marginBottom="8dp"
             android:text="@string/signin"
             android:background="@drawable/plain_button"
-            android:onClick="logIn"/>
+            android:onClick="logIn" />
+
         <Button
+            android:id="@+id/sign_up_button"
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:text="@string/signup"
             android:background="@drawable/secondary_button"
             android:textColor="@color/colorAccent"
-            android:id="@+id/button_to_signup"
-            android:onClick="toSignUp"/>
+            android:onClick="toSignUp" />
 
     </LinearLayout>
 
