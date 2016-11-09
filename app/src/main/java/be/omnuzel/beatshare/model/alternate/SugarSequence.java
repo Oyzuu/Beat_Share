@@ -82,4 +82,23 @@ public class SugarSequence extends SugarRecord {
         this.bars = bars;
     }
 
+    @Override
+    public String toString() {
+        return "SugarSequence{" +
+                "name='" + name + '\'' +
+                ", genre='" + genre + '\'' +
+                ", author='" + author + '\'' +
+                ", bpm=" + bpm +
+                ", location=" + location +
+                ", bars=" + bars +
+                '}';
+    }
+
+    public void sugarSave() {
+        for (SugarBar bar : bars) {
+            bar.sugarSave();
+        }
+
+        save();
+    }
 }

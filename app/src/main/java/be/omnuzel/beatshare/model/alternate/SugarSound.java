@@ -2,6 +2,8 @@ package be.omnuzel.beatshare.model.alternate;
 
 import com.orm.SugarRecord;
 
+import java.util.Arrays;
+
 /**
  * Created by isdc on 9/11/16.
  */
@@ -37,5 +39,14 @@ public class SugarSound extends SugarRecord {
 
     public void setSoundID(int soundID) {
         this.soundID = soundID;
+    }
+
+    @Override
+    public String toString() {
+        return "SugarSound{" +
+                "name='" + name + '\'' +
+                ", matrix=" + Arrays.toString(matrix) +
+                ", soundID=" + soundID +
+                '}';
     }
 }

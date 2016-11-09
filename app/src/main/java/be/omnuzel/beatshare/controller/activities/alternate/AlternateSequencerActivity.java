@@ -26,6 +26,7 @@ import android.widget.TextView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
+import java.util.List;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.activities.ManagementActivity;
@@ -34,8 +35,6 @@ import be.omnuzel.beatshare.controller.dialogs.LogOutDialog;
 import be.omnuzel.beatshare.controller.dialogs.OverwriteSaveDialog;
 import be.omnuzel.beatshare.controller.dialogs.SetBMPDialog;
 import be.omnuzel.beatshare.controller.threads.PlaybackThread;
-import be.omnuzel.beatshare.controller.utils.Localizer;
-import be.omnuzel.beatshare.model.Location;
 import be.omnuzel.beatshare.model.Sequence;
 import be.omnuzel.beatshare.model.User;
 import be.omnuzel.beatshare.model.alternate.SugarBar;
@@ -245,18 +244,33 @@ public class AlternateSequencerActivity
 
     // TODO !!! IMPORTANT !!! Importable sequence
     public void importSequence() {
-        snackThis("import");
+        List<SugarSequence> result =
+                SugarSequence.find(SugarSequence.class, "name=? and author=?", "test", "test|test");
+
+        if (result != null) {
+            sequence = result.get(0);
+            snackThis("Sequence imported");
+            Log.i("IMPORTED-SEQUENCE", sequence.getName() + " by " + sequence.getAuthor());
+//            refreshButtons();
+//            refreshSpinner();
+        } else {
+            snackThis("Sequence not found");
+        }
     }
 
     // TODO MockLocation for demo
     public void saveSequence() {
-        Localizer localizer = new Localizer(this);
+        sequence.setName("test");
+        sequence.setAuthor(user.getName() + "|" + user.getEmail());
+        sequence.setBpm(bpm);
+        sequence.sugarSave();
+//        Localizer localizer = new Localizer(this);
 //        Location  location  = localizer.getLocation(Criteria.ACCURACY_COARSE);
 //
 //        if (location == null)
 //            location = localizer.getMockLocation();
 
-        Location location = localizer.getMockLocation();
+//        Location location = localizer.getMockLocation();
 //        String seq_name = "test sequence";
 //
 //        sequence.setName(seq_name);

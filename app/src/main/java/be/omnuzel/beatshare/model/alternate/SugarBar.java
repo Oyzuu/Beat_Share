@@ -41,4 +41,19 @@ public class SugarBar extends SugarRecord {
 
         return names;
     }
+
+    @Override
+    public String toString() {
+        return "SugarBar{" +
+                "sounds=" + sounds +
+                '}';
+    }
+
+    public void sugarSave() {
+        for (SugarSound sound : sounds) {
+            sound.save();
+        }
+
+        save();
+    }
 }
