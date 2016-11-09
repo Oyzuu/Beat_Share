@@ -1,5 +1,7 @@
 package be.omnuzel.beatshare.controller.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,10 +20,14 @@ public class ManagementActivity
         implements
         MemberManagementFragment.MemberManagementListener {
 
+    public static void startActivity(Context context, User user) {
+        Intent intent = new Intent(context, ManagementActivity.class);
+        intent.putExtra("user", user);
+        context.startActivity(intent);
+    }
+
     private User user;
     private UserDAO userDAO;
-
-    private MemberManagementFragment memberManagementFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +42,10 @@ public class ManagementActivity
             getSupportActionBar().setTitle("Account");
 
         userDAO = new UserDAO(this);
-        memberManagementFragment = MemberManagementFragment.getInstance();
 
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.management_rootview, memberManagementFragment)
+                .replace(R.id.management_rootview, MemberManagementFragment.newInstance())
                 .commit();
     }
 

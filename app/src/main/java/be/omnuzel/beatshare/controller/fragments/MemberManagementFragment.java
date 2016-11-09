@@ -18,21 +18,18 @@ public class MemberManagementFragment extends Fragment {
         void cancel(View view);
     }
 
-    public static MemberManagementFragment instance;
+    public static MemberManagementFragment newInstance() {
 
-    public static MemberManagementFragment getInstance() {
-        if (instance == null)
-            instance = new MemberManagementFragment();
-
-        return instance;
+        Bundle args = new Bundle();
+        
+        MemberManagementFragment fragment = new MemberManagementFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
-
-    private MemberManagementListener callback;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.callback = (MemberManagementListener) context;
     }
 
     @Nullable

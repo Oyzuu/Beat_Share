@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.AddSoundDialog;
@@ -55,11 +59,15 @@ public class SequencerActivity
         context.startActivity(intent);
     }
 
-
     // STATE CONSTANTS
     public static final int STOPPED = 0,
             PLAYING = 1,
             PAUSED = 2;
+
+    @IntDef({STOPPED, PLAYING, PAUSED})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface SequencerStates {
+    }
 
     private User user;
 
@@ -67,10 +75,7 @@ public class SequencerActivity
     private SequenceDAO sequenceDAO;
     private Sequence sequence;
     private Sequence sequenceToOverwrite;
-    private Bar bar1,
-            bar2,
-            bar3,
-            bar4;
+    private Bar bar1, bar2, bar3, bar4;
 
     private android.support.v7.app.ActionBar actionBar;
     private Spinner spinner;
@@ -79,9 +84,7 @@ public class SequencerActivity
     private Bar activeBar;
     private String activeSound;
     private int[] activePads;
-    private int bpm,
-            state,
-            currentStep;
+    private int bpm, state, currentStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +96,7 @@ public class SequencerActivity
             user = (User) extras.get("user");
 
         if (user != null && user.getRoles().get(0).getName().equals("admin"))
-            toAccount();
+            ManagementActivity.startActivity(this, user);
 
         // Left drawer init and event management
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.sequencer_rootview);
@@ -194,7 +197,7 @@ public class SequencerActivity
                 toSettings();
                 break;
             case R.id.bar_menu_account:
-                toAccount();
+                ManagementActivity.startActivity(this, user);
                 break;
         }
 
@@ -205,7 +208,7 @@ public class SequencerActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.drawer_account:
-                toAccount();
+                ManagementActivity.startActivity(this, user);
                 break;
             case R.id.drawer_settings:
                 toSettings();
@@ -274,12 +277,6 @@ public class SequencerActivity
 
     public void toSettings() {
         new SetBMPDialog().show(getFragmentManager(), "set BPM");
-    }
-
-    public void toAccount() {
-        Intent intent = new Intent(this, ManagementActivity.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
     }
 
     // TODO !!! IMPORTANT !!! Importable sequence
