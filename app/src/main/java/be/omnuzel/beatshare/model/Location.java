@@ -5,19 +5,19 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Location implements Parcelable {
-    private long          id;
-    private double        latitude,
-                          longitude;
+    private long id;
+    private double latitude,
+            longitude;
     private Neighbourhood neighbourhood;
 
-    public Location() {}
+    public Location() {
+    }
 
     public long getId() {
         return id;
@@ -63,30 +63,31 @@ public class Location implements Parcelable {
 
     /**
      * Return a hydrated Location from coordinates and a JSON string
-     * @param latitude latitude of the location
+     *
+     * @param latitude  latitude of the location
      * @param longitude longitude of the location
-     * @param json a JSON from reverse Geocoding API
+     * @param json      a JSON from reverse Geocoding API
      * @return Location
      * @throws JSONException
      */
     public static Location fromJSON(double latitude, double longitude, String json) throws JSONException {
         JSONObject jo = new JSONObject(json);
 
-        JSONArray  results                 = jo     .getJSONArray("results");
-        JSONObject resultFirstObject       = results.getJSONObject(0);
-        JSONObject resultBeforeLastObject  = results.getJSONObject(results.length()-2);
+        JSONArray results = jo.getJSONArray("results");
+        JSONObject resultFirstObject = results.getJSONObject(0);
+        JSONObject resultBeforeLastObject = results.getJSONObject(results.length() - 2);
 
         // splitting the complete address to get neighbourhood's name
         // is easier this way due to data model inconsistency
-        String   fullAddress       = resultFirstObject.optString("formatted_address", "ERROR");
-        String[] addressArray      = fullAddress.split(", ");
-        String[] neighArray        = addressArray[1].split(" ");
-        String   neighbourhoodName = neighArray[1];
+        String fullAddress = resultFirstObject.optString("formatted_address", "ERROR");
+        String[] addressArray = fullAddress.split(", ");
+        String[] neighArray = addressArray[1].split(" ");
+        String neighbourhoodName = neighArray[1];
 
-        String   cityCountryString  = resultBeforeLastObject.optString("formatted_address", "ERROR");
-        String[] cityCountryArray   = cityCountryString.split(", ");
-        String   cityName           = cityCountryArray[0];
-        String   countryName        = cityCountryArray[1];
+        String cityCountryString = resultBeforeLastObject.optString("formatted_address", "ERROR");
+        String[] cityCountryArray = cityCountryString.split(", ");
+        String cityName = cityCountryArray[0];
+        String countryName = cityCountryArray[1];
 
         Log.i("LOC HYDRATE", neighbourhoodName);
         Log.i("LOC HYDRATE", cityName);
@@ -98,10 +99,10 @@ public class Location implements Parcelable {
 
         City city = new City();
 
-        city.setName   (cityName);
+        city.setName(cityName);
         city.setCountry(country);
 
-        Neighbourhood neighbourhood = new Neighbourhood() ;
+        Neighbourhood neighbourhood = new Neighbourhood();
 
         neighbourhood.setName(neighbourhoodName);
         neighbourhood.setCity(city);
@@ -110,8 +111,8 @@ public class Location implements Parcelable {
 
         Location location = new Location();
 
-        location.setLatitude     (latitude);
-        location.setLongitude    (longitude);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
         location.setNeighbourhood(neighbourhood);
 
         return location;
@@ -125,9 +126,9 @@ public class Location implements Parcelable {
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void writeToParcel(Parcel destination, int flags) {
-        destination.writeLong       (id);
-        destination.writeDouble     (latitude);
-        destination.writeDouble     (longitude);
+        destination.writeLong(id);
+        destination.writeDouble(latitude);
+        destination.writeDouble(longitude);
         destination.writeTypedObject(neighbourhood, 0);
     }
 
@@ -137,9 +138,9 @@ public class Location implements Parcelable {
         public Location createFromParcel(Parcel source) {
             Location location = new Location();
 
-            location.setId           (source.readLong());
-            location.setLatitude     (source.readDouble());
-            location.setLongitude    (source.readDouble());
+            location.setId(source.readLong());
+            location.setLatitude(source.readDouble());
+            location.setLongitude(source.readDouble());
             location.setNeighbourhood(source.readTypedObject(Neighbourhood.CREATOR));
 
             return location;

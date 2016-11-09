@@ -30,4 +30,6 @@ dependencies {
     compile 'com.mikepenz:google-material-typeface:2.2.0.2.original@aar'
 
     compile 'com.facebook.stetho:stetho:1.4.1'
+
+    compile 'com.github.satyan:sugar:1.4'
 }

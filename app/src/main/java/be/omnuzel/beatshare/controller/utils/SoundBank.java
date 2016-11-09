@@ -40,7 +40,6 @@ public class SoundBank {
 
     public void load(int resourceId) {
         int id = soundPool.load(context, resourceId, 0);
-//        Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
 
         sounds.put(resourceId, id);
     }

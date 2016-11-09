@@ -10,6 +10,7 @@ import be.omnuzel.beatshare.R;
 import be.omnuzel.beatshare.controller.dialogs.ExitDialog;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
+import be.omnuzel.beatshare.model.DummySugarEntity;
 
 // TODO ___ PUBLISH ___ Create developer account for Play Games Services
 
@@ -19,6 +20,11 @@ public class MainActivity extends AppCompatActivity implements LogInFragment.Log
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DummySugarEntity dummySugarEntity = new DummySugarEntity();
+        dummySugarEntity.setName("hey");
+        dummySugarEntity.setCount(5);
+        dummySugarEntity.save();
 
         getFragmentManager()
                 .beginTransaction()
