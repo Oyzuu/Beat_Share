@@ -7,7 +7,8 @@ public class Role implements Parcelable {
     private long id;
     private String name;
 
-    public Role() {}
+    public Role() {
+    }
 
     public long getId() {
         return id;
@@ -40,16 +41,16 @@ public class Role implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel destination, int flags) {
-        destination.writeLong  (id);
+        destination.writeLong(id);
         destination.writeString(name);
     }
 
-    public static  Creator<Role> CREATOR = new Creator<Role>() {
+    public static Creator<Role> CREATOR = new Creator<Role>() {
         @Override
         public Role createFromParcel(Parcel source) {
             Role role = new Role();
 
-            role.setId  (source.readLong());
+            role.setId(source.readLong());
             role.setName(source.readString());
 
             return role;

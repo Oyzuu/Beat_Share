@@ -15,27 +15,27 @@ import java.util.TreeMap;
 public class Sequence {
 
     // In a perfect world, soundsMap would be an <SoundMap> object
-    private TreeMap<Integer, ArrayList<Integer>> soundsMap;
-    private ArrayList<Bar>                       bars;
-    private Set<Integer>                         distinctSoundsId;
+    private final TreeMap<Integer, ArrayList<Integer>> soundsMap;
+    private final ArrayList<Bar> bars;
+    private final Set<Integer> distinctSoundsId;
 
 
-    private long     id;
-    private String   name,
-                     genre,
-                     author;
-    private int      bpm;
+    private long id;
+    private String name,
+            genre,
+            author;
+    private int bpm;
     private Location location;
 
     public Sequence() {
-        this.bars             = new ArrayList<>();
-        this.soundsMap        = new TreeMap<>();
+        this.bars = new ArrayList<>();
+        this.soundsMap = new TreeMap<>();
         this.distinctSoundsId = new HashSet<>();
 
-        this.name     = "";
-        this.genre    = "";
-        this.bpm      = 0;
-        this.author   = null;
+        this.name = "";
+        this.genre = "";
+        this.bpm = 0;
+        this.author = null;
         this.location = null;
     }
 
@@ -130,23 +130,23 @@ public class Sequence {
     }
 
     public String toJSON() throws JSONException {
-        JSONObject jsonObject     = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put("name",   this.name);
-        jsonObject.put("genre",  this.genre);
-        jsonObject.put("bpm",    this.bpm);
+        jsonObject.put("name", this.name);
+        jsonObject.put("genre", this.genre);
+        jsonObject.put("bpm", this.bpm);
         jsonObject.put("author", this.author);
 
         JSONObject locationObject = new JSONObject();
 
-        locationObject.put("latitude",  this.location.getLatitude());
+        locationObject.put("latitude", this.location.getLatitude());
         locationObject.put("longitude", this.location.getLongitude());
 
         Neighbourhood neighbourhood = this.location.getNeighbourhood();
 
         locationObject.put("neighbourhood", neighbourhood.getName());
-        locationObject.put("city",          neighbourhood.getCity().getName());
-        locationObject.put("country",       neighbourhood.getCity().getCountry().getName());
+        locationObject.put("city", neighbourhood.getCity().getName());
+        locationObject.put("country", neighbourhood.getCity().getCountry().getName());
 
         jsonObject.put("location", locationObject);
 
@@ -161,7 +161,7 @@ public class Sequence {
                 JSONObject soundObject = new JSONObject();
 
                 soundObject.put("name", sound.getName());
-                soundObject.put("id",   sound.getId());
+                soundObject.put("id", sound.getId());
 
                 JSONArray matrix;
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -169,8 +169,7 @@ public class Sequence {
 
                     for (int n : sound.getMatrix())
                         matrix.put(n);
-                }
-                else
+                } else
                     matrix = new JSONArray(sound.getMatrix());
 
                 soundObject.put("matrix", matrix);
@@ -192,17 +191,17 @@ public class Sequence {
     public static Sequence fromJSON(String json) throws JSONException {
         JSONObject jsonObject = new JSONObject(json);
 
-        String name   = jsonObject.getString("name");
-        String genre  = jsonObject.getString("genre");
-        int    bpm    = jsonObject.getInt   ("bpm");
+        String name = jsonObject.getString("name");
+        String genre = jsonObject.getString("genre");
+        int bpm = jsonObject.getInt("bpm");
         String author = jsonObject.getString("author");
 
         JSONObject locationObject = jsonObject.getJSONObject("location");
 
-        double lat         = locationObject.getDouble("latitude");
-        double lon         = locationObject.getDouble("longitude");
-        String neighName   = locationObject.getString("neighbourhood");
-        String cityName    = locationObject.getString("city");
+        double lat = locationObject.getDouble("latitude");
+        double lon = locationObject.getDouble("longitude");
+        String neighName = locationObject.getString("neighbourhood");
+        String cityName = locationObject.getString("city");
         String countryName = locationObject.getString("country");
 
         Country country = new Country();
@@ -224,10 +223,10 @@ public class Sequence {
         JSONObject sequenceObject = jsonObject.getJSONObject("sequence");
 
         Sequence sequence = new Sequence();
-        sequence.setName    (name);
-        sequence.setGenre   (genre);
-        sequence.setBpm     (bpm);
-        sequence.setAuthor  (author);
+        sequence.setName(name);
+        sequence.setGenre(genre);
+        sequence.setBpm(bpm);
+        sequence.setAuthor(author);
         sequence.setLocation(location);
 
         Log.i("FROM JSON", "sequence object length : " + sequenceObject.names().length());
@@ -243,7 +242,7 @@ public class Sequence {
                 JSONObject soundObject = barObject.getJSONObject("sound" + soundNumber);
 
                 String soundName = soundObject.getString("name");
-                int    id        = soundObject.getInt("id");
+                int id = soundObject.getInt("id");
 
                 int[] matrix = new int[16];
                 JSONArray matrixArray = soundObject.getJSONArray("matrix");

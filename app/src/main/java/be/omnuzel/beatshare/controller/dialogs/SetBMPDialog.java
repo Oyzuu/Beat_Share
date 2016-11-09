@@ -37,7 +37,7 @@ public class SetBMPDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.bpm_edit, null);
         final EditText editText = (EditText) view;
 
-        editText.setText(callback.getBPM());
+        editText.setText(callback.getBPM() + "");
 
         builder.setTitle(R.string.bpm_dialog)
                 .setView(editText)

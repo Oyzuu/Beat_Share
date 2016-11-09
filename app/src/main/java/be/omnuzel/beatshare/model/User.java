@@ -75,10 +75,10 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel destination, int flags) {
-        destination.writeLong     (id);
-        destination.writeString   (userName);
-        destination.writeString   (email);
-        destination.writeString   (password);
+        destination.writeLong(id);
+        destination.writeString(userName);
+        destination.writeString(email);
+        destination.writeString(password);
         destination.writeTypedList(roles);
     }
 
@@ -87,9 +87,9 @@ public class User implements Parcelable {
         public User createFromParcel(Parcel source) {
             User user = new User();
 
-            user.setId      (source.readLong());
+            user.setId(source.readLong());
             user.setName(source.readString());
-            user.setEmail   (source.readString());
+            user.setEmail(source.readString());
             user.setPassword(source.readString());
 
             ArrayList<Role> arrayList = new ArrayList<>();

@@ -525,7 +525,7 @@ public class SequencerActivity
             button.setBackground(inactive);
     }
 
-    private void refreshPlayButton(int state) {
+    private void refreshPlayButton(@SequencerStates int state) {
         Button playButton = (Button) findViewById(R.id.seq_play_button);
 
         if (playButton != null) {
