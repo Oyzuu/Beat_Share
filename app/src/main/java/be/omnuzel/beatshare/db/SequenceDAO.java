@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -17,13 +16,13 @@ import be.omnuzel.beatshare.model.Sequence;
 public class SequenceDAO implements DataAccessObject<Sequence> {
 
     public static String
-    TABLE_NAME         = "sequence",
+            TABLE_NAME = "sequence",
 
-    COLUMN_ID          = "id",
-    COLUMN_NAME        = "name",
-    COLUMN_JSON        = "json",
+    COLUMN_ID = "id",
+            COLUMN_NAME = "name",
+            COLUMN_JSON = "json",
 
-    CREATE_TABLE       = String.format(
+    CREATE_TABLE = String.format(
             "CREATE TABLE IF NOT EXISTS %s(" +
                     "%s INTEGER PRIMARY KEY," +
                     "%s TEXT NOT NULL," +
@@ -31,16 +30,16 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
             TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_JSON
     ),
 
-    UPGRADE_TABLE      = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
+    UPGRADE_TABLE = "DROP TABLE " + TABLE_NAME + " ; " + CREATE_TABLE;
 
-    private SQLiteDatabase   db;
-    private DatabaseHelper   databaseHelper;
-    private Context          context;
-    private LocationDAO      locationDAO;
+    private SQLiteDatabase db;
+    private DatabaseHelper databaseHelper;
+    private final Context context;
+    private final LocationDAO locationDAO;
 
     public SequenceDAO(Context context) {
         this.context = context;
-        locationDAO  = new LocationDAO(context);
+        locationDAO = new LocationDAO(context);
     }
 
     @Override
@@ -69,8 +68,7 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
         try {
             cv.put(COLUMN_NAME, sequence.getName());
             cv.put(COLUMN_JSON, sequence.toJSON());
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -124,15 +122,14 @@ public class SequenceDAO implements DataAccessObject<Sequence> {
 
     @Override
     public Sequence getFromCursor(Cursor cursor) {
-        int    id   = cursor.getInt   (cursor.getColumnIndex(COLUMN_ID));
+        int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
         String json = cursor.getString(cursor.getColumnIndex(COLUMN_JSON));
 
         Sequence sequence = null;
         try {
             sequence = Sequence.fromJSON(json);
             sequence.setId(id);
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

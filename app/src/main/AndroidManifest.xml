@@ -35,6 +35,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.activities.SequencerActivity" />
+        <activity android:name=".controller.activities.alternate.AlternateSequencerActivity" />
         <activity android:name=".controller.activities.Debug" />
         <activity android:name=".controller.activities.ManagementActivity" />
     </application>

@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import be.omnuzel.beatshare.R;
-import be.omnuzel.beatshare.controller.activities.SequencerActivity;
+import be.omnuzel.beatshare.controller.activities.alternate.AlternateSequencerActivity;
 import be.omnuzel.beatshare.controller.utils.ChocolateSaltyBalls;
 import be.omnuzel.beatshare.db.DataAccessObject;
 import be.omnuzel.beatshare.db.UserDAO;
@@ -127,7 +127,7 @@ public class LogInFragment extends Fragment {
             return;
         }
 
-        SequencerActivity.startActivity(context, user);
+        AlternateSequencerActivity.startActivity(context, user);
     }
 
 }

@@ -4,7 +4,7 @@
         android:title="@string/settings"
         android:id="@+id/bar_menu_settings"
         android:icon="@drawable/ic_tune_white_24dp"
-        android:showAsAction="always"/>
+        android:showAsAction="always" />
     <item
         android:title="@string/account"
         android:id="@+id/bar_menu_account"

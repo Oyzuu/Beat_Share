@@ -236,7 +236,7 @@ public class Sequence {
             Bar bar = new Bar();
             bar.getActiveSoundsNames().remove(0);
 
-            Log.i("FROM JSON", "bar object length : " + barObject.names().length());
+//            Log.i("FROM JSON", "bar object length : " + barObject.names().length());
             // sound loop
             for (int soundNumber = 1; soundNumber <= barObject.names().length(); soundNumber++) {
                 JSONObject soundObject = barObject.getJSONObject("sound" + soundNumber);
