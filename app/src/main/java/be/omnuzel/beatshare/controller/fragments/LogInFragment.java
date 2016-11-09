@@ -1,7 +1,7 @@
 package be.omnuzel.beatshare.controller.fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -33,8 +33,18 @@ public class LogInFragment extends Fragment {
     }
 
     private EditText loginNameEdit, loginPassEdit;
+    private Context context;
+    private LogInFragmentListener mCallback;
 
     public LogInFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+        this.mCallback = (LogInFragmentListener) context;
+
     }
 
     @Nullable
@@ -65,13 +75,13 @@ public class LogInFragment extends Fragment {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toSignUp();
+                mCallback.toSignUp();
             }
         });
     }
 
-    private boolean checkFieldValidity(EditText edittext, String errorMessage) {
-        if (edittext.getText().toString().trim().equals("")) {
+    private boolean checkResultEquality(EditText edittext, String expectedResult, String errorMessage) {
+        if (edittext.getText().toString().trim().equals(expectedResult)) {
             edittext.setError(errorMessage);
             return false;
         }
@@ -84,12 +94,12 @@ public class LogInFragment extends Fragment {
         String name = loginNameEdit != null ? loginNameEdit.getText().toString() : "";
         String pass = loginPassEdit != null ? loginPassEdit.getText().toString() : "";
 
-        if (!checkFieldValidity(loginNameEdit, getString(R.string.user_input_error)) ||
-                !checkFieldValidity(loginPassEdit, getString(R.string.password_input_error))) {
+        if (!checkResultEquality(loginNameEdit, "", getString(R.string.user_input_error)) ||
+                !checkResultEquality(loginPassEdit, "", getString(R.string.password_input_error))) {
             return;
         }
 
-        UserDAO userDAO = new UserDAO(getContext());
+        UserDAO userDAO = new UserDAO(context);
 
         userDAO.open(DataAccessObject.READABLE);
         User user = userDAO.getByName(name);
@@ -115,14 +125,7 @@ public class LogInFragment extends Fragment {
             return;
         }
 
-        Intent intent = new Intent(getActivity(), SequencerActivity.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
+        SequencerActivity.startActivity(context, user);
     }
-
-    public void toSignUp() {
-        // callback will change fragments here
-    }
-
 
 }

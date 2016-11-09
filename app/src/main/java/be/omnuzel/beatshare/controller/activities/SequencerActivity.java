@@ -1,5 +1,6 @@
 package be.omnuzel.beatshare.controller.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -47,6 +48,12 @@ public class SequencerActivity
         SetBMPDialog.BPMDialogListener,
         PlaybackThread.PlaybackListener,
         OverwriteSaveDialog.OverwriteSaveListener {
+
+    public static void startActivity(Context context, User user) {
+        Intent intent = new Intent(context, SequencerActivity.class);
+        intent.putExtra("user", user);
+        context.startActivity(intent);
+    }
 
 
     // STATE CONSTANTS

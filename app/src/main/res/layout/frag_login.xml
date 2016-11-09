@@ -46,8 +46,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/signin"
-            android:background="@drawable/plain_button"
-            android:onClick="logIn" />
+            android:background="@drawable/plain_button" />
 
         <Button
             android:id="@+id/sign_up_button"
@@ -56,8 +55,7 @@
             android:layout_gravity="center"
             android:text="@string/signup"
             android:background="@drawable/secondary_button"
-            android:textColor="@color/colorAccent"
-            android:onClick="toSignUp" />
+            android:textColor="@color/colorAccent" />
 
     </LinearLayout>
 
