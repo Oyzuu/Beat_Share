@@ -22,24 +22,22 @@ public class SetBMPDialog extends DialogFragment {
     }
 
     private BPMDialogListener callback;
-    private Activity activity;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = activity;
         this.callback = (BPMDialogListener) activity;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = LayoutInflater.from((Context) callback);
         View view = inflater.inflate(R.layout.bpm_edit, null);
         final EditText editText = (EditText) view;
 
-        editText.setText(callback.getBPM() + "");
+        editText.setText(callback.getBPM());
 
         builder.setTitle(R.string.bpm_dialog)
                 .setView(editText)

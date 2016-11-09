@@ -14,19 +14,17 @@ public class OverwriteSaveDialog extends DialogFragment {
         void overwriteSave();
     }
 
-    private Activity activity;
     private OverwriteSaveListener callback;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = activity;
         this.callback = (OverwriteSaveListener) activity;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.ow_dialog)
                 .setMessage(R.string.ow_message)

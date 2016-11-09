@@ -44,7 +44,7 @@ public class SequencerActivity
         AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
-        AddSoundDialog.SoundDialogListener,
+        AddSoundDialog.AddSoundDialogListener,
         SetBMPDialog.BPMDialogListener,
         PlaybackThread.PlaybackListener,
         OverwriteSaveDialog.OverwriteSaveListener {

@@ -12,16 +12,16 @@ import be.omnuzel.beatshare.R;
 
 public class AddSoundDialog extends DialogFragment {
 
-    public interface SoundDialogListener {
+    public interface AddSoundDialogListener {
         void addSound(String soundName);
     }
 
-    private SoundDialogListener callback;
+    private AddSoundDialogListener callback;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.callback = (SoundDialogListener) activity;
+        this.callback = (AddSoundDialogListener) activity;
 
     }
 
