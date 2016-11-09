@@ -11,34 +11,29 @@ import be.omnuzel.beatshare.controller.dialogs.ExitDialog;
 import be.omnuzel.beatshare.controller.fragments.LogInFragment;
 import be.omnuzel.beatshare.controller.fragments.SignUpFragment;
 
-
-// TODO !!! IMPORTANT !!! make models parcelable (Sequence ?)
 // TODO ___ PUBLISH ___ Create developer account for Play Games Services
 
-public class MainActivity extends AppCompatActivity
-        implements SignUpFragment.SignUpListener, LogInFragment.LogInFragmentListener {
+public class MainActivity extends AppCompatActivity implements LogInFragment.LogInFragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toSignIn();
-    }
-
-    @Override
-    public void onBackPressed() {
-        new ExitDialog().show(getFragmentManager(), "quit");
-    }
-
-
-    @Override
-    public void toSignIn() {
         getFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.main_view, LogInFragment.newInstance())
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+        } else {
+            new ExitDialog().show(getFragmentManager(), "quit");
+        }
     }
 
     @Override

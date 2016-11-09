@@ -75,6 +75,8 @@ public class LogInFragment extends Fragment {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loginNameEdit.setText("");
+                loginPassEdit.setText("");
                 mCallback.toSignUp();
             }
         });

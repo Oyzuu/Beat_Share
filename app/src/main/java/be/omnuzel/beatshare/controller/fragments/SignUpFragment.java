@@ -20,10 +20,6 @@ import be.omnuzel.beatshare.model.User;
 
 public class SignUpFragment extends Fragment {
 
-    public interface SignUpListener {
-        void toSignIn();
-    }
-
     public static SignUpFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -33,7 +29,6 @@ public class SignUpFragment extends Fragment {
         return fragment;
     }
 
-    private SignUpListener callback;
     private Context context;
     private EditText nameEdit, passEdit, passConfirmEdit, mailEdit, mailConfirmEdit;
 
@@ -41,7 +36,6 @@ public class SignUpFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        this.callback = (SignUpListener) context;
     }
 
     @Nullable
@@ -67,7 +61,7 @@ public class SignUpFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.toSignIn();
+                getActivity().onBackPressed();
             }
         });
 
@@ -78,64 +72,29 @@ public class SignUpFragment extends Fragment {
         mailConfirmEdit = (EditText) view.findViewById(R.id.signup_confirm_mail);
     }
 
+    private boolean checkResultEquality(EditText edittext, String expectedResult, String errorMessage) {
+        if (edittext.getText().toString().trim().equals(expectedResult)) {
+            edittext.setError(errorMessage);
+            return true;
+        }
+
+        return false;
+    }
+
     public void signUp() {
-        boolean formIsOK = true;
 
         // non null verification with an empty string as fallback value
-        String name = nameEdit != null ? nameEdit.getText().toString() : "";
-        String pass = passEdit != null ? passEdit.getText().toString() : "";
-        String passConfirm = passConfirmEdit != null ? passConfirmEdit.getText().toString() : "";
-        String mail = mailEdit != null ? mailEdit.getText().toString() : "";
-        String mailConfirm = mailConfirmEdit != null ? mailConfirmEdit.getText().toString() : "";
+        String name = nameEdit != null ? nameEdit.getText().toString().trim() : "";
+        String pass = passEdit != null ? passEdit.getText().toString().trim() : "";
+        String mail = mailEdit != null ? mailEdit.getText().toString().trim() : "";
 
-        name = name.trim();
-        pass = pass.trim();
-        passConfirm = passConfirm.trim();
-        mail = mail.trim();
-        mailConfirm = mailConfirm.trim();
-
-        Log.i("MAIN", String.format("name : %s, pass : %s, mail : %s", name, pass, mail));
-
-        if (name.equals("") || pass.equals("") || mail.equals("")) {
-            Log.i("MAIN", "User input error");
-            formIsOK = false;
-        }
-
-        if (name.equals("")) {
-            Log.i("MAIN", "Name input error");
-            nameEdit.setError(getString(R.string.user_input_error));
-            formIsOK = false;
-        }
-
-        if (pass.equals("")) {
-            Log.i("MAIN", "Password input error");
-            passEdit.setError(getString(R.string.pass_confirm_error));
-            formIsOK = false;
-        }
-
-        if (mail.equals("")) {
-            Log.i("MAIN", "mail input error");
-            mailEdit.setError(getString(R.string.mail_input_error));
-            formIsOK = false;
-        }
-
-        if (!formIsOK)
+        if (checkResultEquality(nameEdit, "", getString(R.string.user_input_error)) ||
+                checkResultEquality(passEdit, "", getString(R.string.password_input_error)) ||
+                checkResultEquality(mailEdit, "", getString(R.string.mail_input_error)) ||
+                !checkResultEquality(passConfirmEdit, pass, getString(R.string.pass_confirm_error)) ||
+                !checkResultEquality(mailConfirmEdit, mail, getString(R.string.mail_confirm_error))) {
             return;
-
-        if (!pass.equals(passConfirm)) {
-            Log.i("MAIN", "Password confirmation error");
-            passConfirmEdit.setError(getString(R.string.pass_confirm_error));
-            formIsOK = false;
         }
-
-        if (!mail.equals(mailConfirm)) {
-            Log.i("MAIN", "Mail confirmation error");
-            mailConfirmEdit.setError(getString(R.string.mail_confirm_error));
-            formIsOK = false;
-        }
-
-        if (!formIsOK)
-            return;
 
         Log.i("MAIN", "Sign Up : " + name + " with mail : " + mail);
 
@@ -151,8 +110,7 @@ public class SignUpFragment extends Fragment {
             userDAO.create(user);
             user = userDAO.getByName(name);
 
-            // CANCEL
-
+            getActivity().onBackPressed();
             SequencerActivity.startActivity(context, user);
         } catch (SQLiteConstraintException e) {
             Log.i("SIGNUP-ERROR", "SQLite Constraint error");
@@ -160,4 +118,5 @@ public class SignUpFragment extends Fragment {
             userDAO.close();
         }
     }
+
 }
