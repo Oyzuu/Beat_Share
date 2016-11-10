@@ -2,6 +2,7 @@ package be.omnuzel.beatshare.controller.threads;
 
 import android.content.Context;
 import android.media.SoundPool;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -50,8 +51,6 @@ public class PlaybackThread extends Thread {
 
         this.soundBank = new SoundBank(context, distinctSounds.size());
 
-//        Log.i("PLAYTHREAD", "Total steps : " + totalSteps);
-
         for (int soundId : distinctSounds) {
             soundBank.load(soundId);
         }
@@ -74,6 +73,8 @@ public class PlaybackThread extends Thread {
             this.sequence = callback.getSequence();
             sequence.build();
 
+            long start = System.currentTimeMillis();
+
             int state = callback.getState();
             int sleepTime = MINUTE / callback.getBPM() / TIMES_PER_BAR;
 
@@ -87,7 +88,10 @@ public class PlaybackThread extends Thread {
             }
 
             for (int soundId : sequenceMap.get(currentStep)) {
+                long playStart = System.currentTimeMillis();
                 soundBank.play(soundId);
+                long playEnd = System.currentTimeMillis();
+                Log.i("SOUNDBANK-PLAY", playEnd - playStart + "");
             }
 
             try {
@@ -97,13 +101,14 @@ public class PlaybackThread extends Thread {
             }
 
             currentStep++;
-//            Log.i("THREAD", currentStep + "");
 
             if (currentStep == totalSteps) {
                 currentStep = 0;
             }
-        }
 
-//        Log.i("THREAD", "has stopped");
+            long end = System.currentTimeMillis();
+            Log.i("PLAY-LOOP-TIME", end - start + "");
+        }
     }
+
 }

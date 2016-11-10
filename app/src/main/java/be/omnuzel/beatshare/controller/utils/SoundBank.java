@@ -28,7 +28,7 @@ public class SoundBank {
         } else {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
                     .build();
 
             soundPool = new SoundPool.Builder()
@@ -40,8 +40,6 @@ public class SoundBank {
 
     public void load(int resourceId) {
         int id = soundPool.load(context, resourceId, 0);
-//        Log.i("SOUNDBANK_LOAD", "Sample " + id + " loaded !");
-
         sounds.put(resourceId, id);
     }
 

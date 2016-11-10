@@ -21,9 +21,9 @@ public class Sequence {
 
 
     private long id;
-    private String name,
-            genre,
-            author;
+    private String name;
+    private String genre;
+    private String author;
     private int bpm;
     private Location location;
 
@@ -95,26 +95,32 @@ public class Sequence {
      * Build a map with sequence step as KEY and sounds to play at that step as VALUE
      */
     public void build() {
-        for (int i = 0; i < bars.size() * 16; i++)
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < bars.size() * 16; i++) {
             soundsMap.put(i, new ArrayList<Integer>());
+        }
 
         int i = 0;
         for (Bar bar : bars) {
-            if (bar.getActiveSounds().size() == 0)
+            if (bar.getActiveSounds().size() == 0) {
                 break;
+            }
 
             for (Sound sound : bar.getActiveSounds()) {
                 int[] matrix = sound.getMatrix();
                 distinctSoundsId.add(sound.getId());
 
                 for (int j = 0; j < matrix.length; j++) {
-                    if (matrix[j] == 1)
+                    if (matrix[j] == 1) {
                         soundsMap.get(j + (16 * i)).add(sound.getId());
+                    }
                 }
             }
 
             i++;
         }
+        long end = System.currentTimeMillis();
+        Log.i("SEQ-BUILD-TIME", end - start + "");
     }
 
     public Set<Integer> getDistinctSoundsId() {
