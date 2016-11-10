@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sequencer_rootview"
     android:orientation="vertical"
     tools:context=".controller.activities.SequencerActivity"
@@ -21,7 +22,7 @@
         <!-- Bar Buttons and pads -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
             <!-- Bar buttons and progress bars -->
             <LinearLayout
@@ -159,197 +160,206 @@
 
 
             <!-- Buttons  1 to  4 -->
-            <LinearLayout
+            <android.support.percent.PercentRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:gravity="center">
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
                     android:id="@+id/seq_button_1"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_toEndOf="@+id/seq_button_1"
                     android:id="@+id/seq_button_2"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_toEndOf="@id/seq_button_2"
                     android:id="@+id/seq_button_3"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_toEndOf="@id/seq_button_3"
                     android:id="@+id/seq_button_4"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
-            </LinearLayout>
-            <!-- Buttons  5 to  8 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_1"
                     android:id="@+id/seq_button_5"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_1"
+                    android:layout_toEndOf="@id/seq_button_5"
                     android:id="@+id/seq_button_6"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_1"
+                    android:layout_toEndOf="@id/seq_button_6"
                     android:id="@+id/seq_button_7"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_1"
+                    android:layout_toEndOf="@id/seq_button_7"
                     android:id="@+id/seq_button_8"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
-            </LinearLayout>
-            <!-- Buttons  9 to 12 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_5"
                     android:id="@+id/seq_button_9"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_5"
+                    android:layout_toEndOf="@id/seq_button_9"
                     android:id="@+id/seq_button_10"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_5"
+                    android:layout_toEndOf="@id/seq_button_10"
                     android:id="@+id/seq_button_11"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_5"
+                    android:layout_toEndOf="@id/seq_button_11"
                     android:id="@+id/seq_button_12"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
-            </LinearLayout>
-            <!-- Buttons 13 to 16 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_9"
                     android:id="@+id/seq_button_13"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_9"
+                    android:layout_toEndOf="@id/seq_button_13"
                     android:id="@+id/seq_button_14"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_9"
+                    android:layout_toEndOf="@id/seq_button_14"
                     android:id="@+id/seq_button_15"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
 
                 <Button
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_margin="4dp"
+                    app:layout_widthPercent="24.125%"
+                    app:layout_aspectRatio="100%"
+                    app:layout_marginPercent="0.5%"
+                    android:layout_below="@id/seq_button_9"
+                    android:layout_toEndOf="@id/seq_button_15"
                     android:id="@+id/seq_button_16"
                     android:onClick="activatePad"
                     android:background="@drawable/disabled_sequencer_pad" />
+            </android.support.percent.PercentRelativeLayout>
+
+            <!-- Play / Stop buttons -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Button
+                    android:layout_width="158dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:id="@+id/seq_play_button"
+                    android:text="@string/play"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/plain_button"
+                    android:onClick="play" />
+
+                <Button
+                    android:layout_width="158dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:id="@+id/seq_stop_button"
+                    android:text="@string/stop"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/plain_button"
+                    android:onClick="stop" />
             </LinearLayout>
         </LinearLayout>
-        <!-- Play / Stop buttons -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
 
-            <Button
-                android:layout_width="158dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:id="@+id/seq_play_button"
-                android:text="@string/play"
-                android:layout_margin="4dp"
-                android:background="@drawable/plain_button"
-                android:onClick="play" />
-
-            <Button
-                android:layout_width="158dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:id="@+id/seq_stop_button"
-                android:text="@string/stop"
-                android:layout_margin="4dp"
-                android:background="@drawable/plain_button"
-                android:onClick="stop" />
-        </LinearLayout>
 
     </LinearLayout>
 
     <!-- left drawer -->
-    <!--<android.support.design.widget.NavigationView-->
-    <!--android:layout_width="320dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:id="@+id/sequencer_drawer"-->
-    <!--android:background="@color/colorPrimary"-->
-    <!--android:layout_gravity="start"-->
-    <!--app:headerLayout="@layout/drawer_header"-->
-    <!--app:menu="@menu/sequencer_drawer"-->
-    <!--app:itemTextColor="@color/white"-->
-    <!--app:itemTextAppearance="@android:style/TextAppearance.DeviceDefault.Large" />-->
+    <android.support.design.widget.NavigationView
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:id="@+id/sequencer_drawer"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/sequencer_drawer"
+        app:itemTextColor="@color/white"
+        app:itemTextAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
 </android.support.v4.widget.DrawerLayout>

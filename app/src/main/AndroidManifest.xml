@@ -21,7 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.activities.SequencerActivity" />
+        <activity
+            android:name=".controller.activities.SequencerActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
         <activity android:name=".controller.activities.Debug" />
         <activity android:name=".controller.activities.ManagementActivity" />
     </application>
