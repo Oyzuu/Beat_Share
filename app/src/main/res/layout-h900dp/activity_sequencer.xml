@@ -26,11 +26,11 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:id="@+id/button_bar1"
             android:text="@string/bar1"
-
+            android:textSize="24sp"
             android:textColor="@color/colorAccent"
             android:onClick="selectBar"
             android:background="@drawable/secondary_button" />
@@ -39,7 +39,7 @@
             app:layout_widthPercent="24.125%"
             android:layout_height="15dp"
             android:layout_below="@id/button_bar1"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:id="@+id/progress_bar1"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
 
@@ -47,12 +47,12 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_toEndOf="@id/button_bar1"
             android:id="@+id/button_bar2"
             android:text="@string/bar2"
-
+            android:textSize="24sp"
             android:onClick="selectBar"
             android:background="@drawable/secondary_button"
             android:visibility="gone" />
@@ -60,7 +60,7 @@
         <ProgressBar
             app:layout_widthPercent="24.125%"
             android:layout_height="15dp"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_toEndOf="@id/progress_bar1"
             android:layout_below="@id/button_bar2"
             android:id="@+id/progress_bar2"
@@ -71,12 +71,12 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_toEndOf="@id/button_bar2"
             android:id="@+id/button_bar3"
             android:text="@string/bar3"
-
+            android:textSize="24sp"
             android:onClick="selectBar"
             android:background="@drawable/secondary_button"
             android:visibility="gone" />
@@ -84,7 +84,7 @@
         <ProgressBar
             app:layout_widthPercent="24.125%"
             android:layout_height="15dp"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/button_bar3"
             android:layout_toEndOf="@id/progress_bar2"
             android:id="@+id/progress_bar3"
@@ -96,12 +96,12 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_toEndOf="@id/button_bar3"
             android:id="@+id/button_bar4"
             android:text="@string/bar4"
-
+            android:textSize="24sp"
             android:onClick="selectBar"
             android:background="@drawable/secondary_button"
             android:visibility="gone" />
@@ -109,7 +109,7 @@
         <ProgressBar
             app:layout_widthPercent="24.125%"
             android:layout_height="15dp"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/button_bar4"
             android:layout_toEndOf="@id/progress_bar3"
             android:id="@+id/progress_bar4"
@@ -121,35 +121,35 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_toEndOf="@id/button_bar4"
             android:layout_gravity="start"
             android:id="@+id/add_bar_button"
             android:text="@string/add"
-
+            android:textSize="24sp"
             android:background="@drawable/secondary_button"
             android:onClick="addBar" />
 
         <!-- Spinner and add button -->
 
         <Spinner
-            app:layout_widthPercent="70%"
+            app:layout_widthPercent="73.875%"
             app:layout_heightPercent="6%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/progress_bar1"
             android:id="@+id/sounds_spinner" />
 
         <Button
             android:id="@+id/add_sound_button"
-            app:layout_widthPercent="23%"
+            app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/progress_bar1"
-            android:layout_alignParentRight="true"
+            android:layout_toEndOf="@id/sounds_spinner"
             android:background="@drawable/secondary_button"
             android:text="@string/add"
-
+            android:textSize="24sp"
             android:onClick="openAddSoundDialog" />
 
         <!-- Buttons 1 to 4-->
@@ -157,7 +157,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/add_sound_button"
             android:id="@+id/seq_button_1"
             android:onClick="activatePad"
@@ -166,7 +166,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/add_sound_button"
             android:layout_toEndOf="@+id/seq_button_1"
             android:id="@+id/seq_button_2"
@@ -176,7 +176,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/add_sound_button"
             android:layout_toEndOf="@id/seq_button_2"
             android:id="@+id/seq_button_3"
@@ -186,7 +186,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/add_sound_button"
             android:layout_toEndOf="@id/seq_button_3"
             android:id="@+id/seq_button_4"
@@ -198,7 +198,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_1"
             android:id="@+id/seq_button_5"
             android:onClick="activatePad"
@@ -207,7 +207,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_1"
             android:layout_toEndOf="@id/seq_button_5"
             android:id="@+id/seq_button_6"
@@ -217,7 +217,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_1"
             android:layout_toEndOf="@id/seq_button_6"
             android:id="@+id/seq_button_7"
@@ -227,7 +227,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_1"
             android:layout_toEndOf="@id/seq_button_7"
             android:id="@+id/seq_button_8"
@@ -239,7 +239,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_5"
             android:id="@+id/seq_button_9"
             android:onClick="activatePad"
@@ -248,7 +248,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_5"
             android:layout_toEndOf="@id/seq_button_9"
             android:id="@+id/seq_button_10"
@@ -258,7 +258,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_5"
             android:layout_toEndOf="@id/seq_button_10"
             android:id="@+id/seq_button_11"
@@ -268,7 +268,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_5"
             android:layout_toEndOf="@id/seq_button_11"
             android:id="@+id/seq_button_12"
@@ -280,7 +280,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_9"
             android:id="@+id/seq_button_13"
             android:onClick="activatePad"
@@ -289,7 +289,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_9"
             android:layout_toEndOf="@id/seq_button_13"
             android:id="@+id/seq_button_14"
@@ -299,7 +299,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_9"
             android:layout_toEndOf="@id/seq_button_14"
             android:id="@+id/seq_button_15"
@@ -309,7 +309,7 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_aspectRatio="100%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_9"
             android:layout_toEndOf="@id/seq_button_15"
             android:id="@+id/seq_button_16"
@@ -320,26 +320,26 @@
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_14"
             android:layout_toEndOf="@id/seq_button_13"
             android:padding="5dp"
             android:id="@+id/seq_play_button"
             android:text="@string/play"
-
+            android:textSize="24sp"
             android:background="@drawable/plain_button"
             android:onClick="play" />
 
         <Button
             app:layout_widthPercent="24.125%"
             app:layout_heightPercent="6%"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_below="@id/seq_button_15"
             android:layout_toEndOf="@id/seq_button_14"
             android:padding="5dp"
             android:id="@+id/seq_stop_button"
             android:text="@string/stop"
-
+            android:textSize="24sp"
             android:background="@drawable/plain_button"
             android:onClick="stop" />
     </android.support.percent.PercentRelativeLayout>

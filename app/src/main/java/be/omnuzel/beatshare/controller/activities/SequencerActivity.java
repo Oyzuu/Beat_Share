@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -404,21 +403,26 @@ public class SequencerActivity
 
         sequence.addBar(activeBar);
 
-        // Fetch layout linked to created bar by name and make it visible
-        String name = "bar" + sequence.getTotalBars() + "_layout";
+
+        // Setting button and progress bar visible
+        String name = "button_bar" + sequence.getTotalBars();
         int id = getResources().getIdentifier(name, "id", getPackageName());
-        LinearLayout barLayout = (LinearLayout) findViewById(id);
+        View invisibleView = findViewById(id);
 
-        if (barLayout != null)
-            barLayout.setVisibility(View.VISIBLE);
+        if (invisibleView != null) {
+            invisibleView.setVisibility(View.VISIBLE);
+        }
 
-        // Fetch bar button to select by name
-        name = "button_bar" + sequence.getTotalBars();
-        id = getResources().getIdentifier(name, "id", getPackageName());
-        View button = findViewById(id);
-
+        selectBar(invisibleView);
         resetActivePads();
-        selectBar(button);
+
+        name = "progress_bar" + sequence.getTotalBars();
+        id = getResources().getIdentifier(name, "id", getPackageName());
+        invisibleView = findViewById(id);
+
+        if (invisibleView != null) {
+            invisibleView.setVisibility(View.VISIBLE);
+        }
     }
 
     public void selectBar(View view) {
